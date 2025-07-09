@@ -325,14 +325,7 @@ This project was developed by our team for the **Smart India Hackathon 2024 Inte
 - **Mobile Responsiveness**: Some admin panel components need optimization
 - **Browser Compatibility**: Limited testing on older browsers
 
-## 📞 Support & Contact
 
-For any queries, issues, or contributions:
-
-- **Project Repository**: [GitHub Link]
-- **Documentation**: Available in `/docs` folder
-- **Issue Tracker**: Use GitHub Issues
-- **Email**: your-team-email@example.com
 
 ## 📄 License
 
@@ -360,4 +353,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-*This README was generated for the Smart India Hackathon 2024 project developed in September 2024.*
