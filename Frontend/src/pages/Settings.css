@@ -1,0 +1,48 @@
+/* Default light mode styles */
+body {
+  background-color: #f0f4f8;
+  color: #333;
+}
+
+body.dark-mode {
+  background-color: #0d0f13; /* Dark gray background */
+  color: #e2e8f0; /* Light gray text */
+}
+
+.bg-white {
+  background-color: #ffffff; /* White background in light mode */
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc; /* Light gray background */
+}
+
+.bg-gray-800 {
+  background-color: #2d3748; /* Dark gray background in dark mode */
+}
+
+.text-gray-900 {
+  color: #1a202c; /* Dark text color in light mode */
+}
+
+.text-gray-700 {
+  color: #4a5568; /* Medium gray text color */
+}
+
+.text-gray-300 {
+  color: #e2e8f0; /* Light gray text color in dark mode */
+}
+
+/* Border for light and dark mode */
+.bg-white.border {
+  border: 1px solid #e2e8f0; /* Light border in light mode */
+}
+
+.dark:bg-gray-800.dark:border-gray-600 {
+  border: 1px solid #2d3748; /* Dark border in dark mode */
+}
+
+/* Specific style for white text */
+.text-white {
+  color: #000000; /* White text color */
+}

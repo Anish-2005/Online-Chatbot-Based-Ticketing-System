@@ -1,0 +1,36 @@
+/* Global Styles */
+
+/* Light mode styles */
+body.light {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+body.dark {
+  background-color: #000; /* Black background */
+  color: #f9f9f9;
+}
+
+/* Apply dark mode to the entire page container */
+.light {
+  background-color: #f9f9f9; /* Default light mode background */
+}
+
+.dark {
+  background-color: #000; /* Full black background in dark mode */
+}
+
+/* Dark mode content box styles */
+.dark .bg-white {
+  background-color: #1a202c; /* Dark background for content box */
+}
+
+button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.dark html{
+  background-color: black;
+}
+.dark #white{
+  background-color: black;
+}

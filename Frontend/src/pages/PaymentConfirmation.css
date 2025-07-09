@@ -1,0 +1,136 @@
+/* Payment Confirmation Page */
+.payment-confirmation-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: white; /* Background image */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Mode */
+.payment-confirmation-page.light-mode {
+  background-color: rgba(249, 249, 249, 0.8); /* Semi-transparent white */
+  color: #000;
+}
+
+/* Dark Mode */
+.payment-confirmation-page.dark-mode {
+  background-color: rgba(18, 17, 17, 0.8); /* Semi-transparent dark */
+  color: #f9f9f9;
+}
+
+/* Heading */
+.heading {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #7282c1;
+}
+
+/* Payment Details Box */
+.payment-details {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px; /* Limiting width */
+  margin: 0 auto; /* Center align */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark Mode Payment Details */
+.payment-details.dark-mode {
+  background-color: #1c1c1c;
+}
+
+/* Payment Details Text */
+.payment-details p {
+  margin: 10px 0;
+}
+
+/* Contact Info */
+.contact-info {
+  margin-top: 20px;
+}
+
+.contact-info label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.contact-info input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.contact-info input:focus {
+  border-color: #007bff;
+}
+
+/* Dark Mode Contact Info */
+.dark-mode .contact-info input {
+  background-color: #000;
+  color: #f9f9f9;
+  border-color: #cfcbcb;
+}
+
+/* Confirm Payment Button */
+.confirm-payment-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.confirm-payment-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Dark Mode Confirm Payment Button */
+.dark-mode .confirm-payment-button {
+  background-color: #0056b3;
+}
+
+/* Popup Message */
+.popup-message {
+  position: fixed; /* Make it fixed to always be visible even on scroll */
+  top: 70%; /* Center it vertically */
+  left: 50%; /* Center it horizontally */
+  transform: translate(-50%, -50%); /* Adjust for exact center */
+  padding: 20px; /* Increase padding for better appearance */
+  background-color: rgba(240, 240, 240, 0.8); /* Semi-transparent background */
+  border: 2px solid rgba(200, 200, 200, 0.9); /* Add semi-transparent border */
+  border-radius: 8px; /* Smooth the edges */
+  color: #333;
+  z-index: 10; /* Ensure it's above other content */
+  text-align: center; /* Center the text */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for better visual */
+  transition: background-color 0.3s, color 0.3s, transform 0.3s ease-in-out;
+}
+
+/* Dark Mode Popup Message */
+.dark-mode .popup-message {
+  background-color: rgba(51, 51, 51, 0.8); /* Dark mode semi-transparent background */
+  color: #f0f0f0;
+  border-color: rgba(85, 85, 85, 0.9); /* Dark mode border */
+}
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+  .popup-message {
+    top:80%;
+    padding: 15px; /* Decrease padding for smaller screens */
+    font-size: 14px; /* Smaller text for mobile */
+    max-width: 95%; /* Take most of the screen width */
+  }
+}

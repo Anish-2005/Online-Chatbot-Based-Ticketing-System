@@ -1,0 +1,39 @@
+/* TotalEarningsPage.css */
+
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .bg-gray-100 {
+    background-color: #121212;
+  }
+  
+  .dark-mode .bg-gradient-to-r {
+    background: linear-gradient(to right, #6e1f2c, #2b4d8c, #00509e);
+  }
+  
+  .dark-mode .bg-white {
+    background-color: #1e1e1e;
+  }
+  
+  .dark-mode .text-white {
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .text-light-purple {
+    color: #d3a6f0;
+  }
+  
+  .dark-mode .bg-gray-700 {
+    background-color: #333;
+  }
+  
+  .dark-mode .bg-opacity-10 {
+    background-color: rgba(30, 30, 30, 0.3);
+  }
+  
+  .dark-mode .bg-opacity-30 {
+    background-color: rgba(30, 30, 30, 0.6);
+  }
+  

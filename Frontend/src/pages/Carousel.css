@@ -1,0 +1,231 @@
+/* Base styling */
+.carousel-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.carousel-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+}
+
+.carousel-slider .slick-list {
+  overflow: visible;
+}
+
+/* Slide styling */
+.carousel-slide {
+  opacity: 0.3;
+  transform: scale(0.7);
+  transition: transform 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+  filter: blur(2px);
+  padding: 0 10px;
+  position: relative;
+}
+
+/* Hover effect to slightly scale up */
+.carousel-slide:hover {
+  transform: scale(0.75);
+}
+
+/* Active slide styling */
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  z-index: 2;
+}
+
+/* Adjacent slide styling */
+.carousel-slide.adjacent {
+  opacity: 0.6;
+  transform: scale(0.85);
+  filter: blur(1px);
+  z-index: 1;
+}
+
+/* Slide image */
+.carousel-image {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.5s ease;
+}
+
+/* Image hover effect */
+.carousel-slide:hover .carousel-image {
+  transform: scale(1.05);
+}
+
+/* Slide content */
+.carousel-content {
+  text-align: center;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0 0 12px 12px;
+  margin-top: -20px;
+  position: relative;
+  z-index: 3;
+  transition: background-color 0.5s ease, transform 0.5s ease;
+}
+
+/* Active slide content */
+.carousel-slide.active .carousel-content {
+  background-color: rgba(255, 255, 255, 1);
+  transform: translateY(-10px);
+}
+
+/* Text styling */
+.carousel-content h3 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  color: #222;
+}
+
+.carousel-content p {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #666;
+}
+
+/* Custom dots */
+.slick-dots li button:before {
+  font-size: 12px;
+  color: #353232;
+  opacity: 1;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #333;
+  opacity: 1;
+}
+
+/* Custom arrows with border */
+.slick-prev, .slick-next {
+  font-size: 0;
+  width: 40px;
+  height: 40px;
+  background-color: #808080; /* Grey background */
+  border-radius: 50%;
+  border: 2px solid #333; /* Added border to make the button more visible */
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  z-index: 5;
+}
+
+.slick-prev:hover, .slick-next:hover {
+  background-color: #333; /* Dark grey background on hover */
+  border-color: #010000; /* Change border color to white on hover */
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 20px;
+  color: #333;
+  opacity: 0.8;
+}
+
+.slick-prev:hover:before, .slick-next:hover:before {
+  color: #fff;
+  opacity: 1;
+}
+
+
+
+/* Animation for content entry */
+.carousel-content {
+  animation: fadeInUp 0.8s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+h2.text-white {
+  color: #ffffff;
+}
+
+h2.text-light {
+  color: #333333; /* Replace this with whatever light color you want in light mode */
+}
+/* Media query for mobile screens (768px or less) */
+@media (max-width: 768px) {
+  /* Adjust Carousel Container */
+  .carousel-container {
+    padding: 20px;
+  }
+
+  /* Adjust Title font size */
+  .carousel-title {
+    font-size: 1.5rem;
+  }
+
+  /* Adjust Slide styling for mobile */
+  .carousel-slide {
+    transform: scale(0.85);
+    opacity: 0.6;
+    padding: 0 5px;
+  }
+
+  /* Active slide styling for mobile */
+  .carousel-slide.active {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* Adjust Image height */
+  .carousel-image {
+    height: 200px;
+  }
+
+  /* Adjust Dots size */
+  .slick-dots li button:before {
+    font-size: 10px;
+  }
+
+  /* Adjust Arrows size */
+  /* Custom arrows */
+.slick-prev, .slick-next {
+  font-size: 0;
+  width: 40px;
+  height: 40px;
+  background-color: #808080; /* Changed from white (#fff) to grey (#808080) */
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  z-index: 5;
+}
+
+.slick-prev:hover, .slick-next:hover {
+  background-color: #333; /* Keep the hover effect as dark grey */
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 20px;
+  color: #333;
+  opacity: 0.8;
+}
+
+.slick-prev:hover:before, .slick-next:hover:before {
+  color: #fff;
+  opacity: 1;
+}
+}

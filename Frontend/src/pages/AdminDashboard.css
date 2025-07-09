@@ -1,0 +1,56 @@
+/* AdminDashboard.css */
+body.dark-mode {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.bg-gray-900 {
+  background-color: #1a202c;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.shadow-xl {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.bg-gradient-to-r.from-gray-700 {
+  background: linear-gradient(to right, #4a5568, #2d3748, #1a202c);
+}
+.bg-gradient-to-r {
+  background: linear-gradient(to right, #4f46e5, #7c3aed, #3b82f6); /* Darker gradient for dark mode */
+}

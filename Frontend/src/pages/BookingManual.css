@@ -1,0 +1,60 @@
+/* General styles for the Booking Manual component */
+.booking-manual {
+  background-color: #f8f9fa; /* Light mode background */
+  color: #212529; /* Light mode text color */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.booking-manual.dark-mode {
+  background-color: #212529; /* Dark mode background */
+  color: #f8f9fa; /* Dark mode text color */
+}
+
+.booking-manual-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: inherit; /* Make title inherit text color based on mode */
+}
+
+.booking-manual-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.booking-manual-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.booking-manual-info {
+  flex: 1;
+}
+
+.booking-manual-event-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: inherit; /* Make event title inherit text color based on mode */
+}
+
+/* Dark Mode Styling */
+.dark-mode .booking-manual {
+  background-color: #343a40; /* Darker background in dark mode */
+  color: #f8f9fa; /* Lighter text in dark mode */
+}
+
+.dark-mode .booking-manual-title,
+.dark-mode .booking-manual-event-title {
+  color: #f8f9fa;
+}

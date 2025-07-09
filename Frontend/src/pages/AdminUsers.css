@@ -1,0 +1,44 @@
+/* Light mode */
+body {
+    --text-color: black;
+    --background-color: white;
+    --heading-text-color: black;
+    --box-bg-color: white;
+    --table-bg-color: white;
+    --hover-bg-color: #f7f7f7;
+  }
+  
+  /* Dark mode */
+  body.dark-mode {
+    --text-color: #e5e7eb; /* Light gray for text in dark mode */
+    --background-color: #1f2937; /* Dark gray background */
+    --heading-text-color: #d8b4fe; /* Light purple for headings */
+    --box-bg-color: #374151; /* Darker gray for boxes */
+    --table-bg-color: #374151; /* Darker gray for table background */
+    --hover-bg-color: #4b5563; /* Darker gray for row hover in dark mode */
+  }
+  
+  .bg-white {
+    background-color: var(--box-bg-color);
+  }
+  
+  .text-black {
+    color: var(--text-color);
+  }
+  
+  .text-light-purple {
+    color: var(--heading-text-color);
+  }
+  
+  .hover:bg-gray-100 {
+    background-color: var(--hover-bg-color);
+  }
+  
+  .dark-mode .hover:bg-gray-100 {
+    background-color: var(--hover-bg-color);
+  }
+  
+  .dark-mode-box {
+    background-color: var(--box-bg-color);
+  }
+  

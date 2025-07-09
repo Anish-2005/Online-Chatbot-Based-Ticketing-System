@@ -1,0 +1,39 @@
+/* Light mode styles */
+.text-black {
+    color: #000000;
+  }
+  
+  .text-light-purple {
+    color: #b9a0d2; /* Light purple color */
+  }
+  
+  .bg-white {
+    background-color: #ffffff;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .text-light-purple {
+    color: #b9a0d2; /* Light purple color */
+  }
+  
+  .dark-mode .bg-gray-800 {
+    background-color: #0b0d10;
+    border: 1px solid white;
+  }
+  
+  .dark-mode .bg-gray-700 {
+    background-color: #14171b;
+  }
+  
+  .dark-mode .bg-gray-200 {
+    background-color: #e2e8f0;
+  }
+  
+  .dark-mode .text-gray-300 {
+    color: #e2e8f0;
+  }
+  
+  .dark-mode .text-gray-700 {
+    color: #1c2027;
+  }
+  

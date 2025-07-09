@@ -1,0 +1,70 @@
+/* Sidebar container */
+.sidebar {
+    position: fixed;
+    inset-y: 0;
+    left: 0;
+    width: 16rem; /* w-64 */
+    padding: 1.5rem; /* p-6 */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode */
+.sidebar-light {
+    background-color: white;
+    color: #333; /* Dark text for light mode */
+}
+
+.sidebar-light .heading {
+    color: #333; /* Dark text for light mode */
+}
+
+.sidebar-light .nav-link {
+    color: #6a0dad; /* Light purple */
+    text-shadow: 1px 1px 0 black; /* Black border effect */
+}
+
+.sidebar-light .nav-link:hover {
+    color: #8e2de2; /* Slightly darker light purple on hover */
+}
+
+.sidebar-light .active-link {
+    background-color: #6a0dad; /* Light purple */
+    color: white; /* White text for active link */
+}
+
+.sidebar-light .return-home-btn {
+    background-color: #6a0dad; /* Light purple */
+    color: white;
+}
+
+/* Dark mode */
+.sidebar-dark {
+    background-color: #1a202c; /* Dark gray background */
+    color: white;
+}
+
+.sidebar-dark .heading {
+    color: white; /* White text for dark mode */
+}
+
+.sidebar-dark .nav-link {
+    color: #d1c4e9; /* Light purple for dark mode */
+    text-shadow: 1px 1px 0 black; /* Black border effect */
+}
+
+.sidebar-dark .nav-link:hover {
+    color: #ab47bc; /* Darker light purple on hover in dark mode */
+}
+
+.sidebar-dark .active-link {
+    background-color: #2d3748; /* Slightly lighter dark gray */
+    color: #d1c4e9; /* Light purple text for active link */
+}
+
+.sidebar-dark .return-home-btn {
+    background-color: #262a31; /* Slightly lighter dark gray */
+    color: white;
+    border: 1px solid white;
+}

@@ -1,0 +1,19 @@
+/* SpecialOffers.css */
+
+/* General Styles */
+.dark-mode .bg-gray-800 {
+    background-color: #1f2937; /* Dark background for dark mode */
+  }
+  
+  .dark-mode .text-white {
+    color: #ffffff; /* White text for dark mode */
+  }
+  
+  .dark-mode .text-gray-300 {
+    color: #d1d5db; /* Light gray text for dark mode */
+  }
+  
+  .dark-mode .bg-gradient-to-r {
+    background: linear-gradient(to right, #4f46e5, #7c3aed, #3b82f6); /* Darker gradient for dark mode */
+  }
+  

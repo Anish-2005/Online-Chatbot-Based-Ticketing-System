@@ -1,0 +1,129 @@
+/* General Chatbot Container */
+.chatbot-container {
+  margin-top: 30px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  width: 500px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* Chatbot Icon (when used) */
+.chatbot-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.chatbot-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Add background blur effect when chatbot is open */
+.chatbot-open ~ .bookshows-container {
+  filter: blur(8px);
+  transition: filter 0.3s ease;
+}
+
+/* Light Theme */
+.light-theme {
+  --df-messenger-button-titlebar-color: #3765FF;
+  --df-messenger-send-icon: #000000;
+  --df-messenger-bot-message: #f1f1f1;
+  --df-messenger-chat-background-color: #fafafa;
+  --df-messenger-text-color: #000000;
+
+  /* Input Section in Light Mode */
+  --df-messenger-input-placeholder-color: #666;
+  --df-messenger-input-background-color: #ffffff;
+  --df-messenger-input-text-color: #000000;
+  --df-messenger-input-border-color: #ddd;
+}
+
+/* Dark Theme */
+.dark-theme {
+  --df-messenger-button-titlebar-color: #333;
+  --df-messenger-send-icon: #ffffff;
+  --df-messenger-bot-message: #928d8d; /* Bot message bubble background color */
+  --df-messenger-chat-background-color: #222;
+  --df-messenger-text-color: #ffffff; /* Set text color to white */
+  --df-messenger-user-message: #ffffff; /* User message text color */
+  --df-messenger-bot-message-text-color: #ffffff; /* Bot message text color */
+
+  /* Dark Mode Text Box and Input Styles */
+  --df-messenger-input-placeholder-color: #ccc; /* Placeholder text color */
+  --df-messenger-input-background-color: #000000; /* Input background */
+  --df-messenger-input-text-color: #ffffff; /* White text in input */
+  --df-messenger-input-border-color: #444; /* Input border color */
+
+  /* Scrollbar customization for dark mode */
+  scrollbar-color: #333 #111; /* Dark scroll track with black thumb */
+  scrollbar-width: thin; /* Thin scrollbar */
+}
+
+.dark-theme df-messenger {
+  --df-messenger-input-placeholder-color: #ccc;
+  --df-messenger-input-background-color: #000000;
+  --df-messenger-input-text-color: #ffffff;
+  --df-messenger-input-border-color: #444;
+}
+
+/* Chatbot Toggle Button - Default */
+.chatbot-toggle {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* When the chatbot is open */
+.chatbot-open .chatbot-toggle {
+  background-color: #ff6347; /* Change the toggle button color */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .chatbot-container {
+    width: 80%; /* Cover 80% of the screen width */
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .chatbot-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chatbot-toggle {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111; /* Scrollbar track in dark mode */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #333; /* Scrollbar thumb in dark mode */
+  border-radius: 10px;
+  border: 2px solid #111; /* Adds padding around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

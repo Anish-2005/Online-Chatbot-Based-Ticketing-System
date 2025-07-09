@@ -1,0 +1,118 @@
+/* Navbar.css */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    padding: 15px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    width: 100%; /* Ensures the navbar spans the entire screen width */
+    z-index: 1000;
+  }
+  
+  .navbar-logo h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-logo h2:hover {
+    color: #ffdd57; /* Highlight color on hover */
+  }
+  
+  .navbar-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-item {
+    margin-left: 25px;
+  }
+  
+  .navbar-link {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 8px 12px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar-link .icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+  }
+  
+  .navbar-link .link-text {
+    display: none;
+  }
+  
+  @media (min-width: 600px) {
+    .navbar-link .link-text {
+      display: inline;
+    }
+  }
+  
+  .navbar-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 3px;
+    background: #ffdd57;
+    transition: width 0.3s;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+  }
+  
+  .navbar-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    color: #ffdd57;
+  }
+  
+  .navbar-link:hover::after {
+    width: 100%;
+  }
+  
+  .navbar-link:focus {
+    outline: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .navbar-list {
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .navbar-item {
+      margin: 10px 0;
+    }
+  }
+  .nav-links a:hover {
+    background-color: #555;
+  }
+  
+  .nav-links .active {
+    background-color: #007bff; /* Highlight active tab */
+    color: white;
+  }

@@ -1,0 +1,82 @@
+/* Container for the whole booking section */
+.book-ticket-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+    transition: background-color 0.3s, color 0.3s;
+
+
+    max-width: 1200px;
+    margin: 60px auto;
+  }
+  
+  /* Museum Image Section */
+  .image-section {
+    flex: 1;
+  }
+  
+  .museum-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Museum Details Section */
+  .details-section {
+    flex: 2;
+    margin-left: 1.5rem;
+    color: #212529;
+  }
+  
+  .details-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .details-section p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  /* Book Ticket Button */
+  .book-ticket-btn {
+    padding: 12px 24px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .book-ticket-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .book-ticket-container {
+    background-color: #1c1c1c;
+    color: #f8f9fa;
+  }
+  
+  .dark-mode .museum-image {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark-mode .book-ticket-btn {
+    background-color: #333;
+  }
+  
+  .dark-mode .book-ticket-btn:hover {
+    background-color: #444;
+  }
+  

@@ -1,0 +1,163 @@
+:root {
+  --bg-color-light: #f9f9f9;
+  --bg-color-dark: #1e1e1e;
+  --text-color-light: #333;
+  --text-color-dark: #f0f0f0;
+  --button-bg-light: #007bff;
+  --button-bg-dark: #444;
+  --button-hover-bg-light: #0056b3;
+  --button-hover-bg-dark: #555;
+}
+
+/* General Styling */
+.events-page {
+  background-color: var(--bg-color-light);
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.events-page.dark {
+  background-color: var(--bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: var(--button-bg-light);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.events-page.dark .dark-mode-toggle {
+  background-color: var(--button-bg-dark);
+}
+
+.dark-mode-toggle:hover {
+  background-color: var(--button-hover-bg-light);
+}
+
+.events-page.dark .dark-mode-toggle:hover {
+  background-color: var(--button-hover-bg-dark);
+}
+
+/* Title Styling */
+.events-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: var(--text-color-light);
+  text-align: center;
+}
+
+.events-page.dark .events-title {
+  color: var(--text-color-dark);
+}
+
+/* Carousel Container */
+.carousel-container {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* Shows Container */
+.shows-container {
+  display: grid;
+  margin-top: 100px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Show Card */
+.show-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.events-page.dark .show-card {
+  background-color: #2c2c2c;
+}
+
+.show-card:hover {
+  transform: translateY(-5px);
+}
+
+.show-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.show-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.show-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--text-color-light);
+}
+
+.events-page.dark .show-title {
+  color: var(--text-color-dark);
+}
+
+.show-date,
+.show-location {
+  font-size: 1rem;
+  color: #777;
+}
+
+.events-page.dark .show-date,
+.events-page.dark .show-location {
+  color: #bbb;
+}
+
+/* Back Button */
+.back-button {
+  background-color: var(--button-bg-light);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.events-page.dark .back-button {
+  background-color: var(--button-bg-dark);
+}
+
+.back-button:hover {
+  background-color: var(--button-hover-bg-light);
+  transform: scale(1.05);
+}
+
+.events-page.dark .back-button:hover {
+  background-color: var(--button-hover-bg-dark);
+}

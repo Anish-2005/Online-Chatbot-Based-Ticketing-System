@@ -1,0 +1,477 @@
+/* Container for the whole page */
+.bookshows-container {
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light mode styles */
+.light-mode {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* Dark mode styles */
+.dark-mode {
+  background-color: #121212;
+  color: #f8f9fa;
+}
+
+/* Back to User Dashboard button */
+.back-to-dashboard-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dark-mode .back-to-dashboard-btn {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+.back-to-dashboard-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.dark-mode .back-to-dashboard-btn:hover {
+  background-color: #444;
+}
+
+/* Dark Mode Toggle Button */
+.toggle-dark-mode-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dark-mode .toggle-dark-mode-btn {
+  background-color: #1c7430;
+}
+
+.toggle-dark-mode-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.dark-mode .toggle-dark-mode-btn:hover {
+  background-color: #145a32;
+}
+
+
+/* Chatbot Button */
+.chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.dark-mode .chatbot-btn {
+  background-color: #333;
+}
+
+.chatbot-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.dark-mode .chatbot-btn:hover {
+  background-color: #444;
+}
+
+/* Page title */
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+  color: inherit; /* Inherit color based on mode */
+}
+
+/* Carousel container */
+.carousel-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Booking manual container */
+.booking-manual-container {
+  margin-top: 2rem;
+}
+
+/* View Full Booking Manual button */
+.view-full-manual-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+}
+
+.dark-mode .view-full-manual-btn {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+.view-full-manual-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.dark-mode .view-full-manual-btn:hover {
+  background-color: #444;
+}
+
+/* Content container (if any additional content is added) */
+.content-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 2rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode .content-container {
+  background-color: #1c1c1c;
+  color: #f8f9fa;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styles for the About Museum container */
+.about-museum-container {
+  background-color: #f8f9fa;
+  color: #000000;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles for About Museum */
+.dark-mode .about-museum-container {
+  background-color: #1c1c1c;
+  color: #e0e0e0;
+}
+
+/* Intro section heading */
+.intro-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+
+/* Mission section heading */
+.mission-section h2,
+.features-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+
+/* Text paragraphs */
+.intro-section p,
+.mission-section p,
+.features-section p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: inherit;
+}
+
+/* Feature list */
+.features-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-section li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.feature-image {
+  width: 100px;
+  height: auto;
+  margin-right: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode styles for images */
+.dark-mode .feature-image {
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode.feature-text {
+  color: black;
+}
+
+.features-section li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode styles for li */
+.dark-mode .features-section li {
+  background-color: #000;
+  border: 0.3px solid #f8f9fa;
+  color: #f8f9fa;
+}
+
+/* Container for the whole booking section */
+.book-ticket-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Museum Image Section */
+.image-section {
+  flex: 1;
+}
+
+.museum-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Museum Details Section */
+.details-section {
+  flex: 2;
+  margin-left: 1.5rem;
+  color: #212529;
+}
+
+.details-section h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.details-section p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Book Ticket Button */
+.book-ticket-btn {
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.book-ticket-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+/* Dark mode styles */
+.dark-mode .book-ticket-container {
+  background-color: #1c1c1c;
+  color: #f8f9fa;
+}
+
+.dark-mode .museum-image {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .details-section h2, 
+.dark-mode .details-section p {
+  color: #f8f9fa;
+}
+
+.dark-mode .book-ticket-btn {
+  background-color: #333;
+}
+
+.dark-mode .book-ticket-btn:hover {
+  background-color: #444;
+}
+
+/* Dark mode adjustments for more contrast */
+.dark-mode .details-section h2 {
+  color: #ffffff;
+}
+
+.dark-mode .details-section p {
+  color: #e0e0e0;
+}
+
+/* Tooltip for Chatbot Button */
+.chatbot-btn::after {
+  content: "Chatbot";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  font-size: 12px;
+}
+
+.chatbot-btn:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+/* Dark mode styles for Admin Login Button */
+.dark-mode .admin-login-btn {
+  background-color: #333;
+}
+.dark-mode .admin-login-btn:hover {
+  background-color: #444;
+}
+.dark-mode .toggle-dark-mode-btn {
+  background-color: #333;
+}
+.dark-mode .toggle-dark-mode-btn:hover {
+  background-color: #444;
+}
+/* Media query for mobile screens (768px or less) */
+@media (max-width: 768px) {
+  /* Ensure that only one slide appears on the screen */
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Adjust flexbox layouts for better stacking on smaller screens */
+  .image-section,
+  .details-section,
+  .book-ticket-container {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 0;
+  }
+
+  /* Make museum image responsive */
+  .museum-image {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Adjust padding and margins for better spacing */
+  .bookshows-container {
+    padding: 1rem;
+  }
+
+  .back-to-dashboard-btn,
+  .toggle-dark-mode-btn{
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  .chatbot-btn {
+    padding: 8px 16px;
+    font-size: 1.5rem;
+  }
+  .back-to-dashboard-btn,
+  .toggle-dark-mode-btn {
+    top: 10px;
+  }
+
+  /* Adjust the title size for mobile */
+  .title {
+    margin-top: 30px;
+    font-size: 2rem;
+  }
+
+  /* Ensure features list items stack correctly */
+  .features-section li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Adjust button sizes */
+  .book-ticket-btn,
+  .view-full-manual-btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  /* Adjust About Museum section layout */
+  .about-museum-container {
+    padding: 1.5rem;
+  }
+}
