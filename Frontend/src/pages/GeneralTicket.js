@@ -22,7 +22,7 @@ const GeneralTicket = () => {
   }, [event, navigate]);
 
   const fetchTickets = () => {
-    fetch(`https://fastapi-deploy-app.onrender.com/ticket_booking?event_id=66dcec58fea7a83d2186c52f`)
+    fetch(`https://online-chatbot-based-ticketing-system-4whh.onrender.com/ticket_booking?event_id=66dcec58fea7a83d2186c52f`)
       .then(response => response.json())
       .then(data => setTicketsLeft(data.ticketsLeft))
       .catch(error => console.error('Error fetching tickets:', error));
@@ -40,7 +40,7 @@ const GeneralTicket = () => {
       ticketsBought: seatCount
     };
 
-    fetch('https://fastapi-deploy-app.onrender.com/ticket_booking/update', {
+    fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/ticket_booking/update', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

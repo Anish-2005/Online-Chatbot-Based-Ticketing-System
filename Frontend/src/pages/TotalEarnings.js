@@ -11,7 +11,7 @@ const TotalEarningsPage = ({ role }) => {
   useEffect(() => {
     const fetchEarnings = async () => {
       try {
-        const response = await fetch('https://fastapi-deploy-app.onrender.com/earning');
+        const response = await fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/earning');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

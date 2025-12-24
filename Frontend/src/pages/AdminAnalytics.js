@@ -13,7 +13,7 @@ const AdminAnalyticsPage = ({ role }) => {
   useEffect(() => {
     const fetchTicketData = async () => {
       try {
-        const response = await fetch('https://fastapi-deploy-app.onrender.com/tickets-analytics');
+        const response = await fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/tickets-analytics');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -26,7 +26,7 @@ const AdminAnalyticsPage = ({ role }) => {
 
     const fetchEarningsData = async () => {
       try {
-        const response = await fetch('https://fastapi-deploy-app.onrender.com/profit');
+        const response = await fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/profit');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
