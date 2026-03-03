@@ -4,7 +4,7 @@ body {
   color: #333;
 }
 
-body.dark-mode {
+body.dark {
   background-color: #0d0f13; /* Dark gray background */
   color: #e2e8f0; /* Light gray text */
 }

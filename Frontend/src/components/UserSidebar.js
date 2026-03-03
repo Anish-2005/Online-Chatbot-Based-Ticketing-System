@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaHome } from 'react-icons/fa'; // Import home icon
-import { useTheme } from './ThemeContext';
+import { useTheme } from '../pages/ThemeContext';
 
 const UserSidebar = () => {
   const location = useLocation(); // Get the current location

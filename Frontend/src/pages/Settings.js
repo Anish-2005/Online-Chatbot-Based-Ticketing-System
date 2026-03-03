@@ -33,7 +33,7 @@ const Settings = ({ role }) => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className={`flex min-h-screen ${isDark ? 'dark' : ''}`}>
       {/* Sidebar */}
       <Sidebar role={role} />
 
