@@ -130,21 +130,8 @@ const Sidebar = () => {
 
       {/* Return to Home Button */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-        <button
-          type="button"
-          onClick={(event) => toggleTheme(event)}
-          className={`mb-3 flex w-full items-center ${isCollapsed ? 'justify-center' : 'justify-center gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${
-            isDark
-              ? 'bg-gray-800 text-yellow-300 hover:bg-gray-700'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-          aria-label="Toggle theme"
-        >
-          {isDark ? <FiSun className="w-4 h-4" /> : <FiMoon className="w-4 h-4" />}
-          {!isCollapsed && <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
-        </button>
-
-        {isCollapsed && (
+        <ThemeToggleButton isCollapsed={isCollapsed} />
+{isCollapsed && (
           <button
             type="button"
             onClick={() => setIsCollapsed(false)}

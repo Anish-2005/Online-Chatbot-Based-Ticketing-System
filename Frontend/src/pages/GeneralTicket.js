@@ -50,14 +50,8 @@ const GeneralTicket = () => {
 
   return (
     <div className={`booking-page ${isDark ? 'dark' : 'light'}`}>
-      <button
-        className={`dark-mode-toggle ${isDark ? 'dark' : ''}`}
-        onClick={toggleTheme}
-      >
-        {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-      </button>
-
-      <motion.h1
+            <ThemeToggleButton />
+<motion.h1
         className="heading"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

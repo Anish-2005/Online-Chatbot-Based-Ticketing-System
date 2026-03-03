@@ -146,16 +146,8 @@ const PaymentConfirmation = () => {
             >
               ← Back to Booking
             </motion.button>
-
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold shadow-md transition-all ${isDark ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-            >
-              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-            </motion.button>
-          </div>
+            <ThemeToggleButton />
+</div>
 
           <motion.div
             className="mt-8"
