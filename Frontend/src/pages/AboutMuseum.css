@@ -1,101 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
 .about-museum-container {
-    padding: 2rem;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .intro-section,
-  .mission-section,
-  .features-section,
-  .chatbot-section {
-    margin-bottom: 2rem;
-  }
-  
-  h1, h2 {
-    font-family: 'Merriweather', serif;
-    color: #2c3e50;
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  
-  p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    color: #666;
-  }
-  
-  .intro-section p,
-  .mission-section p {
-    line-height: 1.6;
-  }
-  
-  .features-section ul,
-  .chatbot-section ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .features-section li,
-  .chatbot-section li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fff;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    border: 1px solid #ddd;
-  }
-  
-  .features-section li:hover,
-  .chatbot-section li:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-  }
-  
-  .feature-image {
-    width: 150px;
-    height: 100px;
-    object-fit: cover;
-    border-right: 1px solid #ddd;
-  }
-  
-  .features-section li p,
-  .chatbot-section li p {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.about-section {
+  border-radius: 1rem;
+  border: 1px solid;
+  padding: 1.25rem;
+  backdrop-filter: blur(4px);
+}
+
+.about-title {
+  margin: 0 0 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.about-subtitle {
+  margin: 0 0 0.6rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.about-description {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.75;
+  letter-spacing: -0.003em;
+}
+
+.features-section ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.features-section li {
+  display: flex;
+  align-items: stretch;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  border: 1px solid;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.features-section li:hover {
+  transform: translateY(-3px);
+}
+
+.feature-image {
+  width: 180px;
+  min-width: 180px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.feature-text {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  letter-spacing: -0.002em;
+}
+
+.feature-text strong {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.about-museum-container.light .about-section {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(196, 181, 253, 0.45);
+  box-shadow: 0 12px 28px rgba(76, 29, 149, 0.08);
+}
+
+.about-museum-container.light .about-title,
+.about-museum-container.light .about-subtitle {
+  color: #111827;
+}
+
+.about-museum-container.light .about-description,
+.about-museum-container.light .feature-text {
+  color: #374151;
+}
+
+.about-museum-container.light .features-section li {
+  background: rgba(245, 243, 255, 0.75);
+  border-color: rgba(196, 181, 253, 0.5);
+}
+
+.about-museum-container.light .features-section li:hover {
+  box-shadow: 0 10px 22px rgba(124, 58, 237, 0.14);
+  border-color: rgba(147, 51, 234, 0.55);
+}
+
+.about-museum-container.dark .about-section {
+  background: rgba(31, 41, 55, 0.55);
+  border-color: rgba(167, 139, 250, 0.32);
+  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.45);
+}
+
+.about-museum-container.dark .about-title,
+.about-museum-container.dark .about-subtitle {
+  color: #f9fafb;
+}
+
+.about-museum-container.dark .about-description,
+.about-museum-container.dark .feature-text {
+  color: #d1d5db;
+}
+
+.about-museum-container.dark .features-section li {
+  background: rgba(17, 24, 39, 0.65);
+  border-color: rgba(167, 139, 250, 0.28);
+}
+
+.about-museum-container.dark .features-section li:hover {
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.55);
+  border-color: rgba(196, 181, 253, 0.45);
+}
+
+@media (max-width: 768px) {
+  .about-section {
     padding: 1rem;
-    flex: 1;
   }
-  
-  .chatbot-section li {
-    background-color: #f4f4f4;
-    border: none;
-    border-radius: 8px;
+
+  .features-section li {
+    flex-direction: column;
   }
-  
-  @media (max-width: 768px) {
-    .features-section li,
-    .chatbot-section li {
-      flex-direction: column;
-    }
-  
-    .feature-image {
-      width: 100%;
-      height: auto;
-      border-right: none;
-      border-bottom: 1px solid #ddd;
-    }
+
+  .feature-image {
+    width: 100%;
+    min-width: 100%;
+    height: 170px;
   }
-  
+
+  .feature-text {
+    font-size: 0.94rem;
+    padding: 0.85rem 0.9rem;
+  }
+}

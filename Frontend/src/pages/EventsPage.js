@@ -2,151 +2,162 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
-import './EventsPage.css'; // Import the CSS file
+import { fetchShows } from '../services/shows';
 import Carousel from './Carousel';
-
-const latestShows = [
-   {
-    id: 1,
-    image: 'https://cdn-az.allevents.in/events5/banners/feab92d0b89ca33637fda294def2f37398a44674f2ca310e4dc0b8bf41040f86-rimg-w1200-h628-dc461c17-gmir?v=1725029822',
-    title: 'Sunburn Arena Ft. Alan Walker',
-    date: 'September 27, 2024',
-    location: 'Biswa Bangla Mela Prangan',
-    price: '₹1499 onwards',
-  },
-  {
-    id: 2,
-    image: 'https://m.media-amazon.com/images/M/MV5BMTA1NmUxYzItZmVmNy00YmQxLTk4Y2UtZjVkMWUwMWQ5N2IxXkEyXkFqcGc@._V1_.jpg',
-    title: 'Stree 2: Sarkate Ka Aatank',
-    date: 'October 2024',
-    location: 'Major cinemas in Kolkata',
-    price: '₹350 onwards',
-  },
-  {
-    id: 3,
-    image: 'https://b.zmtcdn.com/data/zomaland/ce3d83319751c17bbdd80954619f05d71721029953.png',
-    title: 'Ghar X Helly Shah',
-    date: '15th September',
-    location: 'Kolkata',
-    price: '₹499 onwards',
-  },
-  {
-    id: 4,
-    image: 'https://b.zmtcdn.com/data/zomaland/d639b7e07000b40558843f407cc1ece81723781534.jpeg?fit=around%7C600%3A600',
-    title: 'Guru Randhawa - Moon Rise Tour',
-    date: '23rd November',
-    location: 'Kolkata',
-    price: '₹499 onwards',
-  },
-  {
-    id: 5,
-    image: 'https://cdn-az.allevents.in/events5/banners/feab92d0b89ca33637fda294def2f37398a44674f2ca310e4dc0b8bf41040f86-rimg-w1200-h628-dc461c17-gmir?v=1725029822',
-    title: 'Sunburn Arena Ft. Alan Walker',
-    date: 'September 27, 2024',
-    location: 'Biswa Bangla Mela Prangan',
-    price: '₹1499 onwards',
-  },
-  {
-    id: 6,
-    image: 'https://m.media-amazon.com/images/M/MV5BMTA1NmUxYzItZmVmNy00YmQxLTk4Y2UtZjVkMWUwMWQ5N2IxXkEyXkFqcGc@._V1_.jpg',
-    title: 'Stree 2: Sarkate Ka Aatank',
-    date: 'October 2024',
-    location: 'Major cinemas in Kolkata',
-    price: '₹350 onwards',
-  },
-  {
-    id: 7,
-    image: 'https://b.zmtcdn.com/data/zomaland/ce3d83319751c17bbdd80954619f05d71721029953.png',
-    title: 'Ghar X Helly Shah',
-    date: '15th September',
-    location: 'Kolkata',
-    price: '₹499 onwards',
-  },
-  {
-    id: 8,
-    image: 'https://b.zmtcdn.com/data/zomaland/d639b7e07000b40558843f407cc1ece81723781534.jpeg?fit=around%7C600%3A600',
-    title: 'Guru Randhawa - Moon Rise Tour',
-    date: '23rd November',
-    location: 'Kolkata',
-    price: '₹499 onwards',
-  },
-  {
-    id: 9,
-    image: 'https://cdn-az.allevents.in/events5/banners/feab92d0b89ca33637fda294def2f37398a44674f2ca310e4dc0b8bf41040f86-rimg-w1200-h628-dc461c17-gmir?v=1725029822',
-    title: 'Sunburn Arena Ft. Alan Walker',
-    date: 'September 27, 2024',
-    location: 'Biswa Bangla Mela Prangan',
-    price: '₹1499 onwards',
-  },
-];
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
+  const [shows, setShows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const loadShows = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const data = await fetchShows();
+        setShows(Array.isArray(data) ? data : []);
+      } catch (fetchError) {
+        setError(fetchError.message || 'Unable to load events right now.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadShows();
+  }, []);
 
   const onSlideClick = (show) => {
-    alert(`You clicked on ${show.title}`);
+    navigate('/booking-manual', { state: { event: show } });
   };
 
   return (
-    <div className={`events-page ${isDark ? 'dark' : ''}`}>
-      {/* Dark Mode Toggle */}
-      <motion.button
-        className="dark-mode-toggle"
-        onClick={toggleTheme}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-      </motion.button>
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      <div className="relative overflow-hidden">
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50 to-white'}`} />
 
-      <motion.button
-        className="back-button"
-        onClick={() => navigate('/user')}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Back to User Dashboard
-      </motion.button>
+        <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <motion.button
+              onClick={() => navigate('/bookshows')}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+              className={`inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+            >
+              ← Back to Dashboard
+            </motion.button>
 
-      <motion.h1
-        className="events-title"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        Events
-      </motion.h1>
+            <motion.button
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold shadow-md transition-all ${isDark ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+            >
+              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
+            </motion.button>
+          </div>
 
-      <motion.div
-        className="carousel-container"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Carousel onSlideClick={onSlideClick} />
-      </motion.div>
-
-      <div className="shows-container">
-        {latestShows.map((show) => (
           <motion.div
-            key={show.id}
-            className="show-card"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            whileHover={{ scale: 1.05 }}
-            onClick={() => onSlideClick(show)}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="mt-8"
           >
-            <img src={show.image} alt={show.title} className="show-image" />
-            <div className="show-info">
-              <h3 className="show-title">{show.title}</h3>
-              <p className="show-date">{show.date}</p>
-              <p className="show-location">{show.location}</p>
-            </div>
+            <h1 className={`text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-[1.15] bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
+              Explore Live
+              <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>Events & Experiences</span>
+            </h1>
+            <p className={`mt-4 max-w-3xl text-lg sm:text-xl font-medium leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              Discover upcoming museum shows, exhibitions, and special sessions. Click any event card to open booking details instantly.
+            </p>
           </motion.div>
-        ))}
+        </div>
       </div>
+
+      <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.15 }}
+          className={`rounded-3xl border p-4 shadow-2xl sm:p-6 ${isDark ? 'border-purple-700/30 bg-gray-800/50' : 'border-purple-200 bg-white'}`}
+        >
+          <Carousel onSlideClick={onSlideClick} />
+        </motion.section>
+
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.25 }}
+          className="mt-8"
+        >
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className={`text-2xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              Latest Events
+            </h2>
+            {!loading && !error && (
+              <span className={`text-sm font-semibold ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+                {shows.length} event{shows.length === 1 ? '' : 's'}
+              </span>
+            )}
+          </div>
+
+          {loading && (
+            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-purple-700/30 bg-gray-800/50 text-gray-300' : 'border-purple-200 bg-purple-50/60 text-gray-700'}`}>
+              Loading events...
+            </div>
+          )}
+
+          {!loading && error && (
+            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
+              {error}
+            </div>
+          )}
+
+          {!loading && !error && shows.length === 0 && (
+            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-purple-700/30 bg-gray-800/50 text-gray-300' : 'border-purple-200 bg-purple-50/60 text-gray-700'}`}>
+              No events available yet. Ask admin to add shows from Manage Shows.
+            </div>
+          )}
+
+          {!loading && !error && shows.length > 0 && (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {shows.map((show, index) => (
+                <motion.button
+                  key={show.id || `${show.title}-${index}`}
+                  type="button"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.2) }}
+                  onClick={() => onSlideClick(show)}
+                  className={`group overflow-hidden rounded-2xl border text-left transition-all hover:-translate-y-1 ${isDark ? 'border-purple-700/30 bg-gray-800/60 hover:border-purple-500/60' : 'border-purple-200 bg-white hover:border-purple-300'} hover:shadow-xl`}
+                >
+                  <img
+                    src={show.image}
+                    alt={show.title}
+                    className="h-52 w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                  <div className="p-4">
+                    <h3 className={`text-lg font-bold leading-snug ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      {show.title}
+                    </h3>
+                    <p className={`mt-2 text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {show.date} • {show.time}
+                    </p>
+                    <p className={`mt-1 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {show.location}
+                    </p>
+                    <p className={`mt-3 text-sm font-extrabold ${isDark ? 'text-purple-300' : 'text-purple-700'}`}>
+                      {show.price}
+                    </p>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          )}
+        </motion.section>
+      </main>
     </div>
   );
 };

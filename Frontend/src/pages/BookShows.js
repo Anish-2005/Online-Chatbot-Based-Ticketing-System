@@ -40,12 +40,12 @@ const Bookshows = () => {
               transition={{ duration: 0.45 }}
               className="lg:col-span-8"
             >
-              <h1 className={`text-5xl font-black tracking-tighter sm:text-6xl lg:text-7xl leading-tight bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
+              <h1 className={`text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-[1.15] bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`} style={{fontFamily: "'Poppins', sans-serif", letterSpacing: '-0.02em'}}>
                 Discover, Compare,
                 <span className="block">and Book</span>
                 <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>Premium Shows</span>
               </h1>
-              <p className={`mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl font-medium ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+              <p className={`mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl font-500 ${isDark ? 'text-gray-300' : 'text-gray-800'}`} style={{fontFamily: "'Inter', sans-serif", letterSpacing: '-0.005em'}}>
                 Browse handpicked exhibitions and live museum programs in a cinematic experience. Tap any show card to book in seconds.
               </p>
 
@@ -74,13 +74,13 @@ const Bookshows = () => {
               className="lg:col-span-4"
             >
               <div className={`rounded-3xl border p-6 shadow-xl backdrop-blur-sm ${isDark ? 'border-purple-700/30 bg-purple-900/40' : 'border-purple-200 bg-purple-50/80'}`}>
-                <p className={`text-xs font-black uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+                <p className={`text-xs font-bold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`} style={{fontFamily: "'Poppins', sans-serif", letterSpacing: '0.08em'}}>
                   💡 Booking Tip
                 </p>
-                <h3 className={`mt-3 text-2xl font-black ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`mt-3 text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`} style={{fontFamily: "'Poppins', sans-serif", letterSpacing: '-0.015em'}}>
                   Best Slots Fill Fast
                 </h3>
-                <p className={`mt-3 text-base leading-relaxed font-medium ${isDark ? 'text-slate-400' : 'text-slate-700'}`}>
+                <p className={`mt-3 text-base leading-relaxed font-400 ${isDark ? 'text-gray-400' : 'text-gray-700'}`} style={{fontFamily: "'Inter', sans-serif"}}>
                   Book early to secure premium seating. Available spots book quickly during peak times.
                 </p>
               </div>
