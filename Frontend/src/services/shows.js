@@ -1,30 +1,29 @@
-const rawBaseUrl = process.env.REACT_APP_API_BASE_URL;
-const isInvalidBaseUrl = !rawBaseUrl || rawBaseUrl === 'false' || rawBaseUrl === 'undefined' || rawBaseUrl === 'null';
-const API_BASE_URL = isInvalidBaseUrl ? 'http://localhost:8000' : rawBaseUrl;
+import { addDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase';
+
+const SHOWS_COLLECTION = 'shows';
 
 export const fetchShows = async () => {
-  const response = await fetch(`${API_BASE_URL}/shows`);
+  const snapshot = await getDocs(collection(db, SHOWS_COLLECTION));
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch shows');
-  }
-
-  return response.json();
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 };
 
 export const createShow = async (payload) => {
-  const response = await fetch(`${API_BASE_URL}/shows`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+  const showPayload = {
+    ...payload,
+    ticketsLeft: Number(payload.ticketsLeft),
+    price_int: Number(payload.price_int),
+    createdAt: serverTimestamp(),
+  };
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || 'Failed to create show');
-  }
+  const docRef = await addDoc(collection(db, SHOWS_COLLECTION), showPayload);
 
-  return response.json();
+  return {
+    id: docRef.id,
+    ...showPayload,
+  };
 };

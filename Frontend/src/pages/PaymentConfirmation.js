@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
+import { processShowPayment } from '../services/bookings';
 import './PaymentConfirmation.css';
 
 const PaymentConfirmation = () => {
   const { isDark } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
-  const { event, selectedSeats, seatCount } = location.state || {};
+  const { event, selectedSeats = [], seatCount = 0 } = location.state || {};
   const [email, setEmail] = useState('');
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -33,8 +34,8 @@ const PaymentConfirmation = () => {
     validateEmail(emailValue);
   };
 
-  const handlePayment = () => {
-    if (emailError || !email) {
+  const handlePayment = async () => {
+    if (emailError || !email || !event?.id || seatCount <= 0) {
       setPopupMessage('Please correct the errors before proceeding.');
       return;
     }
@@ -42,41 +43,26 @@ const PaymentConfirmation = () => {
     setIsPaymentProcessing(true);
     setPopupMessage('');
 
-    const paymentData = {
-      eventId: event.id, // Assuming event has an id property
-      selectedSeats,
-      seatCount,
-      email,
-      amount: pricePerTicket * seatCount,
-    };
-
-    fetch('https://fastapi-deploy-app.onrender.com/ticket_booking/payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(paymentData),
-    })
-      .then(async (response) => {
-        const data = await response.json(); // Parse JSON response
-        if (response.ok) {
-          setPopupMessage('Payment successful! Ticket details will be sent to your email.');
-          setTimeout(() => {
-            navigate('/bookshows', { state: { event, selectedSeats, seatCount } });
-          }, 15000); // Delay navigation to allow user to see the popup
-        } else {
-          console.error('Payment error details:', data);
-          const errorMessage = data.detail ? JSON.stringify(data.detail) : 'Unknown error occurred.';
-          setPopupMessage(`Payment failed: ${errorMessage}`);
-        }
-      })
-      .catch((error) => {
-        console.error('Error processing payment:', error);
-        setPopupMessage(`An error occurred during payment: ${error.message || error}`);
-      })
-      .finally(() => {
-        setIsPaymentProcessing(false);
+    try {
+      await processShowPayment({
+        eventId: event.id,
+        selectedSeats,
+        seatCount,
+        email,
+        amount: pricePerTicket * seatCount,
+        eventTitle: event.title,
       });
+
+      setPopupMessage('Payment successful! Your booking has been saved.');
+      setTimeout(() => {
+        navigate('/bookshows', { state: { event, selectedSeats, seatCount } });
+      }, 2500);
+    } catch (paymentError) {
+      console.error('Error processing payment:', paymentError);
+      setPopupMessage(`Payment failed: ${paymentError.message || 'Unknown error occurred.'}`);
+    } finally {
+      setIsPaymentProcessing(false);
+    }
   };
 
   return (

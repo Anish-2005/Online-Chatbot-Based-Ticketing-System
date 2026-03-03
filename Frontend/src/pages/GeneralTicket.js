@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
+import { getTicketsLeft } from '../services/bookings';
 import './Booking.css';
 
 const GeneralTicket = () => {
@@ -22,46 +23,29 @@ const GeneralTicket = () => {
     }
   }, [event, navigate]);
 
-  const fetchTickets = () => {
-    fetch(`https://online-chatbot-based-ticketing-system-4whh.onrender.com/ticket_booking?event_id=66dcec58fea7a83d2186c52f`)
-      .then(response => response.json())
-      .then(data => setTicketsLeft(data.ticketsLeft))
-      .catch(error => console.error('Error fetching tickets:', error));
+  const fetchTickets = async () => {
+    try {
+      const tickets = await getTicketsLeft(event.id);
+      setTicketsLeft(tickets);
+    } catch (fetchError) {
+      console.error('Error fetching tickets:', fetchError);
+      setError('Unable to fetch tickets right now.');
+    }
   };
 
   const handleConfirmBooking = () => {
-    // Validation checks
     if (seatCount === 0) {
       setError('Booking Failed: Number of tickets cannot be zero.');
       return;
     }
 
-    const data = {
-      eventId: '66dcec58fea7a83d2186c52f',
-      ticketsBought: seatCount
-    };
-
-    fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/ticket_booking/update', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    navigate('/paymentconfirmation', {
+      state: {
+        event,
+        selectedSeats: [],
+        seatCount,
       },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          setTicketsLeft(data.ticketsLeft);
-          setError(null); // Clear any previous error message
-          navigate('/paymentconfirmation', { state: { event, seatCount } });
-        } else {
-          setError('Booking Failed');
-        }
-      })
-      .catch(error => {
-        console.error('Error booking tickets:', error);
-        setError('Booking Failed');
-      });
+    });
   };
 
   return (

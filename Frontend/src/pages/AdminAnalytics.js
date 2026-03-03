@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import { useTheme } from './ThemeContext';
 import { FiTrendingUp, FiActivity, FiDollarSign, FiPieChart } from 'react-icons/fi';
+import { fetchProfitAnalytics, fetchTicketAnalytics } from '../services/metrics';
 
 const AdminAnalyticsPage = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
@@ -11,38 +12,25 @@ const AdminAnalyticsPage = ({ role }) => {
   const [profit, setEarningsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch ticket analytics data from FastAPI
   useEffect(() => {
-    const fetchTicketData = async () => {
+    const loadAnalytics = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/tickets-analytics');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setTicketData(data);
-        setLoading(false);
+        const [tickets, profits] = await Promise.all([
+          fetchTicketAnalytics(),
+          fetchProfitAnalytics(),
+        ]);
+
+        setTicketData(tickets);
+        setEarningsData(profits);
       } catch (error) {
-        console.error('Error fetching ticket data:', error);
+        console.error('Error loading analytics data:', error);
+      } finally {
         setLoading(false);
       }
     };
 
-    const fetchEarningsData = async () => {
-      try {
-        const response = await fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/profit');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setEarningsData(data);
-      } catch (error) {
-        console.error('Error fetching earnings data:', error);
-      }
-    };
-
-    fetchTicketData();
-    fetchEarningsData();
+    loadAnalytics();
   }, []);
 
   const chartStyles = {

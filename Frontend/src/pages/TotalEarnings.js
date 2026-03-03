@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
 import { FiDollarSign, FiTrendingUp, FiPieChart, FiCreditCard } from 'react-icons/fi';
+import { fetchEarningsBreakdown } from '../services/metrics';
 
 const TotalEarningsPage = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
@@ -10,22 +11,19 @@ const TotalEarningsPage = ({ role }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchEarnings = async () => {
+    const loadEarnings = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('https://online-chatbot-based-ticketing-system-4whh.onrender.com/earning');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setEarningsBreakdown(data[0] || {});
-        setLoading(false);
+        const data = await fetchEarningsBreakdown();
+        setEarningsBreakdown(data || {});
       } catch (error) {
         console.error('Error fetching earnings data:', error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchEarnings();
+    loadEarnings();
   }, []);
 
   const totalEarnings = Object.values(earningsBreakdown).reduce(

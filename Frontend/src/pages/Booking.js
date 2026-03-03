@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
+import { getTicketsLeft } from '../services/bookings';
 import './Booking.css';
 
 const Booking = () => {
@@ -23,11 +24,14 @@ const Booking = () => {
     }
   }, [event, navigate]);
 
-  const fetchTickets = () => {
-    fetch(`https://online-chatbot-based-ticketing-system-4whh.onrender.com/ticket_booking?event_id=${event.id}`)
-      .then(response => response.json())
-      .then(data => setTicketsLeft(data.ticketsLeft))
-      .catch(error => console.error('Error fetching tickets:', error));
+  const fetchTickets = async () => {
+    try {
+      const tickets = await getTicketsLeft(event.id);
+      setTicketsLeft(tickets);
+    } catch (fetchError) {
+      console.error('Error fetching tickets:', fetchError);
+      setError('Unable to fetch ticket availability right now.');
+    }
   };
 
   const handleSeatSelection = (seatNumber) => {
