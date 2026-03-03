@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
-import { color, motion } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
+import { useTheme } from './ThemeContext';
 import './AdminDashboard.css'; // Import your CSS file if needed
 
 const AdminDashboard = ({ role }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle('dark-mode', !isDarkMode);
-  };
+  const { isDark, toggleTheme } = useTheme();
 
   return (
-    <div className={`flex min-h-screen ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark' : ''}`}>
       {/* Sidebar */}
       <Sidebar role={role} />
 
       {/* Main Content */}
-      <div className={`flex-1 ml-64 p-8 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+      <div className={`flex-1 ml-64 p-8 ${isDark ? 'bg-gray-900' : 'bg-gray-100'}`}>
         <motion.div
-          className={`bg-gradient-to-r ${isDarkMode ? 'from-gray-700 via-gray-800 to-gray-900' : 'from-blue-500 via-teal-500 to-green-500'} text-white shadow-xl rounded-lg p-8 mb-8`}
+          className={`bg-gradient-to-r ${isDark ? 'from-gray-700 via-gray-800 to-gray-900' : 'from-purple-600 via-purple-500 to-purple-400'} text-white shadow-xl rounded-lg p-8 mb-8`}
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
@@ -35,10 +31,10 @@ const AdminDashboard = ({ role }) => {
               Welcome to Admin Dashboard
             </motion.h1>
             <button
-              onClick={toggleDarkMode}
-              className={`py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out ${isDarkMode ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+              onClick={toggleTheme}
+              className={`py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out ${isDark ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-white text-purple-600 hover:bg-gray-100'}`}
             >
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
             </button>
           </div>
 

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Carousel from './Carousel';
 import AboutMuseum from './AboutMuseum';
 import Chatbot from './Chatbot';
+import { useTheme } from './ThemeContext';
 import './BookShows.css';
 
 const Bookshows = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [showAboutMuseum, setShowAboutMuseum] = useState(false);
   const navigate = useNavigate();
@@ -19,28 +20,19 @@ const Bookshows = () => {
     }
   };
 
-  // Toggle dark mode class on the body
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [darkMode]);
-
   return (
-    <div className={`bookshows-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`bookshows-container ${isDark ? 'dark-mode' : 'light-mode'}`}>
       <div className="button-container">
         <button
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={toggleTheme}
           className="toggle-dark-mode-btn"
         >
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
+          {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
         </button>
       </div>
 
       {/* Chatbot Button */}
-      <Chatbot className="chatbot-btn" darkMode={darkMode} />
+      <Chatbot className="chatbot-btn" darkMode={isDark} />
 
       <motion.h1
         className="title"
@@ -58,7 +50,7 @@ const Bookshows = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <Carousel isDarkMode={darkMode} onSlideClick={setSelectedSlide} />
+        <Carousel isDarkMode={isDark} onSlideClick={setSelectedSlide} />
       </motion.div>
 
       {/* About Museum Section */}

@@ -5,14 +5,32 @@ export const ThemeContext = createContext();
 
 // Create a ThemeProvider component
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(() => {
+    // Initialize from localStorage
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('app-theme');
+      return savedTheme || 'light';
+    }
+    return 'light';
+  });
 
+  // Apply theme to document whenever it changes
   useEffect(() => {
-    localStorage.setItem('theme', theme);
+    // Save to localStorage
+    localStorage.setItem('app-theme', theme);
+    
+    // Apply to document root
+    const htmlElement = document.documentElement;
+    const bodyElement = document.body;
+    
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+      htmlElement.classList.add('dark');
+      bodyElement.classList.add('dark');
+      bodyElement.classList.remove('light');
     } else {
-      document.documentElement.classList.remove('dark');
+      htmlElement.classList.remove('dark');
+      bodyElement.classList.add('light');
+      bodyElement.classList.remove('dark');
     }
   }, [theme]);
 
@@ -20,12 +38,36 @@ export const ThemeProvider = ({ children }) => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
+  const setLightTheme = () => {
+    setTheme('light');
+  };
+
+  const setDarkTheme = () => {
+    setTheme('dark');
+  };
+
+  const isDark = theme === 'dark';
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider 
+      value={{ 
+        theme, 
+        toggleTheme, 
+        setLightTheme, 
+        setDarkTheme, 
+        isDark 
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
 };
 
 // Custom hook for using the Theme Context
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};

@@ -1,26 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import UserSidebar from '../components/UserSidebar'; // Ensure the correct path
 import { motion } from 'framer-motion';
+import { useTheme } from './ThemeContext';
 
 const UserDashboard = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Handle dark mode toggle
-  const handleToggle = () => {
-    setDarkMode(!darkMode);
-  };
-
-  // Add or remove dark class on the body based on darkMode state
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [darkMode]);
+  const { isDark, toggleTheme } = useTheme();
 
   return (
-    <div className={`flex min-h-screen ${darkMode ? 'dark' : 'light'}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark' : 'light'}`}>
       {/* User Sidebar */}
       <UserSidebar />
 
@@ -35,10 +22,10 @@ const UserDashboard = () => {
           {/* Toggle Button */}
           <div className="absolute top-4 right-4">
             <button
-              onClick={handleToggle}
-              className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-full px-4 py-2 shadow-md"
+              onClick={toggleTheme}
+              className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-full px-4 py-2 shadow-md transition-all duration-300"
             >
-              {darkMode ? 'Light Mode' : 'Dark Mode'}
+              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
             </button>
           </div>
 

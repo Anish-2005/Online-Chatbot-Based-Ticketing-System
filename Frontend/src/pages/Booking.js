@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTheme } from './ThemeContext';
 import './Booking.css';
 
 const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
   const { event } = location.state || {};
   console.log("Event", event);
   const [ticketsLeft, setTicketsLeft] = useState(0);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [seatCount, setSeatCount] = useState(1);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Booking = () => {
   }, [event, navigate]);
 
   const fetchTickets = () => {
-    fetch(`https://fastapi-deploy-app.onrender.com/ticket_booking?event_id=${event.id}`)
+    fetch(`https://online-chatbot-based-ticketing-system-4whh.onrender.com/ticket_booking?event_id=${event.id}`)
       .then(response => response.json())
       .then(data => setTicketsLeft(data.ticketsLeft))
       .catch(error => console.error('Error fetching tickets:', error));
@@ -48,18 +49,13 @@ const Booking = () => {
     navigate('/paymentconfirmation', { state: { event, selectedSeats, seatCount } });
   };
 
-  const handleToggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-    document.body.classList.toggle('dark-mode', !isDarkMode);
-  };
-
   return (
-    <div className={`booking-page ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`booking-page ${isDark ? 'dark' : 'light'}`}>
       <button
-        className={`dark-mode-toggle ${isDarkMode ? 'dark-mode' : ''}`}
-        onClick={handleToggleDarkMode}
+        className={`dark-mode-toggle ${isDark ? 'dark' : ''}`}
+        onClick={toggleTheme}
       >
-        {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+        {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
       </button>
 
       <motion.h1

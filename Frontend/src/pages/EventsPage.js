@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from './ThemeContext';
 import './EventsPage.css'; // Import the CSS file
 import Carousel from './Carousel';
 
@@ -81,31 +82,22 @@ const latestShows = [
 
 const EventsPage = () => {
   const navigate = useNavigate();
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    // Apply the correct theme based on darkMode state
-    if (darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [darkMode]);
+  const { isDark, toggleTheme } = useTheme();
 
   const onSlideClick = (show) => {
     alert(`You clicked on ${show.title}`);
   };
 
   return (
-    <div className={`events-page ${darkMode ? 'dark' : ''}`}>
+    <div className={`events-page ${isDark ? 'dark' : ''}`}>
       {/* Dark Mode Toggle */}
       <motion.button
         className="dark-mode-toggle"
-        onClick={() => setDarkMode(!darkMode)}
+        onClick={toggleTheme}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
+        {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
       </motion.button>
 
       <motion.button
