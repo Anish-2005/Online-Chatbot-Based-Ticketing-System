@@ -8,7 +8,7 @@ import { getShowSeatState } from '../services/bookings';
 const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const { event } = location.state || {};
   const [ticketsLeft, setTicketsLeft] = useState(0);
   const [totalSeats, setTotalSeats] = useState(50);

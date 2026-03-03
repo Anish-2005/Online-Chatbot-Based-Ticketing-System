@@ -41,7 +41,7 @@ const formatRelativeTime = (dateValue) => {
 };
 
 const AdminDashboard = ({ role }) => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
 
 const UserDashboard = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
 
   return (
     <div className={`flex min-h-screen ${isDark ? 'dark' : 'light'}`}>

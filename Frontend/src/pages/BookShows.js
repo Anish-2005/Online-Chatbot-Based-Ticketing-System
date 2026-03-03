@@ -8,7 +8,7 @@ import { useTheme } from './ThemeContext';
 import ThemeToggleButton from '../components/ThemeToggleButton';
 
 const Bookshows = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [showAboutMuseum, setShowAboutMuseum] = useState(false);
   const navigate = useNavigate();
 

@@ -33,7 +33,7 @@ const normalizeDate = (value) => {
 };
 
 const AdminManageShows = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [loadingShows, setLoadingShows] = useState(true);

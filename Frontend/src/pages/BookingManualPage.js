@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
 
 const BookingManualPage = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 

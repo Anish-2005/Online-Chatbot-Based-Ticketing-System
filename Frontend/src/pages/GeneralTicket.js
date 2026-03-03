@@ -9,7 +9,7 @@ import './Booking.css';
 const GeneralTicket = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const { event } = location.state || {};
 
   const [ticketsLeft, setTicketsLeft] = useState(0);

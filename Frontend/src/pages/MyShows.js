@@ -51,7 +51,7 @@ const getTicketQrData = (ticket) => {
 
 const MyShows = () => {
   const navigate = useNavigate();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

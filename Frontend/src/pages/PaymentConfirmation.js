@@ -7,7 +7,7 @@ import { processShowPayment } from '../services/bookings';
 import { sendTicketEmail } from '../services/mailer';
 
 const PaymentConfirmation = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const { event, selectedSeats = [], seatCount = 0 } = location.state || {};

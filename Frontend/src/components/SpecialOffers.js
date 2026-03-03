@@ -44,7 +44,7 @@ const colorSets = [
 ];
 
 const SpecialOffers = ({ role }) => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [offers, setOffers] = useState([]);
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(true);

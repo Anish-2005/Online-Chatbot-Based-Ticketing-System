@@ -8,7 +8,7 @@ import Carousel from './Carousel';
 
 const EventsPage = () => {
   const navigate = useNavigate();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

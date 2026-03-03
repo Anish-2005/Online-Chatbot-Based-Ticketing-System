@@ -22,7 +22,7 @@ const colorSets = [
 ];
 
 const TotalEarningsPage = ({ role }) => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [summary, setSummary] = useState(null);
   const [categories, setCategories] = useState([]);
   const [monthlyRevenue, setMonthlyRevenue] = useState([]);

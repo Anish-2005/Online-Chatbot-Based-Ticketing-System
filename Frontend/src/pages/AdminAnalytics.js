@@ -13,7 +13,7 @@ const formatCurrency = (value) => new Intl.NumberFormat('en-IN', {
 }).format(Number(value || 0));
 
 const AdminAnalyticsPage = ({ role }) => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

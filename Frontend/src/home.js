@@ -9,7 +9,7 @@ import ThemeToggleButton from './components/ThemeToggleButton';
 // Landing Page - Home Component
 function Home() {
   const navigate = useNavigate();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
 
   const handleAdminLogin = () => {
     navigate('/admindashboard');

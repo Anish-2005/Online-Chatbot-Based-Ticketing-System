@@ -2,12 +2,9 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
-  query,
   runTransaction,
   serverTimestamp,
-  where,
-} from 'firebase/firestore';
+  } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import axios from 'axios';
 

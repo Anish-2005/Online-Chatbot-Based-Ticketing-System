@@ -9,7 +9,7 @@ import {
 import { fetchRoleSettings, saveRoleSettings } from '../services/settings';
 
 const Settings = ({ role }) => {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [settings, setSettings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

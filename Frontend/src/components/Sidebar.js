@@ -10,7 +10,7 @@ import { useTheme } from '../pages/ThemeContext';
 
 const Sidebar = () => {
   const location = useLocation();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     return localStorage.getItem('adminSidebarCollapsed') === 'true';
   });
