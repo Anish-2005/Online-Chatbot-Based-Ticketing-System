@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   FiHome, FiBarChart2, FiDollarSign, FiTag, FiSettings,
-  FiChevronRight, FiCalendar
+  FiChevronRight, FiCalendar, FiChevronLeft, FiMoon, FiSun
 } from 'react-icons/fi';
 import { useTheme } from '../pages/ThemeContext';
 
 const Sidebar = () => {
   const location = useLocation();
-  const { isDark } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    return localStorage.getItem('adminSidebarCollapsed') === 'true';
+  });
+
+  useEffect(() => {
+    const width = isCollapsed ? '5rem' : '16rem';
+    document.documentElement.style.setProperty('--admin-sidebar-width', width);
+    localStorage.setItem('adminSidebarCollapsed', String(isCollapsed));
+  }, [isCollapsed]);
 
   const links = [
     { name: 'Dashboard', path: '/admindashboard', icon: FiHome },
@@ -21,29 +30,44 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className={`fixed inset-y-0 left-0 w-64 ${
+    <div className={`fixed inset-y-0 left-0 ${isCollapsed ? 'w-20' : 'w-64'} ${
       isDark 
         ? 'bg-gray-900 border-r border-gray-800' 
         : 'bg-white border-r border-gray-200'
-    } shadow-2xl z-50 flex flex-col`}>
+    } shadow-2xl z-50 flex flex-col transition-all duration-300`}>
       
       {/* Logo/Header */}
-      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center gap-3"
+          className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between gap-3'}`}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
-            <span className="text-white font-heading font-bold text-xl">T</span>
+          <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+              <span className="text-white font-heading font-bold text-xl">T</span>
+            </div>
+            {!isCollapsed && (
+              <div>
+                <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight">
+                  Ticketing
+                </h2>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
+              </div>
+            )}
           </div>
-          <div>
-            <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight">
-              Ticketing
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
-          </div>
+
+          {!isCollapsed && (
+            <button
+              type="button"
+              onClick={() => setIsCollapsed(true)}
+              className={`rounded-lg p-2 transition-all ${isDark ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+              aria-label="Collapse sidebar"
+            >
+              <FiChevronLeft className="h-4 w-4" />
+            </button>
+          )}
         </motion.div>
       </div>
 
@@ -68,7 +92,7 @@ const Sidebar = () => {
                     : isDark
                     ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
                     : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                }`}
+                } ${isCollapsed ? 'justify-center px-2' : ''}`}
               >
                 {/* Active Indicator */}
                 {isActive && (
@@ -85,15 +109,19 @@ const Sidebar = () => {
                     : 'group-hover:scale-110 transition-transform'
                 }`} />
                 
-                <span className="font-heading font-semibold flex-1 tracking-tight">
-                  {link.name}
-                </span>
+                {!isCollapsed && (
+                  <span className="font-heading font-semibold flex-1 tracking-tight">
+                    {link.name}
+                  </span>
+                )}
                 
-                <FiChevronRight className={`w-4 h-4 transform transition-all ${
-                  isActive 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
-                }`} />
+                {!isCollapsed && (
+                  <FiChevronRight className={`w-4 h-4 transform transition-all ${
+                    isActive 
+                      ? 'opacity-100 translate-x-0' 
+                      : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
+                  }`} />
+                )}
               </Link>
             </motion.div>
           );
@@ -102,16 +130,41 @@ const Sidebar = () => {
 
       {/* Return to Home Button */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className={`mb-3 flex w-full items-center ${isCollapsed ? 'justify-center' : 'justify-center gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${
+            isDark
+              ? 'bg-gray-800 text-yellow-300 hover:bg-gray-700'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          aria-label="Toggle theme"
+        >
+          {isDark ? <FiSun className="w-4 h-4" /> : <FiMoon className="w-4 h-4" />}
+          {!isCollapsed && <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
+        </button>
+
+        {isCollapsed && (
+          <button
+            type="button"
+            onClick={() => setIsCollapsed(false)}
+            className={`mb-3 flex w-full items-center justify-center rounded-xl p-2 transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+            aria-label="Expand sidebar"
+          >
+            <FiChevronRight className="h-4 w-4" />
+          </button>
+        )}
+
         <Link
           to="/"
-          className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${
+          className={`flex items-center justify-center ${isCollapsed ? '' : 'gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${
             isDark
               ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
           <FiHome className="w-4 h-4" />
-          Return to Home
+          {!isCollapsed && 'Return to Home'}
         </Link>
       </div>
     </div>

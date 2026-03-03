@@ -70,7 +70,7 @@ const Settings = ({ role }) => {
     <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <Sidebar role={role} />
 
-      <div className="flex-1 ml-64 p-8">
+      <div className="flex-1 p-8 transition-all duration-300" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -85,12 +85,7 @@ const Settings = ({ role }) => {
                 Manage your account preferences and application settings
               </p>
             </div>
-            <button
-              onClick={toggleTheme}
-              className="px-6 py-3 rounded-xl font-heading font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-blue-500/50 dark:from-blue-500 dark:to-indigo-500 text-base"
-            >
-              {isDark ? '☀️ Light' : '🌙 Dark'}
-            </button>
+            <div />
           </div>
         </motion.div>
 

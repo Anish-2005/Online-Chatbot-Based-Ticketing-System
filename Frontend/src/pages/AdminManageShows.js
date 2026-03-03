@@ -90,7 +90,7 @@ const AdminManageShows = () => {
     <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <Sidebar />
 
-      <div className="flex-1 ml-64 p-8">
+      <div className="flex-1 p-8 transition-all duration-300" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,14 +114,6 @@ const AdminManageShows = () => {
                 <span className="flex items-center gap-2 font-medium">
                   <FiRefreshCw className={`${loadingShows ? 'animate-spin' : ''}`} />
                   Refresh
-                </span>
-              </button>
-              <button
-                onClick={toggleTheme}
-                className="group relative px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/50 dark:from-purple-500 dark:to-pink-500 text-base"
-              >
-                <span className="flex items-center gap-2 font-medium">
-                  {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
                 </span>
               </button>
             </div>
