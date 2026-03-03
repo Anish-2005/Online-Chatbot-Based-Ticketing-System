@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
+import { useTheme } from './ThemeContext';
 import './TotalEarnings.css'; // Import your CSS file for TotalEarningsPage
 
 const TotalEarningsPage = ({ role }) => {
+  const { isDark, toggleTheme } = useTheme();
   const [earningsBreakdown, setEarningsBreakdown] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Fetch earnings from FastAPI
   useEffect(() => {
@@ -33,14 +34,8 @@ const TotalEarningsPage = ({ role }) => {
     0
   );
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    document.body.classList.toggle('dark-mode', newDarkMode);
-  };
-
   return (
-    <div className={`flex min-h-screen ${isDarkMode ? 'dark-mode' : ''}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark' : ''}`}>
       <Sidebar role={role} />
 
       {/* Main Content */}
@@ -49,21 +44,21 @@ const TotalEarningsPage = ({ role }) => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className={`bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 shadow-2xl rounded-xl p-8 mb-8 ${isDarkMode ? 'bg-dark-gradient' : ''}`}
+          className={`bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 shadow-2xl rounded-xl p-8 mb-8 ${isDark ? 'bg-dark-gradient' : ''}`}
         >
           <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-light-purple mb-6">
             Total Earnings
           </h2>
             <button
-              onClick={toggleDarkMode}
+              onClick={toggleTheme}
               className={`py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out ${
-                isDarkMode
+                isDark
                   ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
             </button>
           </div>
 
@@ -71,7 +66,7 @@ const TotalEarningsPage = ({ role }) => {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className={`text-4xl font-extrabold mb-4 ${isDarkMode ? 'text-light-purple' : 'text-white'}`}
+            className={`text-4xl font-extrabold mb-4 ${isDark ? 'text-light-purple' : 'text-white'}`}
           >
             ${totalEarnings.toLocaleString()}
           </motion.p>
@@ -87,12 +82,12 @@ const TotalEarningsPage = ({ role }) => {
                   delay: index * 0.2,
                   ease: 'easeOut',
                 }}
-                className={`flex justify-between items-center rounded-lg p-4 ${isDarkMode ? 'bg-gray-700' : 'bg-white'} ${isDarkMode ? 'bg-opacity-30' : 'bg-opacity-10'}`}
+                className={`flex justify-between items-center rounded-lg p-4 ${isDark ? 'bg-gray-700' : 'bg-white'} ${isDark ? 'bg-opacity-30' : 'bg-opacity-10'}`}
               >
-                <p className={`text-lg font-medium ${isDarkMode ? 'text-light-purple' : 'text-white'} capitalize`}>
+                <p className={`text-lg font-medium ${isDark ? 'text-light-purple' : 'text-white'} capitalize`}>
                   {key.replace(/([A-Z])/g, ' $1')} {/* Formats camelCase */}
                 </p>
-                <p className={`text-lg font-semibold ${isDarkMode ? 'text-light-purple' : 'text-white'}`}>
+                <p className={`text-lg font-semibold ${isDark ? 'text-light-purple' : 'text-white'}`}>
                   ${value.toLocaleString()}
                 </p>
               </motion.div>

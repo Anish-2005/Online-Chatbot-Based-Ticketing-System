@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTheme } from './ThemeContext';
 import './Booking.css';
 
 const GeneralTicket = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
   const { event } = location.state || {};
 
   const [ticketsLeft, setTicketsLeft] = useState(0);
   const [seatCount, setSeatCount] = useState(1);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -63,18 +64,13 @@ const GeneralTicket = () => {
       });
   };
 
-  const handleToggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-    document.body.classList.toggle('dark-mode', !isDarkMode);
-  };
-
   return (
-    <div className={`booking-page ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`booking-page ${isDark ? 'dark' : 'light'}`}>
       <button
-        className={`dark-mode-toggle ${isDarkMode ? 'dark-mode' : ''}`}
-        onClick={handleToggleDarkMode}
+        className={`dark-mode-toggle ${isDark ? 'dark' : ''}`}
+        onClick={toggleTheme}
       >
-        {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+        {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
       </button>
 
       <motion.h1

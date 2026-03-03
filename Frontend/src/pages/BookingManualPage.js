@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTheme } from './ThemeContext';
 import './BookingManualPage.css';
 import { FaHome } from 'react-icons/fa';
 
 const BookingManualPage = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDark } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
   // Access the event data from location state
   const { event } = location.state || {};
-
-  // Check if dark mode is enabled based on body class
-  useEffect(() => {
-    setIsDarkMode(document.body.classList.contains('dark'));
-  }, []);
 
   // Navigate back to home
   const handleBackToHome = () => {
@@ -29,7 +25,7 @@ const BookingManualPage = () => {
   }, [event]);
 
   return (
-    <div className={`booking-manual-page ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`booking-manual-page ${isDark ? 'dark' : 'light'}`}>
       {!event ? (
         <div className="no-show-selected">
           <motion.h1
@@ -44,7 +40,7 @@ const BookingManualPage = () => {
         </div>
       ) : (
         <motion.div
-          className={`movie-box ${isDarkMode ? 'dark-mode' : ''}`}
+          className={`movie-box ${isDark ? 'dark' : ''}`}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -52,11 +48,11 @@ const BookingManualPage = () => {
         >
           <img src={event.image} alt={event.title} className="movie-image" />
           <div className="movie-details">
-            <h1 className={`movie-title ${isDarkMode ? 'dark-mode' : ''}`}>{event.title}</h1>
-            <p className={`movie-info ${isDarkMode ? 'dark-mode' : ''}`}><strong>Date:</strong> {event.date}</p>
-            <p className={`movie-info ${isDarkMode ? 'dark-mode' : ''}`}><strong>Location:</strong> {event.location}</p>
-            <p className={`movie-info ${isDarkMode ? 'dark-mode' : ''}`}><strong>Price:</strong> {event.price}</p>
-            <p className={`movie-description ${isDarkMode ? 'dark-mode' : ''}`}>
+            <h1 className={`movie-title ${isDark ? 'dark' : ''}`}>{event.title}</h1>
+            <p className={`movie-info ${isDark ? 'dark' : ''}`}><strong>Date:</strong> {event.date}</p>
+            <p className={`movie-info ${isDark ? 'dark' : ''}`}><strong>Location:</strong> {event.location}</p>
+            <p className={`movie-info ${isDark ? 'dark' : ''}`}><strong>Price:</strong> {event.price}</p>
+            <p className={`movie-description ${isDark ? 'dark' : ''}`}>
               Enjoy the detailed view of this event. You can book tickets, view more details, and much more here.
             </p>
           </div>
@@ -65,7 +61,7 @@ const BookingManualPage = () => {
 
       <div className="action-buttons">
         <motion.button
-          className={`book-tickets-button ${isDarkMode ? 'dark-mode' : ''}`}
+          className={`book-tickets-button ${isDark ? 'dark' : ''}`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate('/booking', { state: { event } })}

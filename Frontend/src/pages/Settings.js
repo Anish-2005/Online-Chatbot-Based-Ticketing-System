@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
+import { useTheme } from './ThemeContext';
 import './Settings.css'; // Import your CSS file
 
 const Settings = ({ role }) => {
+  const { isDark, toggleTheme } = useTheme();
   const [settings, setSettings] = useState([
     { name: 'Notification', enabled: true },
     { name: 'Email Alerts', enabled: true },
@@ -12,27 +14,9 @@ const Settings = ({ role }) => {
     { name: 'Language Preference', enabled: 'English' }
   ]);
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    // Load dark mode preference from localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Save dark mode preference to localStorage
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
-
   const toggleSetting = (index) => {
     const newSettings = [...settings];
-    if (newSettings[index].name === 'Dark Mode') {
-      setIsDarkMode(!isDarkMode);
-    } else if (newSettings[index].name === 'Auto-Logout Timer') {
+    if (newSettings[index].name === 'Auto-Logout Timer') {
       const newTime = prompt("Set Auto-Logout Timer (in minutes)", newSettings[index].enabled);
       if (!isNaN(newTime) && newTime > 0) {
         newSettings[index].enabled = parseInt(newTime);
@@ -51,7 +35,7 @@ const Settings = ({ role }) => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <Sidebar role={role} isDarkMode={isDarkMode} />
+      <Sidebar role={role} />
 
       {/* Main Content */}
       <div className="flex-1 ml-64 p-8">
@@ -115,12 +99,12 @@ const Settings = ({ role }) => {
             ))}
           </motion.ul>
           <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleTheme}
             className={`py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out ${
-              isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
+              isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
             }`}
           >
-            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            {isDark ? '☀️ Switch to Light Mode' : '🌙 Switch to Dark Mode'}
           </button>
         </motion.div>
       </div>
