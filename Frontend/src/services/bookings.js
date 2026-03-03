@@ -9,6 +9,9 @@ import {
   where,
 } from 'firebase/firestore';
 import { auth, db } from './firebase';
+import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export const getShowById = async (showId) => {
   const showRef = doc(db, 'shows', showId);
@@ -147,6 +150,8 @@ export const processShowPayment = async ({
   };
 };
 
+
+
 export const getMyPaidTickets = async () => {
   const userEmail = auth.currentUser?.email;
 
@@ -154,16 +159,11 @@ export const getMyPaidTickets = async () => {
     return [];
   }
 
-  const paymentsRef = collection(db, 'payments');
-  const paymentsQuery = query(paymentsRef, where('email', '==', userEmail));
-  const snapshot = await getDocs(paymentsQuery);
-
-  return snapshot.docs
-    .map((paymentDoc) => ({ id: paymentDoc.id, ...paymentDoc.data() }))
-    .filter((ticket) => ticket.status === 'paid')
-    .sort((first, second) => {
-      const firstMs = first.createdAt?.toDate ? first.createdAt.toDate().getTime() : 0;
-      const secondMs = second.createdAt?.toDate ? second.createdAt.toDate().getTime() : 0;
-      return secondMs - firstMs;
-    });
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/user/tickets?email=${encodeURIComponent(userEmail)}`);
+    return response.data;
+  } catch (error) {
+    console.error("User Tickets API Error:", error);
+    throw new Error("Failed to load your tickets from the backend.");
+  }
 };

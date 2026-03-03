@@ -17,13 +17,16 @@ def as_number(value, fallback=0.0):
 def to_date_value(value):
     if not value:
         return None
-    # If it's a firestore timestamp
-    if hasattr(value, 'timestamp'):
-        return value.timestamp()
+        
+    if isinstance(value, datetime):
+        return value.replace(tzinfo=None)
+        
     if hasattr(value, 'to_datetime'):
         return value.to_datetime().replace(tzinfo=None)
+        
     if isinstance(value, float) or isinstance(value, int):
         return datetime.fromtimestamp(value)
+        
     if isinstance(value, str):
         try:
             return datetime.fromisoformat(value.replace('Z', '+00:00')).replace(tzinfo=None)
@@ -35,8 +38,6 @@ def to_date_value(value):
                     return datetime(int(parts[2]), int(parts[1]), int(parts[0]))
             except:
                 pass
-    if isinstance(value, datetime):
-        return value.replace(tzinfo=None)
     return None
 
 def start_of_today():
@@ -205,7 +206,12 @@ def fetch_admin_dashboard_data():
 @router.get("/analytics")
 def fetch_admin_analytics_data():
     payment_rows, shows_with_derived = get_raw_admin_data()
-    # Kpis are returned in dashboard, we'll recompute quickly
+    
+    total_revenue = sum(p['amountValue'] for p in payment_rows)
+    total_tickets_sold = sum(p['seatCountValue'] for p in payment_rows)
+    total_capacity = sum(s['totalSeats'] for s in shows_with_derived)
+    total_booked_seats = sum(s['soldSeats'] for s in shows_with_derived)
+    conversion_rate = (total_booked_seats / total_capacity * 100) if total_capacity > 0 else 0
     
     today = start_of_today()
     day_buckets = []
@@ -244,6 +250,11 @@ def fetch_admin_analytics_data():
     financial_breakdown = sorted(revenue_by_show.values(), key=lambda x: x['earnings'], reverse=True)[:8]
     
     return {
+        "kpis": {
+            "totalRevenue": total_revenue,
+            "totalTicketsSold": total_tickets_sold,
+            "conversionRate": conversion_rate
+        },
         "bookingTrend": day_buckets,
         "showPerformance": perf_list,
         "financialBreakdown": financial_breakdown

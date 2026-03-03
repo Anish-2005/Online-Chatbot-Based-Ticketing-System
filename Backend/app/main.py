@@ -15,7 +15,9 @@ from .model import Earnings, Tickets, ResolutionTime, Shows, PaymentDetails, Tic
 app = FastAPI()
 
 from .api.dashboard_api import router as dashboard_router
+from .api.user_api import router as user_router
 app.include_router(dashboard_router, prefix="/api/admin")
+app.include_router(user_router, prefix="/api/user")
 
 # CORS setup to allow React frontend
 # noinspection PyTypeChecker
