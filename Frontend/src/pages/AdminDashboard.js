@@ -62,6 +62,7 @@ const AdminDashboard = ({ role }) => {
 
   const quickActions = [
     { title: 'View Analytics', icon: FiBarChart2, path: '/adminanalytics', color: 'purple' },
+    { title: 'Manage Shows', icon: FiCalendar, path: '/adminshows', color: 'indigo' },
     { title: 'Total Earnings', icon: FiDollarSign, path: '/admintotalearning', color: 'green' },
     { title: 'Manage Users', icon: FiUsers, path: '/adminusers', color: 'blue' },
     { title: 'Settings', icon: FiActivity, path: '/adminsettings', color: 'gray' },

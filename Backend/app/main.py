@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException, Query, Request, BackgroundTasks
 import smtplib
 from email.message import EmailMessage
 from typing import List
+from pydantic import BaseModel
 from .database import tickets_collection, earnings_collection, profit_collection, shows_collections, payment_collection
 from .model import Earnings, Tickets, ResolutionTime, Shows, PaymentDetails, TicketRequest, DialogflowRequest
 
@@ -21,6 +22,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class ShowCreateRequest(BaseModel):
+    image: str
+    title: str
+    date: str
+    time: str
+    location: str
+    price: str
+    ticketsLeft: int
+    price_int: int
 
 async def send_email(email_address: str, event: dict, ticket):
     # Sender email and app-specific password
@@ -122,6 +134,27 @@ async def get_shows():
         if not shows:
             raise HTTPException(status_code=404, detail="No resolution time data found.")
         return shows
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
+@app.post("/shows", response_model=Shows)
+async def create_show(show: ShowCreateRequest):
+    try:
+        show_document = show.dict()
+        result = await shows_collections.insert_one(show_document)
+
+        if not result.inserted_id:
+            raise HTTPException(status_code=500, detail="Failed to create show")
+
+        created_show = {
+            **show_document,
+            "id": str(result.inserted_id),
+        }
+
+        return created_show
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 

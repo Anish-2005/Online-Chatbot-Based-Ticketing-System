@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   FiHome, FiBarChart2, FiDollarSign, FiTag, FiSettings,
-  FiChevronRight
+  FiChevronRight, FiCalendar
 } from 'react-icons/fi';
 import { useTheme } from '../pages/ThemeContext';
 
@@ -14,6 +14,7 @@ const Sidebar = () => {
   const links = [
     { name: 'Dashboard', path: '/admindashboard', icon: FiHome },
     { name: 'Analytics', path: '/adminanalytics', icon: FiBarChart2 },
+    { name: 'Manage Shows', path: '/adminshows', icon: FiCalendar },
     { name: 'Total Earnings', path: '/admintotalearning', icon: FiDollarSign },
     { name: 'Special Offers', path: '/adminSpecialOffers', icon: FiTag },
     { name: 'Settings', path: '/adminsettings', icon: FiSettings }

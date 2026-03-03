@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
+import { fetchShows } from '../services/shows';
 import './Carousel.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -46,11 +47,7 @@ const Carousel = ({ onSlideClick }) => {
   useEffect(() => {
     const fetchSlides = async () => {
       try {
-        const response = await fetch('https://fastapi-deploy-app.onrender.com/shows');
-        if (!response.ok) {
-          throw new Error('Error fetching slides');
-        }
-        const data = await response.json();
+        const data = await fetchShows();
         setSlides(data);
       } catch (error) {
         console.error('Failed to fetch slides:', error);
@@ -119,7 +116,7 @@ const Carousel = ({ onSlideClick }) => {
       <Slider {...settings} className="carousel-slider">
         {shows.map((item, index) => (
           <div
-            key={item.id}
+            key={item.id || item._id || `${item.title}-${index}`}
             className={`carousel-slide ${index === currentSlide ? 'active' : 'inactive'}`}
             onClick={() => handleSlideClick(item)}
           >
