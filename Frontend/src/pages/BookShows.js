@@ -19,9 +19,22 @@ const Bookshows = () => {
 
         <div className="relative mx-auto w-full max-w-7xl px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex items-center justify-between">
-            <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-wide ${isDark ? 'border-purple-700/50 bg-purple-900/30 text-purple-300' : 'border-purple-200 bg-purple-50/80 text-purple-600'}`}>
-              <FiStar className="h-4 w-4" />
-              Curated Museum Experiences
+            <div className="flex flex-wrap items-center gap-3">
+              <div className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 ${isDark ? 'border-purple-700/50 bg-purple-900/30' : 'border-purple-200 bg-purple-50/80'}`}>
+                <img
+                  src="/chat-ticket-logo.svg"
+                  alt="ChatTicket logo"
+                  className="h-7 w-7 rounded-md"
+                />
+                <span className={`text-sm font-black tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  ChatTicket Booking
+                </span>
+              </div>
+
+              <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-wide ${isDark ? 'border-purple-700/50 bg-purple-900/30 text-purple-300' : 'border-purple-200 bg-purple-50/80 text-purple-600'}`}>
+                <FiStar className="h-4 w-4" />
+                Curated Museum Experiences
+              </div>
             </div>
 
             <button

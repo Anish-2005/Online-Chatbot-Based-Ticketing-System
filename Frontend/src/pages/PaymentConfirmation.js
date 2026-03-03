@@ -12,8 +12,12 @@ const PaymentConfirmation = () => {
   const { event, selectedSeats = [], seatCount = 0 } = location.state || {};
   const [email, setEmail] = useState('');
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [isRetryingEmail, setIsRetryingEmail] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info');
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [retryEmailPayload, setRetryEmailPayload] = useState(null);
   const pricePerTicket = parseFloat((event?.price || '').toString().replace(/[^0-9.-]+/g, '')) || 0;
   const totalPrice = pricePerTicket * seatCount;
 
@@ -42,7 +46,14 @@ const PaymentConfirmation = () => {
 
   const handlePayment = async () => {
     if (emailError || !email || !event?.id || seatCount <= 0) {
+      setPopupType('error');
       setPopupMessage('Please correct the errors before proceeding.');
+      return;
+    }
+
+    if (paymentCompleted) {
+      setPopupType('info');
+      setPopupMessage('Payment is already confirmed. Use Retry Email if you did not receive your ticket email.');
       return;
     }
 
@@ -59,33 +70,64 @@ const PaymentConfirmation = () => {
         eventTitle: event.title,
       });
 
+      setPaymentCompleted(true);
+
+      const emailPayload = {
+        to: email,
+        eventTitle: event.title,
+        eventDate: event.date,
+        eventTime: event.time,
+        eventLocation: event.location,
+        selectedSeats,
+        seatCount,
+        amount: pricePerTicket * seatCount,
+        ticketCode: paymentResult.ticketCode,
+        qrData: paymentResult.qrData,
+      };
+
       try {
-        await sendTicketEmail({
-          to: email,
-          eventTitle: event.title,
-          eventDate: event.date,
-          eventTime: event.time,
-          eventLocation: event.location,
-          selectedSeats,
-          seatCount,
-          amount: pricePerTicket * seatCount,
-          ticketCode: paymentResult.ticketCode,
-          qrData: paymentResult.qrData,
-        });
-        setPopupMessage('Payment successful! Ticket email with QR has been sent.');
+        await sendTicketEmail(emailPayload);
+        setRetryEmailPayload(null);
+        setPopupType('success');
+        setPopupMessage(`Payment successful! Ticket mailed to ${email}.`);
+        setTimeout(() => {
+          navigate('/bookshows', { state: { event, selectedSeats, seatCount } });
+        }, 2500);
       } catch (mailError) {
         console.error('Ticket email sending failed:', mailError);
-        setPopupMessage('Payment successful, but ticket email failed. Please verify mailer setup and try again.');
+        setRetryEmailPayload(emailPayload);
+        setPopupType('error');
+        setPopupMessage('Payment successful, but ticket email failed. Click Retry Email to send the ticket again.');
       }
-
-      setTimeout(() => {
-        navigate('/bookshows', { state: { event, selectedSeats, seatCount } });
-      }, 2500);
     } catch (paymentError) {
       console.error('Error processing payment:', paymentError);
+      setPopupType('error');
       setPopupMessage(`Payment failed: ${paymentError.message || 'Unknown error occurred.'}`);
     } finally {
       setIsPaymentProcessing(false);
+    }
+  };
+
+  const handleRetryEmail = async () => {
+    if (!retryEmailPayload) {
+      return;
+    }
+
+    setIsRetryingEmail(true);
+    try {
+      await sendTicketEmail(retryEmailPayload);
+      setRetryEmailPayload(null);
+      setPopupType('success');
+      setPopupMessage(`Ticket mailed to ${retryEmailPayload.to}.`);
+      setTimeout(() => {
+        navigate('/bookshows', { state: { event, selectedSeats, seatCount } });
+      }, 2000);
+    } catch (retryError) {
+      console.error('Retry email failed:', retryError);
+      setPopupType('error');
+      setPopupMessage('Retry failed. Please check mailer service and try again.');
+    } finally {
+      setIsRetryingEmail(false);
     }
   };
 
@@ -205,11 +247,11 @@ const PaymentConfirmation = () => {
               <motion.button
                 onClick={handlePayment}
                 className="inline-flex items-center rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-purple-700 hover:to-pink-700 hover:shadow-purple-500/40 disabled:cursor-not-allowed disabled:opacity-60"
-                whileHover={{ scale: isPaymentProcessing || emailError || !email ? 1 : 1.03 }}
-                whileTap={{ scale: isPaymentProcessing || emailError || !email ? 1 : 0.95 }}
-                disabled={isPaymentProcessing || emailError || !email}
+                whileHover={{ scale: isPaymentProcessing || paymentCompleted || emailError || !email ? 1 : 1.03 }}
+                whileTap={{ scale: isPaymentProcessing || paymentCompleted || emailError || !email ? 1 : 0.95 }}
+                disabled={isPaymentProcessing || paymentCompleted || emailError || !email}
               >
-                {isPaymentProcessing ? 'Processing Payment...' : 'Confirm Payment'}
+                {isPaymentProcessing ? 'Processing Payment...' : paymentCompleted ? 'Payment Confirmed' : 'Confirm Payment'}
               </motion.button>
 
               <button
@@ -226,8 +268,20 @@ const PaymentConfirmation = () => {
 
       {popupMessage && (
         <div className="fixed inset-x-4 bottom-6 z-30 mx-auto max-w-xl">
-          <div className={`rounded-xl border px-4 py-3 text-sm font-medium shadow-lg ${popupMessage.toLowerCase().includes('successful') ? (isDark ? 'border-emerald-500/40 bg-emerald-900/30 text-emerald-200' : 'border-emerald-200 bg-emerald-50 text-emerald-700') : (isDark ? 'border-red-500/40 bg-red-900/30 text-red-200' : 'border-red-200 bg-red-50 text-red-700')}`}>
-            {popupMessage}
+          <div className={`rounded-xl border px-4 py-3 text-sm font-medium shadow-lg ${popupType === 'success' ? (isDark ? 'border-emerald-500/40 bg-emerald-900/30 text-emerald-200' : 'border-emerald-200 bg-emerald-50 text-emerald-700') : popupType === 'info' ? (isDark ? 'border-blue-500/40 bg-blue-900/30 text-blue-200' : 'border-blue-200 bg-blue-50 text-blue-700') : (isDark ? 'border-red-500/40 bg-red-900/30 text-red-200' : 'border-red-200 bg-red-50 text-red-700')}`}>
+            <div className="flex items-center justify-between gap-3">
+              <span>{popupMessage}</span>
+              {paymentCompleted && retryEmailPayload && (
+                <button
+                  type="button"
+                  onClick={handleRetryEmail}
+                  disabled={isRetryingEmail}
+                  className={`shrink-0 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-60 ${isDark ? 'bg-red-800 text-red-100 hover:bg-red-700' : 'bg-red-600 text-white hover:bg-red-700'}`}
+                >
+                  {isRetryingEmail ? 'Retrying...' : 'Retry Email'}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

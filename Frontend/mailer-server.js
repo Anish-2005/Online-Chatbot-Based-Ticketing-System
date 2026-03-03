@@ -10,6 +10,19 @@ app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
 const buildTransporter = () => {
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+
+  if (gmailUser && gmailAppPassword) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: gmailUser,
+        pass: gmailAppPassword,
+      },
+    });
+  }
+
   const host = process.env.SMTP_HOST;
   const portNumber = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
@@ -64,7 +77,8 @@ app.post('/api/send-ticket', async (req, res) => {
     return res.status(500).json({ success: false, message: configError.message });
   }
 
-  const fromAddress = process.env.SMTP_FROM || process.env.SMTP_USER;
+  const senderEmail = process.env.GMAIL_USER || process.env.SMTP_USER;
+  const fromAddress = process.env.SMTP_FROM || `ChatTicket Booking <${senderEmail}>`;
   const seatsText = Array.isArray(selectedSeats) && selectedSeats.length > 0
     ? selectedSeats.join(', ')
     : 'Not provided';
@@ -72,6 +86,24 @@ app.post('/api/send-ticket', async (req, res) => {
   const mailHtml = `
     <div style="font-family: Inter, Arial, sans-serif; max-width: 640px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;">
       <div style="background: linear-gradient(90deg, #7c3aed, #ec4899); padding: 20px; color: #ffffff;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+          <svg width="32" height="32" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="mailLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#5B21B6"/>
+                <stop offset="100%" stop-color="#DB2777"/>
+              </linearGradient>
+            </defs>
+            <rect x="52" y="52" width="408" height="408" rx="104" fill="url(#mailLogoGradient)"/>
+            <path d="M138 188c0-22.1 17.9-40 40-40h156c22.1 0 40 17.9 40 40v70c0 22.1-17.9 40-40 40h-70l-37 40a8 8 0 0 1-14-5.4V298h-35c-22.1 0-40-17.9-40-40v-70z" fill="#FFFFFF"/>
+            <rect x="182" y="202" width="148" height="62" rx="14" fill="#0F172A"/>
+            <circle cx="198" cy="233" r="6" fill="#fff"/>
+            <circle cx="314" cy="233" r="6" fill="#fff"/>
+            <path d="M214 220c0-7.7 6.3-14 14-14h31v9h-28a5 5 0 0 0-5 5v18a5 5 0 0 0 5 5h28v9h-31c-7.7 0-14-6.3-14-14v-18z" fill="#C4B5FD"/>
+            <path d="M241 211h42v8h-30v9h25v8h-25v16h-12v-41z" fill="#F9A8D4"/>
+          </svg>
+          <div style="font-weight: 700; font-size: 15px; letter-spacing: 0.2px;">ChatTicket Booking</div>
+        </div>
         <h2 style="margin: 0; font-size: 22px;">Your Museum Ticket</h2>
         <p style="margin: 8px 0 0 0; opacity: 0.95;">Payment confirmed successfully.</p>
       </div>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">ChatTicket Professional Logo</title>
+  <desc id="desc">Minimal premium logo with ticket-chat symbol and CT monogram.</desc>
+
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5B21B6"/>
+      <stop offset="55%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#DB2777"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="36" y="36" width="440" height="440" rx="112" fill="url(#brandGradient)"/>
+
+  <path d="M120 180c0-30.9 25.1-56 56-56h160c30.9 0 56 25.1 56 56v90c0 30.9-25.1 56-56 56h-76l-44 48a10 10 0 0 1-17.5-6.7V326h-22c-30.9 0-56-25.1-56-56v-90z" fill="#FFFFFF"/>
+
+  <g transform="translate(166 192)">
+    <rect x="0" y="0" width="180" height="90" rx="20" fill="#0F172A"/>
+    <circle cx="18" cy="45" r="8" fill="#FFFFFF"/>
+    <circle cx="162" cy="45" r="8" fill="#FFFFFF"/>
+
+    <path d="M52 34c0-10.5 8.5-19 19-19h44v13H74c-5 0-9 4-9 9v16c0 5 4 9 9 9h41v13H71c-10.5 0-19-8.5-19-19V34z" fill="#C4B5FD"/>
+    <path d="M98 22h56v12h-42v11h35v12h-35v21H98V22z" fill="#F9A8D4"/>
+  </g>
+</svg>
