@@ -32,7 +32,7 @@ const Bookshows = () => {
       </div>
 
       {/* Chatbot Button */}
-      <Chatbot className="chatbot-btn" darkMode={isDark} />
+      <Chatbot className="chatbot-btn" />
 
       <motion.h1
         className="title"
@@ -50,7 +50,7 @@ const Bookshows = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <Carousel isDarkMode={isDark} onSlideClick={setSelectedSlide} />
+        <Carousel onSlideClick={setSelectedSlide} />
       </motion.div>
 
       {/* About Museum Section */}

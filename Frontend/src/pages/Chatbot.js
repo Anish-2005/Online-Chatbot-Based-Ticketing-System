@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from './ThemeContext';
 import './Chatbot.css';
 import img1 from '../images/Favicon1.ico.png';
 
-const Chatbot = ({ darkMode }) => {
+const Chatbot = () => {
+  const { isDark } = useTheme();
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
@@ -16,14 +18,14 @@ const Chatbot = ({ darkMode }) => {
         script.src = 'https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1';
         script.async = true;
         document.body.appendChild(script);
-        script.onload = () => setIsScriptLoaded(true); // Mark as loaded when script is fully loaded
+        script.onload = () => setIsScriptLoaded(true);
       } else {
-        setIsScriptLoaded(true); // Mark as loaded if script already exists
+        setIsScriptLoaded(true);
       }
     }
 
     return () => {
-      // No need to remove the script on unmount, as it will cause reloading issues if remounted
+      // No need to remove the script on unmount
     };
   }, [isScriptLoaded]);
 
@@ -38,7 +40,7 @@ const Chatbot = ({ darkMode }) => {
             chat-icon="https://www.pngkit.com/png/full/502-5023267_itpalooza-is-a-not-for-profit-community-driven.png"
             agent-id="f869a013-1615-48d8-a6fb-c732a3460178"
             language-code="en"
-            class={darkMode ? 'dark-theme' : 'light-theme'}
+            class={isDark ? 'dark-theme' : 'light-theme'}
           ></df-messenger>
         )}
       </div>

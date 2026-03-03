@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import { useTheme } from './ThemeContext';
 
 const UserProfile = () => {
+  const { isDark } = useTheme();
   const [profile, setProfile] = useState({
     name: 'John Doe',
     email: 'john@example.com',
@@ -20,11 +22,11 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex">
+    <div className={`flex min-h-screen ${isDark ? 'dark' : 'light'}`}>
       <Sidebar role="user" />
       <div className="flex-1 p-6">
         <h1 className="text-2xl font-bold mb-4">User Profile</h1>
-        <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white'} shadow-lg rounded-lg p-6`}>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700">Name</label>

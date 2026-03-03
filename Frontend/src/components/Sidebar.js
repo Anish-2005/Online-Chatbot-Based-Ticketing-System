@@ -2,9 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaHome } from 'react-icons/fa'; // Import home icon
+import { useTheme } from './ThemeContext';
 
-const Sidebar = ({ isDarkMode }) => { // Pass isDarkMode as a prop
+const Sidebar = () => { // No longer needs isDarkMode prop
   const location = useLocation(); // Get the current location
+  const { isDark } = useTheme(); // Get theme from context
 
   const links = [
     { name: 'Admin Analytics', path: '/adminanalytics' },
@@ -16,13 +18,13 @@ const Sidebar = ({ isDarkMode }) => { // Pass isDarkMode as a prop
   return (
     <div
       className={`fixed inset-y-0 left-0 w-64 flex flex-col p-6 shadow-lg ${
-        isDarkMode ? 'sidebar-dark' : 'sidebar-light'
+        isDark ? 'sidebar-dark' : 'sidebar-light'
       }`}
     >
              <motion.h2
     className="text-3xl font-bold mb-10 heading"
     style={{
-      color: isDarkMode ? '#D8BFD8' : '#1E3A8A', // Light purple in dark mode, dark blue in light mode
+      color: isDark ? '#D8BFD8' : '#1E3A8A', // Light purple in dark mode, dark blue in light mode
       textAlign: 'left',  // Same text shadow in both modes
       padding: '0px 0px 0px 10px'
     }}
@@ -39,7 +41,7 @@ const Sidebar = ({ isDarkMode }) => { // Pass isDarkMode as a prop
               key={link.name}
               className={`mb-6 ${
                 location.pathname === link.path
-                  ? `${isDarkMode ? 'active-link' : 'active-link'}`
+                  ? `${isDark ? 'active-link' : 'active-link'}`
                   : ''
               }`}
               initial={{ opacity: 0, x: -20 }}
@@ -51,7 +53,7 @@ const Sidebar = ({ isDarkMode }) => { // Pass isDarkMode as a prop
                 className={`block text-lg px-4 py-2 rounded nav-link ${
                   location.pathname === link.path
                     ? 'font-bold'
-                    : `${isDarkMode ? 'hover:text-gray-300' : 'hover:text-gray-800'}`
+                    : `${isDark ? 'hover:text-gray-300' : 'hover:text-gray-800'}`
                 } transition-colors duration-300 ease-in-out`}
               >
                 {link.name}

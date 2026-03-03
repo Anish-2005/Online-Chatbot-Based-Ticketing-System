@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from './ThemeContext';
+import './Login.css';
 
 const Login = () => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
 
   const handleLogin = (role) => {
@@ -13,18 +16,18 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-80">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <div className={`login-container ${isDark ? 'dark' : 'light'}`}>
+      <div className="login-card">
+        <h2 className="login-title">Login</h2>
         <button
           onClick={() => handleLogin('admin')}
-          className="bg-blue-500 text-white py-2 px-4 rounded-full w-full mb-4"
+          className="login-btn admin-btn"
         >
           Admin Login
         </button>
         <button
           onClick={() => handleLogin('user')}
-          className="bg-green-500 text-white py-2 px-4 rounded-full w-full"
+          className="login-btn user-btn"
         >
           User Login
         </button>

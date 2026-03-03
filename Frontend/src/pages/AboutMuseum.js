@@ -1,14 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import './AboutMuseum.css'; // Import the CSS file for styling
+import { useTheme } from './ThemeContext';
+import './AboutMuseum.css';
 import img1 from '../images/education-museum.jpeg';
 import img2 from '../images/exhibition-museum.jpeg';
 import img3 from '../images/museum-interactive.jpg';
 import img4 from '../images/specialevents-museum.webp';
 
 const AboutMuseum = () => {
+  const { isDark } = useTheme();
+
   return (
-    <div className="about-museum-container">
+    <div className={`about-museum-container ${isDark ? 'dark' : 'light'}`}>
       <motion.div
         className="intro-section"
         initial={{ opacity: 0, y: -50 }}

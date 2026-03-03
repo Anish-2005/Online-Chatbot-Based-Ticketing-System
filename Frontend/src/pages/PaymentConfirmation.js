@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTheme } from './ThemeContext';
 import './PaymentConfirmation.css';
 
 const PaymentConfirmation = () => {
+  const { isDark } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const { event, selectedSeats, seatCount } = location.state || {};
@@ -78,7 +80,7 @@ const PaymentConfirmation = () => {
   };
 
   return (
-    <div className={`payment-confirmation-page ${document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`payment-confirmation-page ${isDark ? 'dark-mode' : 'light-mode'}`}>
       <motion.h1
         className="heading"
         initial={{ opacity: 0, y: -20 }}
@@ -89,7 +91,7 @@ const PaymentConfirmation = () => {
       </motion.h1>
 
       <motion.div
-        className={`payment-details ${document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'}`}
+        className={`payment-details ${isDark ? 'dark-mode' : 'light-mode'}`}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}

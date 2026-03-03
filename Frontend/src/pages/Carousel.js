@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from './ThemeContext';
 import './Carousel.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -35,7 +36,8 @@ const CustomNextArrow = ({ className, style, onClick }) => (
   />
 );
 
-const Carousel = ({ isDarkMode, onSlideClick }) => {
+const Carousel = ({ onSlideClick }) => {
+  const { isDark } = useTheme();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [shows, setSlides] = useState([]);
   const [slidesToShow, setSlidesToShow] = useState(3); // Default for larger screens
@@ -104,12 +106,12 @@ const Carousel = ({ isDarkMode, onSlideClick }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`carousel-container ${isDarkMode ? 'dark-mode' : ''}`}
+      className={`carousel-container ${isDark ? 'dark-mode' : ''}`}
     >
       <h2
         className="carousel-title"
         style={{
-          color: isDarkMode ? '#ffffff' : '#333333', // White in dark mode, dark gray in light mode
+          color: isDark ? '#ffffff' : '#333333', // White in dark mode, dark gray in light mode
         }}
       >
         Featured Events

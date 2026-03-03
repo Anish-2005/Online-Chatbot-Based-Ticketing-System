@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import { useTheme } from './ThemeContext';
-import './AdminAnalytics.css'; // Import your CSS file
+import './AdminAnalytics.css';
 
 const AdminAnalyticsPage = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
   const [ticketData, setTicketData] = useState([]);
   const [profit, setEarningsData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch ticket analytics data from FastAPI
   useEffect(() => {
@@ -42,97 +43,167 @@ const AdminAnalyticsPage = ({ role }) => {
     fetchEarningsData();
   }, []);
 
+  const chartStyles = {
+    gridStroke: isDark ? '#2D3436' : '#E8E8F0',
+    textColor: isDark ? '#E2E8F0' : '#2D3436',
+    tooltipBg: isDark ? '#1C1C2E' : '#FFFFFF',
+    tooltipBorder: isDark ? '#6C5CE7' : '#A29BFE'
+  };
+
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark' : 'light'}`}>
+    <div className={`admin-analytics-container ${isDark ? 'dark' : 'light'}`}>
       {/* Sidebar */}
       <Sidebar role={role} />
 
       {/* Main Content */}
-      <div className="flex-1 ml-64 p-10">
+      <div className="analytics-main-content">
+        {/* Header Section */}
         <motion.div
-          className={`shadow-xl rounded-lg p-8 mb-8 ${isDark ? 'bg-gray-800' : 'bg-white'}`}
-          initial={{ opacity: 0, y: 30 }}
+          className="analytics-header"
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <div className="flex justify-between items-center mb-6">
-            <h2 className={`text-3xl font-bold mb-6 ${isDark ? 'text-light-purple' : 'text-black'}`}>
-              Admin Analytics
-            </h2>
-            <button
-              onClick={toggleTheme}
-              className={`py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out ${
-                isDark
-                  ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-            </button>
+          <div className="header-content">
+            <h1 className="analytics-title">Admin Analytics Dashboard</h1>
+            <p className="analytics-subtitle">Real-time performance metrics and insights</p>
           </div>
-
-          {/* Ticket Analytics Section */}
-          <div className="mb-10">
-            <h3 className={`text-xl font-semibold mb-4 ${isDarkMode ? 'text-light-purple' : 'text-black'}`}>
-              Ticket Analytics
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart
-                data={ticketData}
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="tickets"
-                  stroke="#4f46e5"
-                  strokeWidth={3}
-                  activeDot={{ r: 8 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="resolutionTime"
-                  stroke="#22c55e"
-                  strokeWidth={3}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Earnings, Cost, and Profit Section */}
-          <div>
-            <h3 className={`text-xl font-semibold mb-4 ${isDark ? 'text-light-purple' : 'text-black'}`}>
-              Earnings, Cost & Profit
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={profit}
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="earnings" fill="#4f46e5" radius={[10, 10, 0, 0]} />
-                <Bar dataKey="cost" fill="#22c55e" radius={[10, 10, 0, 0]} />
-                <Bar dataKey="profit" fill="#fbbf24" radius={[10, 10, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <button
+            onClick={toggleTheme}
+            className="theme-toggle-btn"
+          >
+            {isDark ? '☀️ Light' : '🌙 Dark'}
+          </button>
         </motion.div>
+
+        {/* Charts Grid */}
+        <div className="charts-grid">
+          {/* Ticket Analytics Chart */}
+          <motion.div
+            className="chart-card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
+          >
+            <div className="chart-header">
+              <h2 className="chart-title">Ticket Performance</h2>
+              <p className="chart-description">Ticket distribution and resolution times</p>
+            </div>
+            {loading ? (
+              <div className="chart-loading">Loading data...</div>
+            ) : (
+              <ResponsiveContainer width="100%" height={320}>
+                <LineChart
+                  data={ticketData}
+                  margin={{ top: 15, right: 30, left: 0, bottom: 15 }}
+                >
+                  <CartesianGrid 
+                    strokeDasharray="4 4" 
+                    stroke={chartStyles.gridStroke}
+                    opacity={0.6}
+                  />
+                  <XAxis 
+                    dataKey="name"
+                    stroke={chartStyles.textColor}
+                    style={{ fontSize: '12px', fontWeight: '500' }}
+                  />
+                  <YAxis 
+                    stroke={chartStyles.textColor}
+                    style={{ fontSize: '12px', fontWeight: '500' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartStyles.tooltipBg,
+                      border: `2px solid ${chartStyles.tooltipBorder}`,
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                    }}
+                    labelStyle={{ color: chartStyles.textColor }}
+                    cursor={false}
+                  />
+                  <Legend 
+                    wrapperStyle={{ paddingTop: '20px' }}
+                    iconType="line"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="tickets"
+                    stroke="#6C5CE7"
+                    strokeWidth={3}
+                    dot={{ fill: '#6C5CE7', r: 5 }}
+                    activeDot={{ r: 7 }}
+                    name="Total Tickets"
+                    isAnimationActive={true}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="resolutionTime"
+                    stroke="#00B894"
+                    strokeWidth={3}
+                    dot={{ fill: '#00B894', r: 5 }}
+                    activeDot={{ r: 7 }}
+                    name="Avg Resolution"
+                    isAnimationActive={true}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
+          </motion.div>
+
+          {/* Earnings Chart */}
+          <motion.div
+            className="chart-card"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+          >
+            <div className="chart-header">
+              <h2 className="chart-title">Financial Overview</h2>
+              <p className="chart-description">Earnings, costs, and profit analysis</p>
+            </div>
+            {loading ? (
+              <div className="chart-loading">Loading data...</div>
+            ) : (
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart
+                  data={profit}
+                  margin={{ top: 15, right: 30, left: 0, bottom: 15 }}
+                >
+                  <CartesianGrid 
+                    strokeDasharray="4 4" 
+                    stroke={chartStyles.gridStroke}
+                    opacity={0.6}
+                  />
+                  <XAxis 
+                    dataKey="name"
+                    stroke={chartStyles.textColor}
+                    style={{ fontSize: '12px', fontWeight: '500' }}
+                  />
+                  <YAxis 
+                    stroke={chartStyles.textColor}
+                    style={{ fontSize: '12px', fontWeight: '500' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: chartStyles.tooltipBg,
+                      border: `2px solid ${chartStyles.tooltipBorder}`,
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                    }}
+                    labelStyle={{ color: chartStyles.textColor }}
+                    cursor={false}
+                  />
+                  <Legend 
+                    wrapperStyle={{ paddingTop: '20px' }}
+                  />
+                  <Bar dataKey="earnings" fill="#6C5CE7" radius={[8, 8, 0, 0]} name="Earnings" />
+                  <Bar dataKey="cost" fill="#FF6B6B" radius={[8, 8, 0, 0]} name="Costs" />
+                  <Bar dataKey="profit" fill="#00B894" radius={[8, 8, 0, 0]} name="Profit" />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </motion.div>
+        </div>
       </div>
     </div>
   );

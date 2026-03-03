@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from './ThemeContext';
 import './MuseumTicket.css';
 import img1 from '../images/Museum-Ticket.webp';
 
 const MuseumTicket = () => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
 
   const handleBookNow = () => {
@@ -20,7 +22,7 @@ const MuseumTicket = () => {
   };
 
   return (
-    <div className="book-ticket-container">
+    <div className={`book-ticket-container ${isDark ? 'dark' : 'light'}`}>
       <div className="image-section">
         <img src={img1} alt="Museum" className="museum-image" />
       </div>
