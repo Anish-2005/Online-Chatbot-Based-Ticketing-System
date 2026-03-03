@@ -8,14 +8,21 @@ load_dotenv()
 # MongoDB connection setup
 MONGODB_URI = os.getenv("MONGODB_URI")
 if not MONGODB_URI:
-    raise Exception("MONGODB_URI not found in environment variables.")
-
-client = AsyncIOMotorClient(MONGODB_URI)
-database = client["Ticketing"]
-
-# Define collections
-tickets_collection = database["tickets"]
-earnings_collection = database["earnings"]
-profit_collection = database["profit"]
-shows_collections = database["shows"]
-payment_collection = database["payments"]
+    print("WARNING: MONGODB_URI not found in environment variables. MongoDB features will fail.")
+    client = None
+    database = None
+    tickets_collection = None
+    earnings_collection = None
+    profit_collection = None
+    shows_collections = None
+    payment_collection = None
+else:
+    client = AsyncIOMotorClient(MONGODB_URI)
+    database = client["Ticketing"]
+    
+    # Define collections
+    tickets_collection = database["tickets"]
+    earnings_collection = database["earnings"]
+    profit_collection = database["profit"]
+    shows_collections = database["shows"]
+    payment_collection = database["payments"]
