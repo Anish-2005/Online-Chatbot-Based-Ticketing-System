@@ -217,8 +217,23 @@ const Booking = () => {
                 </p>
               </div>
 
+              <div className={`mb-4 flex flex-wrap gap-4 rounded-lg border p-3 text-xs ${isDark ? 'border-gray-700 bg-gray-900/40' : 'border-gray-200 bg-gray-50'}`}>
+                <div className="flex items-center gap-2">
+                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'}`}></div>
+                  <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-emerald-400 bg-emerald-500' : 'border-purple-600 bg-purple-600'}`}></div>
+                  <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Selected</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-red-700 bg-gray-900 line-through' : 'border-red-400 bg-gray-300 line-through'}`}></div>
+                  <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Booked (Unavailable)</span>
+                </div>
+              </div>
+
               <p className={`mb-3 text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Seat map shows {totalSeats} total seats (booked seats are locked).
+                Showing {totalSeats} total seats • {bookedSeats.length} already booked • {ticketsLeft} available
               </p>
 
               <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-10">
@@ -237,11 +252,11 @@ const Booking = () => {
                       disabled={disableSeat}
                       whileHover={{ scale: disableSeat ? 1 : 1.05 }}
                       whileTap={{ scale: disableSeat ? 1 : 0.95 }}
-                      className={`h-10 rounded-lg border text-sm font-bold transition-all ${
+                      className={`relative h-10 rounded-lg border text-sm font-bold transition-all ${
                         isBooked
                           ? isDark
-                            ? 'border-red-500/40 bg-red-900/30 text-red-200'
-                            : 'border-red-200 bg-red-50 text-red-600'
+                            ? 'border-red-700 bg-gray-900 text-gray-600 line-through cursor-not-allowed'
+                            : 'border-red-400 bg-gray-300 text-gray-500 line-through cursor-not-allowed'
                           : isSelected
                           ? isDark
                             ? 'border-emerald-400 bg-emerald-500 text-white'
@@ -249,9 +264,14 @@ const Booking = () => {
                           : isDark
                             ? 'border-gray-600 bg-gray-700 text-gray-200 hover:bg-gray-600'
                             : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50'
-                      } ${disableSeat ? 'cursor-not-allowed opacity-50' : ''}`}
+                      } ${isBooked ? '' : disableSeat ? 'cursor-not-allowed opacity-50' : ''}`}
                     >
-                      {seatNumber}
+                      {isBooked && (
+                        <span className={`absolute inset-0 flex items-center justify-center text-xs font-black ${isDark ? 'text-red-700' : 'text-red-600'}`}>
+                          ✕
+                        </span>
+                      )}
+                      <span className={isBooked ? 'opacity-40' : ''}>{seatNumber}</span>
                     </motion.button>
                   );
                 })}

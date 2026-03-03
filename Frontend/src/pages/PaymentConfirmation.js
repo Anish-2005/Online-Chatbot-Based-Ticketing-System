@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
 import { processShowPayment } from '../services/bookings';
+import { sendTicketEmail } from '../services/mailer';
 
 const PaymentConfirmation = () => {
   const { isDark, toggleTheme } = useTheme();
@@ -49,7 +50,7 @@ const PaymentConfirmation = () => {
     setPopupMessage('');
 
     try {
-      await processShowPayment({
+      const paymentResult = await processShowPayment({
         eventId: event.id,
         selectedSeats,
         seatCount,
@@ -58,7 +59,25 @@ const PaymentConfirmation = () => {
         eventTitle: event.title,
       });
 
-      setPopupMessage('Payment successful! Your booking has been saved.');
+      try {
+        await sendTicketEmail({
+          to: email,
+          eventTitle: event.title,
+          eventDate: event.date,
+          eventTime: event.time,
+          eventLocation: event.location,
+          selectedSeats,
+          seatCount,
+          amount: pricePerTicket * seatCount,
+          ticketCode: paymentResult.ticketCode,
+          qrData: paymentResult.qrData,
+        });
+        setPopupMessage('Payment successful! Ticket email with QR has been sent.');
+      } catch (mailError) {
+        console.error('Ticket email sending failed:', mailError);
+        setPopupMessage('Payment successful, but ticket email failed. Please verify mailer setup and try again.');
+      }
+
       setTimeout(() => {
         navigate('/bookshows', { state: { event, selectedSeats, seatCount } });
       }, 2500);
