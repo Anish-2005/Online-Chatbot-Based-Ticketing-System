@@ -1,75 +1,115 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaHome } from 'react-icons/fa'; // Import home icon
+import { 
+  FiHome, FiBarChart2, FiDollarSign, FiTag, FiSettings,
+  FiChevronRight
+} from 'react-icons/fi';
 import { useTheme } from '../pages/ThemeContext';
 
-const Sidebar = () => { // No longer needs isDarkMode prop
-  const location = useLocation(); // Get the current location
-  const { isDark } = useTheme(); // Get theme from context
+const Sidebar = () => {
+  const location = useLocation();
+  const { isDark } = useTheme();
 
   const links = [
-    { name: 'Admin Analytics', path: '/adminanalytics' },
-    { name: 'Total Earnings', path: '/admintotalearning' },
-    { name: 'Special Offers', path: '/adminSpecialOffers' },
-    { name: 'Settings', path: '/adminsettings' }
+    { name: 'Dashboard', path: '/admindashboard', icon: FiHome },
+    { name: 'Analytics', path: '/adminanalytics', icon: FiBarChart2 },
+    { name: 'Total Earnings', path: '/admintotalearning', icon: FiDollarSign },
+    { name: 'Special Offers', path: '/adminSpecialOffers', icon: FiTag },
+    { name: 'Settings', path: '/adminsettings', icon: FiSettings }
   ];
 
   return (
-    <div
-      className={`fixed inset-y-0 left-0 w-64 flex flex-col p-6 shadow-lg ${
-        isDark ? 'sidebar-dark' : 'sidebar-light'
-      }`}
-    >
-             <motion.h2
-    className="text-3xl font-bold mb-10 heading"
-    style={{
-      color: isDark ? '#D8BFD8' : '#1E3A8A', // Light purple in dark mode, dark blue in light mode
-      textAlign: 'left',  // Same text shadow in both modes
-      padding: '0px 0px 0px 10px'
-    }}
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, ease: 'easeOut' }}
-  >
-    Admin Dashboard
-  </motion.h2>
-      <nav>
-        <ul>
-          {links.map((link, index) => (
-            <motion.li
+    <div className={`fixed inset-y-0 left-0 w-64 ${
+      isDark 
+        ? 'bg-gray-900 border-r border-gray-800' 
+        : 'bg-white border-r border-gray-200'
+    } shadow-2xl z-50 flex flex-col`}>
+      
+      {/* Logo/Header */}
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3"
+        >
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+            <span className="text-white font-bold text-xl">T</span>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              Ticketing
+            </h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Admin Panel</p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        {links.map((link, index) => {
+          const Icon = link.icon;
+          const isActive = location.pathname === link.path;
+          
+          return (
+            <motion.div
               key={link.name}
-              className={`mb-6 ${
-                location.pathname === link.path
-                  ? `${isDark ? 'active-link' : 'active-link'}`
-                  : ''
-              }`}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.4, ease: 'easeOut' }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
             >
               <Link
                 to={link.path}
-                className={`block text-lg px-4 py-2 rounded nav-link ${
-                  location.pathname === link.path
-                    ? 'font-bold'
-                    : `${isDark ? 'hover:text-gray-300' : 'hover:text-gray-800'}`
-                } transition-colors duration-300 ease-in-out`}
+                className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50'
+                    : isDark
+                    ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                }`}
               >
-                {link.name}
+                {/* Active Indicator */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute left-0 w-1 h-8 bg-white rounded-r-full"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                
+                <Icon className={`w-5 h-5 ${
+                  isActive 
+                    ? 'text-white' 
+                    : 'group-hover:scale-110 transition-transform'
+                }`} />
+                
+                <span className="font-semibold flex-1">
+                  {link.name}
+                </span>
+                
+                <FiChevronRight className={`w-4 h-4 transform transition-all ${
+                  isActive 
+                    ? 'opacity-100 translate-x-0' 
+                    : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
+                }`} />
               </Link>
-            </motion.li>
-          ))}
-        </ul>
+            </motion.div>
+          );
+        })}
       </nav>
 
       {/* Return to Home Button */}
-      <div className="mt-auto">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         <Link
           to="/"
-          className={`flex items-center justify-center py-2 px-4 rounded-lg shadow-md return-home-btn text-sm`}
+          className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${
+            isDark
+              ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
         >
-          <FaHome className="mr-2" /> {/* Home icon */}
+          <FiHome className="w-4 h-4" />
           Return to Home
         </Link>
       </div>

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
-import './TotalEarnings.css'; // Import your CSS file for TotalEarningsPage
+import { FiDollarSign, FiTrendingUp, FiPieChart, FiCreditCard } from 'react-icons/fi';
 
 const TotalEarningsPage = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
-  const [earningsBreakdown, setEarningsBreakdown] = useState([]);
+  const [earningsBreakdown, setEarningsBreakdown] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  // Fetch earnings from FastAPI
   useEffect(() => {
     const fetchEarnings = async () => {
       try {
@@ -17,83 +17,164 @@ const TotalEarningsPage = ({ role }) => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-
-        // Set the first item of the array as the earnings breakdown
-        setEarningsBreakdown(data[0] || {}); // Default to an empty object if no data
+        setEarningsBreakdown(data[0] || {});
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching earnings data:', error);
+        setLoading(false);
       }
     };
 
     fetchEarnings();
   }, []);
 
-  // Calculate total earnings
   const totalEarnings = Object.values(earningsBreakdown).reduce(
     (acc, value) => acc + value,
     0
   );
 
+  const formatCategoryName = (key) => {
+    return key.replace(/([A-Z])/g, ' $1').trim();
+  };
+
+  const getCategoryIcon = (index) => {
+    const icons = [FiDollarSign, FiCreditCard, FiPieChart, FiTrendingUp];
+    return icons[index % icons.length];
+  };
+
+  const getCategoryColor = (index) => {
+    const colors = ['purple', 'blue', 'green', 'pink', 'orange', 'indigo'];
+    return colors[index % colors.length];
+  };
+
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark' : ''}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <Sidebar role={role} />
 
-      {/* Main Content */}
-      <div className="flex-1 ml-64 p-10">
+      <div className="flex-1 ml-64 p-8">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className={`bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 shadow-2xl rounded-xl p-8 mb-8 ${isDark ? 'bg-dark-gradient' : ''}`}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
         >
-          <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-light-purple mb-6">
-            Total Earnings
-          </h2>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2">
+                Total Earnings
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                Comprehensive breakdown of all revenue streams
+              </p>
+            </div>
             <button
               onClick={toggleTheme}
-              className={`py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out ${
-                isDark
-                  ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
+              className="px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:shadow-emerald-500/50 dark:from-emerald-500 dark:to-teal-500"
             >
-              {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
+              {isDark ? '☀️ Light' : '🌙 Dark'}
             </button>
           </div>
-
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className={`text-4xl font-extrabold mb-4 ${isDark ? 'text-light-purple' : 'text-white'}`}
-          >
-            ${totalEarnings.toLocaleString()}
-          </motion.p>
-
-          <div className="space-y-4">
-            {Object.entries(earningsBreakdown).map(([key, value], index) => (
-              <motion.div
-                key={key}
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.2,
-                  ease: 'easeOut',
-                }}
-                className={`flex justify-between items-center rounded-lg p-4 ${isDark ? 'bg-gray-700' : 'bg-white'} ${isDark ? 'bg-opacity-30' : 'bg-opacity-10'}`}
-              >
-                <p className={`text-lg font-medium ${isDark ? 'text-light-purple' : 'text-white'} capitalize`}>
-                  {key.replace(/([A-Z])/g, ' $1')} {/* Formats camelCase */}
-                </p>
-                <p className={`text-lg font-semibold ${isDark ? 'text-light-purple' : 'text-white'}`}>
-                  ${value.toLocaleString()}
-                </p>
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-96">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-emerald-600"></div>
+          </div>
+        ) : (
+          <>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className={`rounded-2xl p-8 mb-8 shadow-xl relative overflow-hidden ${
+                isDark 
+                  ? 'bg-gradient-to-br from-emerald-900 to-teal-900 border border-emerald-700' 
+                  : 'bg-gradient-to-br from-emerald-500 to-teal-600'
+              }`}
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+              <div className="absolute bottom-0 left-0 w- h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                    <FiDollarSign className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-white/80 text-sm font-medium">Total Revenue</p>
+                    <p className="text-5xl font-bold text-white">
+                      ${totalEarnings.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-white/70 text-sm">
+                  All-time earnings across all categories
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mb-6"
+            >
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                Revenue Breakdown
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Object.entries(earningsBreakdown).map(([key, value], index) => {
+                  const Icon = getCategoryIcon(index);
+                  const color = getCategoryColor(index);
+                  const percentage = ((value / totalEarnings) * 100).toFixed(1);
+                  
+                  return (
+                    <motion.div
+                      key={key}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                      className={`rounded-2xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl ${
+                        isDark 
+                          ? 'bg-gray-800 border border-gray-700' 
+                          : 'bg-white border border-gray-200'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div className={`p-3 rounded-xl bg-${color}-100 dark:bg-${color}-900/20`}>
+                          <Icon className={`w-6 h-6 text-${color}-600 dark:text-${color}-400`} />
+                        </div>
+                        <span className={`text-xs font-semibold px-3 py-1 rounded-full bg-${color}-100 text-${color}-700 dark:bg-${color}-900/30 dark:text-${color}-400`}>
+                          {percentage}%
+                        </span>
+                      </div>
+                      
+                      <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2 capitalize">
+                        {formatCategoryName(key)}
+                      </h3>
+                      
+                      <div className="flex items-baseline gap-2">
+                        <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                          ${value.toLocaleString()}
+                        </p>
+                      </div>
+                      
+                      <div className="mt-4 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${percentage}%` }}
+                          transition={{ delay: 0.5 + index * 0.1, duration: 0.8 }}
+                          className={`h-full bg-gradient-to-r from-${color}-500 to-${color}-600 rounded-full`}
+                        />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
     </div>
   );
