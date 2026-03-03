@@ -58,16 +58,16 @@ const SpecialOffers = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-400 dark:to-rose-400 bg-clip-text text-transparent mb-2">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-400 dark:to-rose-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
                 Special Offers & Promotions
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
                 Exclusive deals and promotional campaigns
               </p>
             </div>
             <button
               onClick={toggleTheme}
-              className="px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-pink-600 to-rose-600 text-white hover:shadow-pink-500/50 dark:from-pink-500 dark:to-rose-500"
+              className="px-6 py-3 rounded-xl font-heading font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-pink-600 to-rose-600 text-white hover:shadow-pink-500/50 dark:from-pink-500 dark:to-rose-500 text-base"
             >
               {isDark ? '☀️ Light' : '🌙 Dark'}
             </button>
@@ -94,7 +94,7 @@ const SpecialOffers = ({ role }) => {
                 <div className={`absolute inset-0 bg-gradient-to-br from-${offer.color}-500/10 to-${offer.color}-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                 
                 <div className="absolute top-4 right-4">
-                  <div className={`px-4 py-2 rounded-full bg-gradient-to-r from-${offer.color}-500 to-${offer.color}-600 text-white font-bold text-sm shadow-lg`}>
+                  <div className={`px-4 py-2 rounded-full bg-gradient-to-r from-${offer.color}-500 to-${offer.color}-600 text-white font-heading font-bold text-sm shadow-lg tracking-tight`}>
                     {offer.discount}
                   </div>
                 </div>
@@ -104,22 +104,22 @@ const SpecialOffers = ({ role }) => {
                     <Icon className={`w-8 h-8 text-${offer.color}-600 dark:text-${offer.color}-400`} />
                   </div>
 
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-2 leading-tight">
                     {offer.title}
                   </h3>
 
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 font-medium">
                     {offer.description}
                   </p>
 
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2 text-sm font-medium">
                     <FiCalendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     <span className="text-gray-600 dark:text-gray-400">
-                      Valid until: <span className="font-semibold text-gray-900 dark:text-white">{offer.validUntil}</span>
+                      Valid until: <span className="font-heading font-bold text-gray-900 dark:text-white">{offer.validUntil}</span>
                     </span>
                   </div>
 
-                  <button className={`mt-6 w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-${offer.color}-500 to-${offer.color}-600 text-white hover:shadow-lg hover:shadow-${offer.color}-500/50 hover:scale-105`}>
+                  <button className={`mt-6 w-full py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 bg-gradient-to-r from-${offer.color}-500 to-${offer.color}-600 text-white hover:shadow-lg hover:shadow-${offer.color}-500/50 hover:scale-105`}>
                     Activate Offer
                   </button>
                 </div>
@@ -136,7 +136,7 @@ const SpecialOffers = ({ role }) => {
           transition={{ delay: 0.5 }}
           className="mt-8"
         >
-          <button className={`w-full py-4 px-6 rounded-2xl font-semibold transition-all duration-300 border-2 border-dashed hover:scale-105 ${
+          <button className={`w-full py-4 px-6 rounded-2xl font-heading font-semibold transition-all duration-300 border-2 border-dashed hover:scale-105 text-base ${
             isDark
               ? 'border-gray-700 text-gray-400 hover:border-gray-600 hover:bg-gray-800'
               : 'border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-gray-50'
