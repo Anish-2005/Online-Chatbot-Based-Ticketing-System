@@ -35,7 +35,8 @@ const Carousel = ({ onSlideClick }) => {
 
   const totalShows = shows.length;
   const visibleSlides = Math.max(1, Math.min(slidesToShow, totalShows || 1));
-  const shouldLoop = totalShows > visibleSlides;
+  const shouldLoop = totalShows > 1;
+  const sliderRef = React.useRef(null);
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -76,8 +77,8 @@ const Carousel = ({ onSlideClick }) => {
     cssEase: 'cubic-bezier(0.22, 1, 0.36, 1)',
     slidesToShow: visibleSlides,
     slidesToScroll: 1,
-    autoplay: shouldLoop,
-    autoplaySpeed: 2300,
+    autoplay: totalShows > 1,
+    autoplaySpeed: 2000,
     pauseOnHover: true,
     arrows: totalShows > 1,
     centerMode: totalShows > 1,
@@ -124,7 +125,7 @@ const Carousel = ({ onSlideClick }) => {
     >
       <h2 className="carousel-3d-title">Trending Shows</h2>
 
-      <Slider {...settings} className="carousel-3d-track">
+      <Slider {...settings} ref={sliderRef} className="carousel-3d-track">
         {shows.map((item, index) => (
           <div
             key={item.id || item._id || `${item.title}-${index}`}

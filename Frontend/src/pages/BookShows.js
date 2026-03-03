@@ -13,20 +13,20 @@ const Bookshows = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.25),_transparent_45%),radial-gradient(circle_at_80%_20%,_rgba(168,85,247,0.2),_transparent_35%)]' : 'bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.14),_transparent_40%),radial-gradient(circle_at_80%_20%,_rgba(168,85,247,0.12),_transparent_32%)]'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50 to-white'}`} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex items-center justify-between">
-            <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${isDark ? 'border-slate-700 bg-slate-900/80 text-slate-200' : 'border-slate-200 bg-white/90 text-slate-700'}`}>
+            <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-wide ${isDark ? 'border-purple-700/50 bg-purple-900/30 text-purple-300' : 'border-purple-200 bg-purple-50/80 text-purple-600'}`}>
               <FiStar className="h-4 w-4" />
               Curated Museum Experiences
             </div>
 
             <button
               onClick={toggleTheme}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 ${isDark ? 'bg-slate-800 text-slate-100 hover:bg-slate-700' : 'bg-white text-slate-800 hover:bg-slate-100'}`}
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold shadow-md transition-all duration-200 hover:-translate-y-0.5 ${isDark ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
             >
               {isDark ? <FiSun className="h-4 w-4" /> : <FiMoon className="h-4 w-4" />}
               {isDark ? 'Light Mode' : 'Dark Mode'}
@@ -40,26 +40,26 @@ const Bookshows = () => {
               transition={{ duration: 0.45 }}
               className="lg:col-span-8"
             >
-              <h1 className={`text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Discover, Compare, and Book
-                <span className={`block ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>Premium Cultural Shows</span>
+              <h1 className={`text-5xl font-black tracking-tighter sm:text-6xl lg:text-7xl leading-tight bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
+                Discover, Compare,
+                <span className="block">and Book</span>
+                <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>Premium Shows</span>
               </h1>
-              <p className={`mt-5 max-w-2xl text-base leading-relaxed sm:text-lg ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                Browse handpicked exhibitions and live museum programs in a cinematic experience.
-                Tap any show card to open details and continue booking in seconds.
+              <p className={`mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl font-medium ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+                Browse handpicked exhibitions and live museum programs in a cinematic experience. Tap any show card to book in seconds.
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => navigate('/events')}
-                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${isDark ? 'bg-blue-500 text-white hover:bg-blue-400' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
+                  className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-purple-500/50"
                 >
                   <FiTrendingUp className="h-4 w-4" />
                   Explore Events
                 </button>
                 <button
                   onClick={() => setShowAboutMuseum((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${isDark ? 'bg-slate-800 text-slate-100 hover:bg-slate-700' : 'bg-white text-slate-800 hover:bg-slate-100'}`}
+                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
                 >
                   <FiInfo className="h-4 w-4" />
                   {showAboutMuseum ? 'Hide Museum Info' : 'About the Museum'}
@@ -73,15 +73,15 @@ const Bookshows = () => {
               transition={{ duration: 0.45, delay: 0.15 }}
               className="lg:col-span-4"
             >
-              <div className={`rounded-2xl border p-5 shadow-xl backdrop-blur-sm ${isDark ? 'border-slate-700 bg-slate-900/70' : 'border-slate-200 bg-white/90'}`}>
-                <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                  Booking Tip
+              <div className={`rounded-3xl border p-6 shadow-xl backdrop-blur-sm ${isDark ? 'border-purple-700/30 bg-purple-900/40' : 'border-purple-200 bg-purple-50/80'}`}>
+                <p className={`text-xs font-black uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+                  💡 Booking Tip
                 </p>
-                <h3 className={`mt-2 text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Best slots fill up fast
+                <h3 className={`mt-3 text-2xl font-black ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  Best Slots Fill Fast
                 </h3>
-                <p className={`mt-2 text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                  Choose shows with higher remaining availability first, then proceed to secure seats from the booking manual.
+                <p className={`mt-3 text-base leading-relaxed font-medium ${isDark ? 'text-slate-400' : 'text-slate-700'}`}>
+                  Book early to secure premium seating. Available spots book quickly during peak times.
                 </p>
               </div>
             </motion.div>
@@ -94,7 +94,7 @@ const Bookshows = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.25 }}
-          className={`rounded-3xl border p-4 shadow-2xl sm:p-6 ${isDark ? 'border-slate-800 bg-slate-900/70' : 'border-slate-200 bg-white'}`}
+          className={`rounded-3xl border p-4 shadow-2xl sm:p-6 ${isDark ? 'border-purple-700/30 bg-gray-800/50' : 'border-purple-200 bg-white'}`}
         >
           <Carousel onSlideClick={() => {}} />
         </motion.section>
@@ -106,7 +106,7 @@ const Bookshows = () => {
           className="mt-8"
         >
           {showAboutMuseum && (
-            <div className={`rounded-3xl border p-6 shadow-lg ${isDark ? 'border-slate-800 bg-slate-900/70' : 'border-slate-200 bg-white'}`}>
+            <div className={`rounded-3xl border p-6 shadow-lg ${isDark ? 'border-purple-700/30 bg-gray-800/50' : 'border-purple-200 bg-purple-50/50'}`}>
               <AboutMuseum />
             </div>
           )}
