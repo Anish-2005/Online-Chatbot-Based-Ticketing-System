@@ -35,7 +35,18 @@ const startOfToday = () => {
   return now;
 };
 
-export const fetchAdminDashboardData = async () => {
+const monthKey = (dateValue) => {
+  const year = dateValue.getFullYear();
+  const month = String(dateValue.getMonth() + 1).padStart(2, '0');
+  return `${year}-${month}`;
+};
+
+const monthLabel = (key) => {
+  const [year, month] = key.split('-').map(Number);
+  return new Date(year, month - 1, 1).toLocaleString('en-US', { month: 'short', year: 'numeric' });
+};
+
+const getRawAdminData = async () => {
   const [showsSnapshot, paymentsSnapshot] = await Promise.all([
     getDocs(collection(db, 'shows')),
     getDocs(collection(db, 'payments')),
@@ -46,10 +57,6 @@ export const fetchAdminDashboardData = async () => {
     .map((item) => ({ id: item.id, ...item.data() }))
     .filter((payment) => payment.status === 'paid');
 
-  const todayStart = startOfToday();
-  const tomorrowStart = new Date(todayStart);
-  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
-
   const paymentRows = paidPayments.map((payment) => {
     const createdAt = toDateValue(payment.createdAt);
     return {
@@ -58,11 +65,6 @@ export const fetchAdminDashboardData = async () => {
       amountValue: asNumber(payment.amount, 0),
       seatCountValue: Math.max(asNumber(payment.seatCount, 0), 0),
     };
-  });
-
-  const todaysPayments = paymentRows.filter((payment) => {
-    if (!payment.createdAtDate) return false;
-    return payment.createdAtDate >= todayStart && payment.createdAtDate < tomorrowStart;
   });
 
   const showsWithDerived = shows.map((show) => {
@@ -88,7 +90,26 @@ export const fetchAdminDashboardData = async () => {
       ticketsLeft,
       occupancyRate,
       showDate,
+      createdAtDate: toDateValue(show.createdAt),
     };
+  });
+
+  return {
+    paymentRows,
+    showsWithDerived,
+  };
+};
+
+export const fetchAdminDashboardData = async () => {
+  const { paymentRows, showsWithDerived } = await getRawAdminData();
+
+  const todayStart = startOfToday();
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+  const todaysPayments = paymentRows.filter((payment) => {
+    if (!payment.createdAtDate) return false;
+    return payment.createdAtDate >= todayStart && payment.createdAtDate < tomorrowStart;
   });
 
   const totalRevenue = paymentRows.reduce((sum, payment) => sum + payment.amountValue, 0);
@@ -137,7 +158,7 @@ export const fetchAdminDashboardData = async () => {
   }));
 
   const showActivity = showsWithDerived
-    .filter((show) => toDateValue(show.createdAt))
+    .filter((show) => show.createdAtDate)
     .map((show) => ({
       id: `show-${show.id}`,
       type: 'show',
@@ -146,7 +167,7 @@ export const fetchAdminDashboardData = async () => {
       user: show.adminEmail || 'Admin',
       details: show.title || 'Untitled show',
       amount: null,
-      timestamp: toDateValue(show.createdAt),
+      timestamp: show.createdAtDate,
     }));
 
   const recentActivity = [...paymentActivity, ...showActivity]
@@ -169,3 +190,114 @@ export const fetchAdminDashboardData = async () => {
     recentActivity,
   };
 };
+
+export const fetchAdminAnalyticsData = async () => {
+  const { paymentRows, showsWithDerived } = await getRawAdminData();
+  const kpis = (await fetchAdminDashboardData()).kpis;
+
+  const today = startOfToday();
+  const dayBuckets = [];
+  for (let offset = 6; offset >= 0; offset -= 1) {
+    const dayStart = new Date(today);
+    dayStart.setDate(dayStart.getDate() - offset);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayEnd.getDate() + 1);
+
+    const dayPayments = paymentRows.filter((payment) => payment.createdAtDate && payment.createdAtDate >= dayStart && payment.createdAtDate < dayEnd);
+    dayBuckets.push({
+      name: dayStart.toLocaleDateString('en-US', { weekday: 'short' }),
+      bookings: dayPayments.length,
+      revenue: dayPayments.reduce((sum, payment) => sum + payment.amountValue, 0),
+      tickets: dayPayments.reduce((sum, payment) => sum + payment.seatCountValue, 0),
+    });
+  }
+
+  const showPerformance = [...showsWithDerived]
+    .sort((first, second) => second.soldSeats - first.soldSeats)
+    .slice(0, 8)
+    .map((show) => ({
+      name: show.title || 'Untitled',
+      sold: show.soldSeats,
+      left: show.ticketsLeft,
+      occupancy: Number(show.occupancyRate.toFixed(1)),
+    }));
+
+  const revenueByShow = {};
+  paymentRows.forEach((payment) => {
+    const key = payment.eventTitle || 'Unknown show';
+    if (!revenueByShow[key]) {
+      revenueByShow[key] = { name: key, earnings: 0, tickets: 0, bookings: 0 };
+    }
+    revenueByShow[key].earnings += payment.amountValue;
+    revenueByShow[key].tickets += payment.seatCountValue;
+    revenueByShow[key].bookings += 1;
+  });
+
+  const financialBreakdown = Object.values(revenueByShow)
+    .sort((first, second) => second.earnings - first.earnings)
+    .slice(0, 8);
+
+  return {
+    kpis,
+    bookingTrend: dayBuckets,
+    showPerformance,
+    financialBreakdown,
+  };
+};
+
+export const fetchTotalEarningsData = async () => {
+  const { paymentRows } = await getRawAdminData();
+
+  const totalRevenue = paymentRows.reduce((sum, payment) => sum + payment.amountValue, 0);
+  const totalBookings = paymentRows.length;
+  const totalTickets = paymentRows.reduce((sum, payment) => sum + payment.seatCountValue, 0);
+
+  const categoryBuckets = {};
+  paymentRows.forEach((payment) => {
+    const category = payment.eventTitle || 'Unknown Show';
+    if (!categoryBuckets[category]) {
+      categoryBuckets[category] = {
+        key: category,
+        name: category,
+        value: 0,
+      };
+    }
+    categoryBuckets[category].value += payment.amountValue;
+  });
+
+  const categories = Object.values(categoryBuckets)
+    .sort((first, second) => second.value - first.value)
+    .slice(0, 8);
+
+  const monthlyBuckets = {};
+  paymentRows.forEach((payment) => {
+    if (!payment.createdAtDate) return;
+    const key = monthKey(payment.createdAtDate);
+    if (!monthlyBuckets[key]) {
+      monthlyBuckets[key] = {
+        key,
+        month: monthLabel(key),
+        revenue: 0,
+        bookings: 0,
+      };
+    }
+    monthlyBuckets[key].revenue += payment.amountValue;
+    monthlyBuckets[key].bookings += 1;
+  });
+
+  const monthlyRevenue = Object.values(monthlyBuckets)
+    .sort((first, second) => first.key.localeCompare(second.key))
+    .slice(-6);
+
+  return {
+    summary: {
+      totalRevenue,
+      totalBookings,
+      totalTickets,
+      averageOrderValue: totalBookings > 0 ? totalRevenue / totalBookings : 0,
+    },
+    categories,
+    monthlyRevenue,
+  };
+};
+
