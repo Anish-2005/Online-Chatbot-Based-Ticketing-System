@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import { useTheme } from './ThemeContext';
@@ -6,33 +6,64 @@ import {
   FiBell, FiMail, FiShield, FiClock, FiGlobe, 
   FiSettings as FiSettingsIcon
 } from 'react-icons/fi';
+import { fetchRoleSettings, saveRoleSettings } from '../services/settings';
 
 const Settings = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
-  const [settings, setSettings] = useState([
-    { id: 1, name: 'Notifications', enabled: true, icon: FiBell, description: 'Receive push notifications' },
-    { id: 2, name: 'Email Alerts', enabled: true, icon: FiMail, description: 'Get email updates' },
-    { id: 3, name: 'Two-Factor Authentication', enabled: false, icon: FiShield, description: 'Enhanced security' },
-    { id: 4, name: 'Auto-Logout Timer', enabled: 15, icon: FiClock, description: 'Session timeout (min)', isCustom: true },
-    { id: 5, name: 'Language Preference', enabled: 'English', icon: FiGlobe, description: 'Interface language', isCustom: true }
-  ]);
+  const [settings, setSettings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const iconByKey = {
+    notifications: FiBell,
+    emailAlerts: FiMail,
+    twoFactorAuth: FiShield,
+    autoLogoutMinutes: FiClock,
+    languagePreference: FiGlobe,
+  };
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchRoleSettings(role || 'default');
+        setSettings(data);
+      } catch (error) {
+        setMessage(error.message || 'Failed to load settings.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSettings();
+  }, [role]);
 
   const toggleSetting = (index) => {
     const newSettings = [...settings];
-    if (newSettings[index].name === 'Auto-Logout Timer') {
-      const newTime = prompt("Set Auto-Logout Timer (in minutes)", newSettings[index].enabled);
-      if (!isNaN(newTime) && newTime > 0) {
-        newSettings[index].enabled = parseInt(newTime);
-      }
-    } else if (newSettings[index].name === 'Language Preference') {
-      const selectedLanguage = prompt("Set Language Preference", newSettings[index].enabled);
-      if (['English', 'Spanish', 'French', 'German', 'Chinese'].includes(selectedLanguage)) {
-        newSettings[index].enabled = selectedLanguage;
-      }
-    } else {
+    if (newSettings[index].type === 'boolean') {
       newSettings[index].enabled = !newSettings[index].enabled;
     }
     setSettings(newSettings);
+  };
+
+  const updateCustomSetting = (index, value) => {
+    const next = [...settings];
+    next[index].enabled = next[index].type === 'number' ? Number(value) : value;
+    setSettings(next);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setMessage('');
+    try {
+      await saveRoleSettings(role || 'default', settings);
+      setMessage('Settings saved successfully.');
+    } catch (error) {
+      setMessage(error.message || 'Unable to save settings.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -63,9 +94,21 @@ const Settings = ({ role }) => {
           </div>
         </motion.div>
 
+        {message ? (
+          <div className={`mb-6 rounded-xl border px-4 py-3 text-sm font-medium ${message.toLowerCase().includes('success') ? (isDark ? 'border-emerald-500/30 bg-emerald-900/20 text-emerald-200' : 'border-emerald-200 bg-emerald-50 text-emerald-700') : (isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700')}`}>
+            {message}
+          </div>
+        ) : null}
+
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-blue-600" />
+          </div>
+        ) : (
+        <>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {settings.map((setting, index) => {
-            const Icon = setting.icon;
+            const Icon = iconByKey[setting.key] || FiSettingsIcon;
             
             return (
               <motion.div
@@ -105,17 +148,26 @@ const Settings = ({ role }) => {
                   </div>
 
                   <div className="ml-4">
-                    {setting.isCustom ? (
-                      <button
-                        onClick={() => toggleSetting(index)}
-                        className={`px-4 py-2 rounded-lg font-heading font-semibold transition-all duration-300 text-base ${
-                          isDark
-                            ? 'bg-gray-700 text-gray-200 hover:bg-gray-600'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {setting.enabled.toString()}
-                      </button>
+                    {setting.type !== 'boolean' ? (
+                      setting.type === 'string' ? (
+                        <select
+                          value={setting.enabled}
+                          onChange={(e) => updateCustomSetting(index, e.target.value)}
+                          className={`rounded-lg border px-3 py-2 text-sm ${isDark ? 'border-gray-600 bg-gray-700 text-gray-100' : 'border-gray-300 bg-white text-gray-900'}`}
+                        >
+                          {['English', 'Spanish', 'French', 'German', 'Chinese'].map((language) => (
+                            <option key={language} value={language}>{language}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type="number"
+                          min="1"
+                          value={setting.enabled}
+                          onChange={(e) => updateCustomSetting(index, e.target.value)}
+                          className={`w-24 rounded-lg border px-3 py-2 text-sm ${isDark ? 'border-gray-600 bg-gray-700 text-gray-100' : 'border-gray-300 bg-white text-gray-900'}`}
+                        />
+                      )
                     ) : (
                       <button
                         onClick={() => toggleSetting(index)}
@@ -142,7 +194,7 @@ const Settings = ({ role }) => {
                   </div>
                 </div>
 
-                {!setting.isCustom && (
+                {setting.type === 'boolean' && (
                   <div className="mt-4 flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${
                       setting.enabled ? 'bg-green-500' : 'bg-gray-400'
@@ -209,6 +261,17 @@ const Settings = ({ role }) => {
             </div>
           </div>
         </motion.div>
+        <div className="mt-6">
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 disabled:opacity-60"
+          >
+            {saving ? 'Saving...' : 'Save Settings'}
+          </button>
+        </div>
+        </>
+        )}
       </div>
     </div>
   );

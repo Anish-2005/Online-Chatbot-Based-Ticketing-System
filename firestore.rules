@@ -32,6 +32,18 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create, update, delete: if request.auth != null && isAdmin();
     }
+
+    // Special offers and promotions for admin panel
+    match /special_offers/{document=**} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null && isAdmin();
+    }
+
+    // Application settings documents (e.g. app_settings/admin, app_settings/user)
+    match /app_settings/{document=**} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null && isAdmin();
+    }
     
     // Helper function to check if user is admin
     // In production, implement proper admin role checking

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiCalendar, FiImage, FiMapPin, FiPlusCircle, FiTag, FiClock, FiCheckCircle } from 'react-icons/fi';
+import { FiCalendar, FiImage, FiMapPin, FiPlusCircle, FiTag, FiClock, FiCheckCircle, FiRefreshCw } from 'react-icons/fi';
 import Sidebar from '../components/Sidebar';
 import { useTheme } from './ThemeContext';
 import { createShow, fetchShows } from '../services/shows';
 
 const initialForm = {
-  title: 'Egyptian Heritage Exhibit',
-  image: 'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=500&h=300&fit=crop&q=80',
-  date: '05/03/2026',
-  time: '10:00',
-  location: 'Main Hall A',
-  price: '250',
-  ticketsLeft: '100',
-  price_int: '250',
+  title: '',
+  image: '',
+  date: '',
+  time: '',
+  location: '',
+  price: '',
+  ticketsLeft: '',
+  price_int: '',
 };
 
 const normalizeDate = (value) => {
@@ -36,22 +36,26 @@ const AdminManageShows = () => {
   const { isDark, toggleTheme } = useTheme();
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
+  const [loadingShows, setLoadingShows] = useState(true);
   const [shows, setShows] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    const loadShows = async () => {
-      try {
-        const data = await fetchShows();
-        setShows(Array.isArray(data) ? data : []);
-      } catch (fetchError) {
-        setError(fetchError.message || 'Unable to load shows.');
-      }
-    };
-
     loadShows();
   }, []);
+
+  const loadShows = async () => {
+    setLoadingShows(true);
+    try {
+      const data = await fetchShows();
+      setShows(Array.isArray(data) ? data : []);
+    } catch (fetchError) {
+      setError(fetchError.message || 'Unable to load shows.');
+    } finally {
+      setLoadingShows(false);
+    }
+  };
 
   const updateField = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -71,8 +75,8 @@ const AdminManageShows = () => {
         price_int: Number(form.price_int),
       };
 
-      const createdShow = await createShow(payload);
-      setShows((prev) => [createdShow, ...prev]);
+      await createShow(payload);
+      await loadShows();
       setForm(initialForm);
       setSuccess('Show added successfully. It is now available in Book Shows.');
     } catch (submitError) {
@@ -101,16 +105,43 @@ const AdminManageShows = () => {
                 Add new shows that users can see and book from the Book Shows page.
               </p>
             </div>
-            <button
-              onClick={toggleTheme}
-              className="group relative px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/50 dark:from-purple-500 dark:to-pink-500 text-base"
-            >
-              <span className="flex items-center gap-2 font-medium">
-                {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-              </span>
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={loadShows}
+                disabled={loadingShows}
+                className={`group relative px-5 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 text-base ${isDark ? 'bg-gray-800 text-gray-100 hover:bg-gray-700' : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'} disabled:opacity-60`}
+              >
+                <span className="flex items-center gap-2 font-medium">
+                  <FiRefreshCw className={`${loadingShows ? 'animate-spin' : ''}`} />
+                  Refresh
+                </span>
+              </button>
+              <button
+                onClick={toggleTheme}
+                className="group relative px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/50 dark:from-purple-500 dark:to-pink-500 text-base"
+              >
+                <span className="flex items-center gap-2 font-medium">
+                  {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
+                </span>
+              </button>
+            </div>
           </div>
         </motion.div>
+
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className={`rounded-xl border p-4 ${isDark ? 'border-gray-700 bg-gray-800/70' : 'border-gray-200 bg-white'}`}>
+            <p className={`text-xs uppercase tracking-widest ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Shows</p>
+            <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{shows.length}</p>
+          </div>
+          <div className={`rounded-xl border p-4 ${isDark ? 'border-gray-700 bg-gray-800/70' : 'border-gray-200 bg-white'}`}>
+            <p className={`text-xs uppercase tracking-widest ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Seats</p>
+            <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{shows.reduce((sum, show) => sum + Number(show.totalSeats || show.available_seats || show.ticketsLeft || 0), 0)}</p>
+          </div>
+          <div className={`rounded-xl border p-4 ${isDark ? 'border-gray-700 bg-gray-800/70' : 'border-gray-200 bg-white'}`}>
+            <p className={`text-xs uppercase tracking-widest ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Upcoming Shows</p>
+            <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{shows.filter((show) => !!show.date).length}</p>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <motion.form
@@ -189,7 +220,11 @@ const AdminManageShows = () => {
           >
             <h3 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-4">Recently Available</h3>
             <div className="space-y-3 max-h-[520px] overflow-auto pr-1">
-              {shows.slice(0, 8).map((show, index) => (
+              {loadingShows ? (
+                <div className={`rounded-xl p-4 border ${isDark ? 'border-gray-700 bg-gray-900/40 text-gray-300' : 'border-gray-200 bg-gray-50 text-gray-600'}`}>
+                  Loading shows...
+                </div>
+              ) : shows.slice(0, 8).map((show, index) => (
                 <div
                   key={show.id || show._id || `${show.title}-${index}`}
                   className={`rounded-xl p-4 border ${

@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from 'recharts';
+import React, { useState, useEffect, useMemo } from 'react';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import { useTheme } from './ThemeContext';
 import { FiTrendingUp, FiActivity, FiDollarSign, FiPieChart } from 'react-icons/fi';
-import { fetchProfitAnalytics, fetchTicketAnalytics } from '../services/metrics';
+import { fetchAdminAnalyticsData } from '../services/dashboard';
+
+const formatCurrency = (value) => new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  maximumFractionDigits: 0,
+}).format(Number(value || 0));
 
 const AdminAnalyticsPage = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
-  const [ticketData, setTicketData] = useState([]);
-  const [profit, setEarningsData] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const loadAnalytics = async () => {
       setLoading(true);
+      setError('');
       try {
-        const [tickets, profits] = await Promise.all([
-          fetchTicketAnalytics(),
-          fetchProfitAnalytics(),
-        ]);
-
-        setTicketData(tickets);
-        setEarningsData(profits);
+        const data = await fetchAdminAnalyticsData();
+        setAnalyticsData(data);
       } catch (error) {
         console.error('Error loading analytics data:', error);
+        setError(error.message || 'Unable to load analytics right now.');
       } finally {
         setLoading(false);
       }
@@ -37,7 +40,7 @@ const AdminAnalyticsPage = ({ role }) => {
     gridStroke: isDark ? '#374151' : '#E5E7EB',
     textColor: isDark ? '#9CA3AF' : '#6B7280',
     tooltipBg: isDark ? '#1F2937' : '#FFFFFF',
-    tooltipBorder: isDark ? '#6C5CE7' : '#A29BFE'
+    tooltipBorder: isDark ? '#6C5CE7' : '#A29BFE',
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -51,7 +54,7 @@ const AdminAnalyticsPage = ({ role }) => {
           </p>
           {payload.map((entry, index) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: <span className="font-bold">{entry.value}</span>
+              {entry.name}: <span className="font-bold">{entry.dataKey === 'revenue' || entry.dataKey === 'earnings' ? formatCurrency(entry.value) : entry.value}</span>
             </p>
           ))}
         </div>
@@ -59,6 +62,27 @@ const AdminAnalyticsPage = ({ role }) => {
     }
     return null;
   };
+
+  const stats = useMemo(() => {
+    const kpis = analyticsData?.kpis;
+    if (!kpis) {
+      return [
+        { icon: FiTrendingUp, label: 'Total Tickets', value: '0' },
+        { icon: FiActivity, label: 'Bookings (7d)', value: '0' },
+        { icon: FiDollarSign, label: 'Total Revenue', value: formatCurrency(0) },
+        { icon: FiPieChart, label: 'Fill Rate', value: '0%' },
+      ];
+    }
+
+    const bookings7d = (analyticsData?.bookingTrend || []).reduce((sum, item) => sum + (item.bookings || 0), 0);
+
+    return [
+      { icon: FiTrendingUp, label: 'Total Tickets', value: kpis.totalTicketsSold.toLocaleString() },
+      { icon: FiActivity, label: 'Bookings (7d)', value: bookings7d.toLocaleString() },
+      { icon: FiDollarSign, label: 'Total Revenue', value: formatCurrency(kpis.totalRevenue) },
+      { icon: FiPieChart, label: 'Fill Rate', value: `${Number(kpis.conversionRate || 0).toFixed(1)}%` },
+    ];
+  }, [analyticsData]);
 
   return (
     <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
@@ -92,12 +116,7 @@ const AdminAnalyticsPage = ({ role }) => {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {[
-            { icon: FiTrendingUp, label: 'Total Tickets', value: ticketData.reduce((sum, item) => sum + (item.tickets || 0), 0), color: 'purple' },
-            { icon: FiActivity, label: 'Avg Resolution', value: `${(ticketData.reduce((sum, item) => sum + (item.resolutionTime || 0), 0) / (ticketData.length || 1)).toFixed(1)}h`, color: 'green' },
-            { icon: FiDollarSign, label: 'Total Profit', value: `$${profit.reduce((sum, item) => sum + (item.profit || 0), 0).toLocaleString()}`, color: 'blue' },
-            { icon: FiPieChart, label: 'Total Earnings', value: `$${profit.reduce((sum, item) => sum + (item.earnings || 0), 0).toLocaleString()}`, color: 'pink' },
-          ].map((stat, index) => (
+          {stats.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -108,8 +127,8 @@ const AdminAnalyticsPage = ({ role }) => {
               } shadow-lg hover:shadow-xl transition-all duration-300`}
             >
               <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-xl bg-${stat.color}-100 dark:bg-${stat.color}-900/20`}>
-                  <stat.icon className={`w-6 h-6 text-${stat.color}-600 dark:text-${stat.color}-400`} />
+                <div className={`p-3 rounded-xl ${isDark ? 'bg-purple-900/20 text-purple-300' : 'bg-purple-100 text-purple-700'}`}>
+                  <stat.icon className="w-6 h-6" />
                 </div>
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-xs font-semibold mb-2 uppercase tracking-wide">{stat.label}</p>
@@ -120,7 +139,7 @@ const AdminAnalyticsPage = ({ role }) => {
 
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Ticket Performance Chart */}
+          {/* Booking Trend */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -133,11 +152,11 @@ const AdminAnalyticsPage = ({ role }) => {
               <div className="flex items-center gap-2 mb-2">
                 <FiActivity className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white tracking-tight">
-                  Ticket Performance
+                  Booking Trend (Last 7 Days)
                 </h2>
               </div>
               <p className="text-base text-gray-600 dark:text-gray-400 font-medium">
-                Ticket distribution and resolution times
+                Daily bookings, tickets sold and revenue
               </p>
             </div>
             
@@ -145,22 +164,16 @@ const AdminAnalyticsPage = ({ role }) => {
               <div className="flex items-center justify-center h-80">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
               </div>
+            ) : error ? (
+              <div className={`rounded-xl border px-4 py-6 text-sm ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
+                {error}
+              </div>
             ) : (
               <ResponsiveContainer width="100%" height={320}>
-                <AreaChart
-                  data={ticketData}
+                <LineChart
+                  data={analyticsData?.bookingTrend || []}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
-                  <defs>
-                    <linearGradient id="ticketsGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6C5CE7" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#6C5CE7" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="resolutionGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#00B894" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#00B894" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
                   <CartesianGrid 
                     strokeDasharray="3 3" 
                     stroke={chartStyles.gridStroke}
@@ -180,28 +193,33 @@ const AdminAnalyticsPage = ({ role }) => {
                     wrapperStyle={{ paddingTop: '10px' }}
                     iconType="line"
                   />
-                  <Area
+                  <Line
                     type="monotone"
-                    dataKey="tickets"
+                    dataKey="bookings"
                     stroke="#6C5CE7"
                     strokeWidth={2}
-                    fill="url(#ticketsGradient)"
-                    name="Total Tickets"
+                    name="Bookings"
                   />
-                  <Area
+                  <Line
                     type="monotone"
-                    dataKey="resolutionTime"
+                    dataKey="tickets"
                     stroke="#00B894"
                     strokeWidth={2}
-                    fill="url(#resolutionGradient)"
-                    name="Avg Resolution (hrs)"
+                    name="Tickets"
                   />
-                </AreaChart>
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#F97316"
+                    strokeWidth={2}
+                    name="Revenue"
+                  />
+                </LineChart>
               </ResponsiveContainer>
             )}
           </motion.div>
 
-          {/* Financial Overview Chart */}
+          {/* Show Performance */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -214,11 +232,11 @@ const AdminAnalyticsPage = ({ role }) => {
               <div className="flex items-center gap-2 mb-2">
                 <FiDollarSign className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white tracking-tight">
-                  Financial Overview
+                  Show Performance
                 </h2>
               </div>
               <p className="text-base text-gray-600 dark:text-gray-400 font-medium">
-                Earnings, costs, and profit analysis
+                Top shows by seats sold and occupancy
               </p>
             </div>
             
@@ -226,10 +244,14 @@ const AdminAnalyticsPage = ({ role }) => {
               <div className="flex items-center justify-center h-80">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
               </div>
+            ) : error ? (
+              <div className={`rounded-xl border px-4 py-6 text-sm ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
+                {error}
+              </div>
             ) : (
               <ResponsiveContainer width="100%" height={320}>
                 <BarChart
-                  data={profit}
+                  data={analyticsData?.showPerformance || []}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
                   <CartesianGrid 
@@ -249,28 +271,67 @@ const AdminAnalyticsPage = ({ role }) => {
                   <Tooltip content={<CustomTooltip />} />
                   <Legend wrapperStyle={{ paddingTop: '10px' }} />
                   <Bar 
-                    dataKey="earnings" 
+                    dataKey="sold" 
                     fill="#6C5CE7" 
                     radius={[8, 8, 0, 0]} 
-                    name="Earnings"
+                    name="Sold"
                   />
                   <Bar 
-                    dataKey="cost" 
-                    fill="#FF6B6B" 
+                    dataKey="left" 
+                    fill="#64748B" 
                     radius={[8, 8, 0, 0]} 
-                    name="Costs"
+                    name="Left"
                   />
                   <Bar 
-                    dataKey="profit" 
+                    dataKey="occupancy" 
                     fill="#00B894" 
                     radius={[8, 8, 0, 0]} 
-                    name="Profit"
+                    name="Occupancy %"
                   />
                 </BarChart>
               </ResponsiveContainer>
             )}
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className={`mt-8 rounded-2xl p-6 shadow-lg ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}
+        >
+          <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white tracking-tight mb-4">
+            Financial Breakdown by Show
+          </h2>
+          {(analyticsData?.financialBreakdown || []).length === 0 ? (
+            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              No financial entries available yet.
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left">
+                <thead>
+                  <tr className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <th className="px-4 py-3 text-xs uppercase tracking-wider">Show</th>
+                    <th className="px-4 py-3 text-xs uppercase tracking-wider">Bookings</th>
+                    <th className="px-4 py-3 text-xs uppercase tracking-wider">Tickets</th>
+                    <th className="px-4 py-3 text-xs uppercase tracking-wider">Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {analyticsData.financialBreakdown.map((row) => (
+                    <tr key={row.name} className={`border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+                      <td className="px-4 py-3 font-semibold text-gray-900 dark:text-white">{row.name}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{row.bookings}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{row.tickets}</td>
+                      <td className="px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">{formatCurrency(row.earnings)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </motion.div>
       </div>
     </div>
   );

@@ -3,21 +3,44 @@ import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
 import { FiDollarSign, FiTrendingUp, FiPieChart, FiCreditCard } from 'react-icons/fi';
-import { fetchEarningsBreakdown } from '../services/metrics';
+import { ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { fetchTotalEarningsData } from '../services/dashboard';
+
+const formatCurrency = (value) => new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  maximumFractionDigits: 0,
+}).format(Number(value || 0));
+
+const colorSets = [
+  { bg: 'bg-purple-100 dark:bg-purple-900/20', text: 'text-purple-600 dark:text-purple-400', chip: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300', fill: '#7C3AED' },
+  { bg: 'bg-blue-100 dark:bg-blue-900/20', text: 'text-blue-600 dark:text-blue-400', chip: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300', fill: '#2563EB' },
+  { bg: 'bg-emerald-100 dark:bg-emerald-900/20', text: 'text-emerald-600 dark:text-emerald-400', chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300', fill: '#10B981' },
+  { bg: 'bg-pink-100 dark:bg-pink-900/20', text: 'text-pink-600 dark:text-pink-400', chip: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300', fill: '#DB2777' },
+  { bg: 'bg-orange-100 dark:bg-orange-900/20', text: 'text-orange-600 dark:text-orange-400', chip: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300', fill: '#EA580C' },
+  { bg: 'bg-indigo-100 dark:bg-indigo-900/20', text: 'text-indigo-600 dark:text-indigo-400', chip: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300', fill: '#4F46E5' },
+];
 
 const TotalEarningsPage = ({ role }) => {
   const { isDark, toggleTheme } = useTheme();
-  const [earningsBreakdown, setEarningsBreakdown] = useState({});
+  const [summary, setSummary] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [monthlyRevenue, setMonthlyRevenue] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const loadEarnings = async () => {
       setLoading(true);
+      setError('');
       try {
-        const data = await fetchEarningsBreakdown();
-        setEarningsBreakdown(data || {});
+        const data = await fetchTotalEarningsData();
+        setSummary(data.summary);
+        setCategories(data.categories || []);
+        setMonthlyRevenue(data.monthlyRevenue || []);
       } catch (error) {
         console.error('Error fetching earnings data:', error);
+        setError(error.message || 'Unable to load earnings right now.');
       } finally {
         setLoading(false);
       }
@@ -26,23 +49,11 @@ const TotalEarningsPage = ({ role }) => {
     loadEarnings();
   }, []);
 
-  const totalEarnings = Object.values(earningsBreakdown).reduce(
-    (acc, value) => acc + value,
-    0
-  );
-
-  const formatCategoryName = (key) => {
-    return key.replace(/([A-Z])/g, ' $1').trim();
-  };
+  const totalEarnings = summary?.totalRevenue || 0;
 
   const getCategoryIcon = (index) => {
     const icons = [FiDollarSign, FiCreditCard, FiPieChart, FiTrendingUp];
     return icons[index % icons.length];
-  };
-
-  const getCategoryColor = (index) => {
-    const colors = ['purple', 'blue', 'green', 'pink', 'orange', 'indigo'];
-    return colors[index % colors.length];
   };
 
   return (
@@ -100,15 +111,21 @@ const TotalEarningsPage = ({ role }) => {
                   <div>
                     <p className="text-white/80 text-sm font-heading font-medium tracking-wide">Total Revenue</p>
                     <p className="text-5xl font-heading font-bold text-white leading-tight tracking-tight">
-                      ${totalEarnings.toLocaleString()}
+                      {formatCurrency(totalEarnings)}
                     </p>
                   </div>
                 </div>
                 <p className="text-white/70 text-base font-medium">
-                  All-time earnings across all categories
+                  {summary?.totalBookings || 0} total bookings • {summary?.totalTickets || 0} tickets sold • Avg order {formatCurrency(summary?.averageOrderValue || 0)}
                 </p>
               </div>
             </motion.div>
+
+            {error ? (
+              <div className={`mb-6 rounded-xl border px-4 py-3 text-sm font-medium ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
+                {error}
+              </div>
+            ) : null}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -117,18 +134,18 @@ const TotalEarningsPage = ({ role }) => {
               className="mb-6"
             >
               <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
-                Revenue Breakdown
+                Revenue by Show
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Object.entries(earningsBreakdown).map(([key, value], index) => {
+                {categories.map((item, index) => {
                   const Icon = getCategoryIcon(index);
-                  const color = getCategoryColor(index);
-                  const percentage = ((value / totalEarnings) * 100).toFixed(1);
+                  const palette = colorSets[index % colorSets.length];
+                  const percentage = totalEarnings > 0 ? ((item.value / totalEarnings) * 100).toFixed(1) : '0.0';
                   
                   return (
                     <motion.div
-                      key={key}
+                      key={item.key}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + index * 0.1 }}
@@ -140,21 +157,21 @@ const TotalEarningsPage = ({ role }) => {
                       }`}
                     >
                       <div className="flex items-start justify-between mb-4">
-                        <div className={`p-3 rounded-xl bg-${color}-100 dark:bg-${color}-900/20`}>
-                          <Icon className={`w-6 h-6 text-${color}-600 dark:text-${color}-400`} />
+                        <div className={`p-3 rounded-xl ${palette.bg}`}>
+                          <Icon className={`w-6 h-6 ${palette.text}`} />
                         </div>
-                        <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full bg-${color}-100 text-${color}-700 dark:bg-${color}-900/30 dark:text-${color}-400 tracking-wide`}>
+                        <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full tracking-wide ${palette.chip}`}>
                           {percentage}%
                         </span>
                       </div>
                       
                       <h3 className="text-gray-600 dark:text-gray-400 text-xs font-heading font-semibold mb-2 capitalize uppercase tracking-wide">
-                        {formatCategoryName(key)}
+                        {item.name}
                       </h3>
                       
                       <div className="flex items-baseline gap-2">
                         <p className="text-3xl font-heading font-bold text-gray-900 dark:text-white leading-tight">
-                          ${value.toLocaleString()}
+                          {formatCurrency(item.value)}
                         </p>
                       </div>
                       
@@ -163,13 +180,53 @@ const TotalEarningsPage = ({ role }) => {
                           initial={{ width: 0 }}
                           animate={{ width: `${percentage}%` }}
                           transition={{ delay: 0.5 + index * 0.1, duration: 0.8 }}
-                          className={`h-full bg-gradient-to-r from-${color}-500 to-${color}-600 rounded-full`}
+                          className="h-full rounded-full"
+                          style={{ background: `linear-gradient(to right, ${palette.fill}, ${palette.fill})` }}
                         />
                       </div>
                     </motion.div>
                   );
                 })}
               </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className={`rounded-2xl p-6 shadow-lg ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}
+            >
+              <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-5 tracking-tight">
+                Monthly Earnings Trend
+              </h2>
+              {monthlyRevenue.length === 0 ? (
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  No monthly revenue data available yet.
+                </p>
+              ) : (
+                <ResponsiveContainer width="100%" height={280}>
+                  <AreaChart data={monthlyRevenue} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="monthlyRevenueGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.35} />
+                        <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#374151' : '#E5E7EB'} opacity={0.5} />
+                    <XAxis dataKey="month" stroke={isDark ? '#9CA3AF' : '#6B7280'} tick={{ fontSize: 12 }} />
+                    <YAxis stroke={isDark ? '#9CA3AF' : '#6B7280'} tick={{ fontSize: 12 }} />
+                    <Tooltip
+                      formatter={(value, name) => [name === 'revenue' ? formatCurrency(value) : value, name === 'revenue' ? 'Revenue' : 'Bookings']}
+                      contentStyle={{
+                        backgroundColor: isDark ? '#1F2937' : '#FFFFFF',
+                        border: `1px solid ${isDark ? '#6C5CE7' : '#A29BFE'}`,
+                        borderRadius: '0.75rem',
+                      }}
+                    />
+                    <Area type="monotone" dataKey="revenue" stroke="#10B981" fill="url(#monthlyRevenueGradient)" strokeWidth={2} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
             </motion.div>
           </>
         )}
