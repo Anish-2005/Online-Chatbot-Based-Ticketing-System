@@ -30,11 +30,11 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, theme);
     localStorage.setItem(LEGACY_THEME_STORAGE_KEY, theme);
-    
+
     // Apply to document root
     const htmlElement = document.documentElement;
     const bodyElement = document.body;
-    
+
     if (theme === 'dark') {
       htmlElement.classList.add('dark');
       bodyElement.classList.add('dark');
@@ -71,7 +71,11 @@ export const ThemeProvider = ({ children }) => {
   const toggleTheme = (eventOrPoint) => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
 
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
+    if (
+      typeof window === 'undefined' ||
+      typeof document === 'undefined' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       setTheme(nextTheme);
       return;
     }
@@ -80,73 +84,95 @@ export const ThemeProvider = ({ children }) => {
       return;
     }
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      setTheme(nextTheme);
-      return;
-    }
-
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
     const x = typeof eventOrPoint?.clientX === 'number'
       ? eventOrPoint.clientX
       : typeof eventOrPoint?.x === 'number'
-      ? eventOrPoint.x
-      : viewportWidth / 2;
+        ? eventOrPoint.x
+        : window.innerWidth / 2;
 
     const y = typeof eventOrPoint?.clientY === 'number'
       ? eventOrPoint.clientY
       : typeof eventOrPoint?.y === 'number'
-      ? eventOrPoint.y
-      : viewportHeight / 2;
+        ? eventOrPoint.y
+        : window.innerHeight / 2;
 
-    const maxRadius = Math.hypot(
-      Math.max(x, viewportWidth - x),
-      Math.max(y, viewportHeight - y)
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
     );
 
-    const overlay = document.createElement('div');
-    overlay.setAttribute('aria-hidden', 'true');
-    overlay.style.position = 'fixed';
-    overlay.style.inset = '0';
-    overlay.style.pointerEvents = 'none';
-    overlay.style.zIndex = '9999';
-    overlay.style.willChange = 'clip-path, opacity';
-    overlay.style.background = nextTheme === 'dark'
-      ? 'radial-gradient(circle at 30% 20%, #334155 0%, #0f172a 60%, #020617 100%)'
-      : 'radial-gradient(circle at 30% 20%, #ffffff 0%, #f8fafc 55%, #e2e8f0 100%)';
-    overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
-
-    document.body.appendChild(overlay);
     isAnimatingRef.current = true;
 
-    const animation = overlay.animate(
-      [
-        { clipPath: `circle(0px at ${x}px ${y}px)`, opacity: 0.98 },
-        { clipPath: `circle(${maxRadius + 40}px at ${x}px ${y}px)`, opacity: 1 },
-      ],
-      {
-        duration: 620,
-        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-        fill: 'forwards',
+    // Fallback if View Transitions API is not supported
+    if (!document.startViewTransition) {
+      const htmlElement = document.documentElement;
+      const bodyElement = document.body;
+
+      if (nextTheme === 'dark') {
+        htmlElement.classList.add('dark');
+        bodyElement.classList.add('dark');
+        bodyElement.classList.remove('light');
+      } else {
+        htmlElement.classList.remove('dark');
+        bodyElement.classList.add('light');
+        bodyElement.classList.remove('dark');
       }
-    );
 
-    window.setTimeout(() => {
+      htmlElement.setAttribute('data-theme', nextTheme);
+      bodyElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+      localStorage.setItem(LEGACY_THEME_STORAGE_KEY, nextTheme);
       setTheme(nextTheme);
-    }, 220);
-
-    animation.onfinish = () => {
-      overlay.remove();
       isAnimatingRef.current = false;
-    };
+      return;
+    }
 
-    animation.oncancel = () => {
-      overlay.remove();
-      isAnimatingRef.current = false;
+    // This creates what feels like an authentic circle expanding and revealing the NEW theme underneath natively!
+    const transition = document.startViewTransition(() => {
+      const htmlElement = document.documentElement;
+      const bodyElement = document.body;
+
+      if (nextTheme === 'dark') {
+        htmlElement.classList.add('dark');
+        bodyElement.classList.add('dark');
+        bodyElement.classList.remove('light');
+      } else {
+        htmlElement.classList.remove('dark');
+        bodyElement.classList.add('light');
+        bodyElement.classList.remove('dark');
+      }
+
+      htmlElement.setAttribute('data-theme', nextTheme);
+      bodyElement.setAttribute('data-theme', nextTheme);
+
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+      localStorage.setItem(LEGACY_THEME_STORAGE_KEY, nextTheme);
+
       setTheme(nextTheme);
-    };
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      // Clean, native, layout-revealing circular animation
+      document.documentElement.animate(
+        {
+          clipPath: nextTheme === 'dark' ? clipPath : [...clipPath].reverse(),
+        },
+        {
+          duration: 600,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          pseudoElement: nextTheme === 'dark' ? '::view-transition-new(root)' : '::view-transition-old(root)',
+        }
+      );
+    });
+
+    transition.finished.finally(() => {
+      isAnimatingRef.current = false;
+    });
   };
 
   const setLightTheme = () => {
@@ -160,13 +186,13 @@ export const ThemeProvider = ({ children }) => {
   const isDark = theme === 'dark';
 
   return (
-    <ThemeContext.Provider 
-      value={{ 
-        theme, 
-        toggleTheme, 
-        setLightTheme, 
-        setDarkTheme, 
-        isDark 
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+        setLightTheme,
+        setDarkTheme,
+        isDark
       }}
     >
       {children}

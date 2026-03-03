@@ -93,60 +93,58 @@
 /*              LIGHT THEME CONFIGURATION                      */
 /* ============================================================ */
 
-.light-theme {
+/* Default Light Theme styles for the messenger */
+df-messenger {
   --df-messenger-button-titlebar-color: var(--primary-dark);
   --df-messenger-button-titlebar-font-color: #FFFFFF;
   --df-messenger-send-icon: #FFFFFF;
   --df-messenger-bot-message: #F3F4F6;
   --df-messenger-chat-background-color: #FAFBFC;
+  --df-messenger-font-color: var(--secondary-dark);
   --df-messenger-text-color: var(--secondary-dark);
+  --df-messenger-bot-message-font-color: var(--secondary-dark);
   --df-messenger-user-message: var(--primary-dark);
+  --df-messenger-user-message-font-color: #FFFFFF;
   --df-messenger-user-message-text-color: #FFFFFF;
   --df-messenger-input-placeholder-color: #999;
   --df-messenger-input-background-color: #FFFFFF;
+  --df-messenger-input-font-color: var(--secondary-dark);
   --df-messenger-input-text-color: var(--secondary-dark);
   --df-messenger-input-border-color: #E5E7EB;
+  --df-messenger-z-index: 999;
+  --df-messenger-bot-message-border-radius: 12px;
+  --df-messenger-user-message-border-radius: 12px;
+  --df-messenger-message-padding: 12px 16px;
 }
 
 /* ============================================================ */
 /*              DARK THEME CONFIGURATION                       */
 /* ============================================================ */
 
-.dark-theme {
-  --df-messenger-button-titlebar-color: var(--accent-yellow);
-  --df-messenger-button-titlebar-font-color: var(--secondary-dark);
-  --df-messenger-send-icon: var(--accent-yellow);
-  --df-messenger-bot-message: #1C1C2E;
-  --df-messenger-chat-background-color: #0F0F1E;
-  --df-messenger-text-color: #E2E8F0;
-  --df-messenger-user-message: var(--primary-dark);
+/* When global data-theme is dark, update the variables */
+[data-theme="dark"] df-messenger {
+  --df-messenger-button-titlebar-color: #6C5CE7;
+  --df-messenger-button-titlebar-font-color: #FFFFFF;
+  --df-messenger-send-icon: #A29BFE;
+  --df-messenger-bot-message: #1F2937;
+  --df-messenger-chat-background-color: #111827;
+  --df-messenger-font-color: #F3F4F6;
+  --df-messenger-text-color: #F3F4F6;
+  --df-messenger-bot-message-font-color: #E5E7EB;
+  --df-messenger-user-message: #6C5CE7;
+  --df-messenger-user-message-font-color: #FFFFFF;
   --df-messenger-user-message-text-color: #FFFFFF;
-  --df-messenger-bot-message-text-color: #E2E8F0;
-  --df-messenger-input-placeholder-color: #999;
-  --df-messenger-input-background-color: #1C1C2E;
-  --df-messenger-input-text-color: #E2E8F0;
-  --df-messenger-input-border-color: #2D3436;
-  scrollbar-color: #333 #0F0F1E;
+  --df-messenger-bot-message-text-color: #E5E7EB;
+  --df-messenger-input-placeholder-color: #9CA3AF;
+  --df-messenger-input-background-color: #1F2937;
+  --df-messenger-input-font-color: #F3F4F6;
+  --df-messenger-input-text-color: #F3F4F6;
+  --df-messenger-input-border-color: #374151;
+  scrollbar-color: #4B5563 #111827;
   scrollbar-width: thin;
 }
 
-.dark-theme df-messenger {
-  --df-messenger-input-placeholder-color: #999;
-  --df-messenger-input-background-color: #1C1C2E;
-  --df-messenger-input-text-color: #E2E8F0;
-  --df-messenger-input-border-color: #2D3436;
-}
-
-/* ============================================================ */
-/*              DIALOGUE FLOW MESSENGER CUSTOMIZATION          */
-/* ============================================================ */
-
-df-messenger {
-  --df-messenger-z-index: 999;
-  --df-messenger-bot-message-border-radius: 12px;
-  --df-messenger-user-message-border-radius: 12px;
-  --df-messenger-message-padding: 12px 16px;
-}
+/* Removed as variables were consolidated above */
 
 /* ============================================================ */
 /*              RESPONSIVE DESIGN                              */
@@ -199,6 +197,7 @@ df-messenger {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -206,10 +205,13 @@ df-messenger {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.05);
@@ -236,6 +238,7 @@ df-messenger {
 
 /* Reduce motion preference */
 @media (prefers-reduced-motion: reduce) {
+
   .chatbot-icon,
   .chatbot-toggle,
   .chatbot-container {

@@ -11,7 +11,7 @@ const Chatbot = () => {
     // Check if the script is already added
     if (!isScriptLoaded) {
       const scriptExists = document.querySelector('script[src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"]');
-      
+
       if (!scriptExists) {
         // Dynamically load the Dialogflow script only if it hasn't been loaded
         const script = document.createElement('script');
@@ -40,7 +40,7 @@ const Chatbot = () => {
             chat-icon="https://www.pngkit.com/png/full/502-5023267_itpalooza-is-a-not-for-profit-community-driven.png"
             agent-id="f869a013-1615-48d8-a6fb-c732a3460178"
             language-code="en"
-            class={isDark ? 'dark-theme' : 'light-theme'}
+            className={isDark ? 'dark-theme' : 'light-theme'}
           ></df-messenger>
         )}
       </div>

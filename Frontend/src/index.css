@@ -27,7 +27,12 @@
     @apply font-sans antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading font-bold tracking-tight;
   }
 
@@ -60,4 +65,30 @@
   .section-subtitle {
     @apply text-lg text-gray-600 mb-8;
   }
+}
+
+/* Theme Transition Animation Styles */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
+}
+
+/* When returning to light mode, old state (dark) is on top to shrink */
+::view-transition-old(root) {
+  z-index: 2;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* When switching to dark mode, new state (dark) is on top to expand */
+html.dark::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.dark::view-transition-new(root) {
+  z-index: 2;
 }
