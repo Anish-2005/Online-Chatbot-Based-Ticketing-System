@@ -1,129 +1,245 @@
-/* General Chatbot Container */
+/* ============================================================ */
+/*                 MODERN CHATBOT STYLES                       */
+/* ============================================================ */
+
+:root {
+  --primary-dark: #6C5CE7;
+  --primary-light: #A29BFE;
+  --primary-accent: #00B894;
+  --secondary-dark: #2D3436;
+  --accent-yellow: #FFE66D;
+}
+
+/* ============================================================ */
+/*              CHATBOT CONTAINER                              */
+/* ============================================================ */
+
 .chatbot-container {
-  margin-top: 30px;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 2rem;
+  right: 2rem;
   z-index: 9999;
   display: flex;
   width: 500px;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
+  max-width: 90vw;
+  align-items: flex-end;
+  justify-content: flex-end;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Chatbot Icon (when used) */
+/* ============================================================ */
+/*              CHATBOT ICON & BUTTON                           */
+/* ============================================================ */
+
 .chatbot-icon {
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  color: #FFFFFF;
 }
 
 .chatbot-icon:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
 }
 
-/* Add background blur effect when chatbot is open */
-.chatbot-open ~ .bookshows-container {
-  filter: blur(8px);
-  transition: filter 0.3s ease;
+.chatbot-icon:active {
+  transform: scale(0.95);
 }
 
-/* Light Theme */
+.chatbot-toggle {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  color: #FFFFFF;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chatbot-toggle:hover {
+  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.5);
+  transform: translateY(-2px);
+}
+
+.chatbot-toggle:active {
+  transform: translateY(0);
+}
+
+.chatbot-open .chatbot-toggle {
+  background: linear-gradient(135deg, var(--accent-yellow), #FFD93D);
+  color: var(--secondary-dark);
+  box-shadow: 0 4px 12px rgba(255, 230, 109, 0.3);
+}
+
+/* ============================================================ */
+/*              LIGHT THEME CONFIGURATION                      */
+/* ============================================================ */
+
 .light-theme {
-  --df-messenger-button-titlebar-color: #3765FF;
-  --df-messenger-send-icon: #000000;
-  --df-messenger-bot-message: #f1f1f1;
-  --df-messenger-chat-background-color: #fafafa;
-  --df-messenger-text-color: #000000;
-
-  /* Input Section in Light Mode */
-  --df-messenger-input-placeholder-color: #666;
-  --df-messenger-input-background-color: #ffffff;
-  --df-messenger-input-text-color: #000000;
-  --df-messenger-input-border-color: #ddd;
+  --df-messenger-button-titlebar-color: var(--primary-dark);
+  --df-messenger-button-titlebar-font-color: #FFFFFF;
+  --df-messenger-send-icon: #FFFFFF;
+  --df-messenger-bot-message: #F3F4F6;
+  --df-messenger-chat-background-color: #FAFBFC;
+  --df-messenger-text-color: var(--secondary-dark);
+  --df-messenger-user-message: var(--primary-dark);
+  --df-messenger-user-message-text-color: #FFFFFF;
+  --df-messenger-input-placeholder-color: #999;
+  --df-messenger-input-background-color: #FFFFFF;
+  --df-messenger-input-text-color: var(--secondary-dark);
+  --df-messenger-input-border-color: #E5E7EB;
 }
 
-/* Dark Theme */
+/* ============================================================ */
+/*              DARK THEME CONFIGURATION                       */
+/* ============================================================ */
+
 .dark-theme {
-  --df-messenger-button-titlebar-color: #333;
-  --df-messenger-send-icon: #ffffff;
-  --df-messenger-bot-message: #928d8d; /* Bot message bubble background color */
-  --df-messenger-chat-background-color: #222;
-  --df-messenger-text-color: #ffffff; /* Set text color to white */
-  --df-messenger-user-message: #ffffff; /* User message text color */
-  --df-messenger-bot-message-text-color: #ffffff; /* Bot message text color */
-
-  /* Dark Mode Text Box and Input Styles */
-  --df-messenger-input-placeholder-color: #ccc; /* Placeholder text color */
-  --df-messenger-input-background-color: #000000; /* Input background */
-  --df-messenger-input-text-color: #ffffff; /* White text in input */
-  --df-messenger-input-border-color: #444; /* Input border color */
-
-  /* Scrollbar customization for dark mode */
-  scrollbar-color: #333 #111; /* Dark scroll track with black thumb */
-  scrollbar-width: thin; /* Thin scrollbar */
+  --df-messenger-button-titlebar-color: var(--accent-yellow);
+  --df-messenger-button-titlebar-font-color: var(--secondary-dark);
+  --df-messenger-send-icon: var(--accent-yellow);
+  --df-messenger-bot-message: #1C1C2E;
+  --df-messenger-chat-background-color: #0F0F1E;
+  --df-messenger-text-color: #E2E8F0;
+  --df-messenger-user-message: var(--primary-dark);
+  --df-messenger-user-message-text-color: #FFFFFF;
+  --df-messenger-bot-message-text-color: #E2E8F0;
+  --df-messenger-input-placeholder-color: #999;
+  --df-messenger-input-background-color: #1C1C2E;
+  --df-messenger-input-text-color: #E2E8F0;
+  --df-messenger-input-border-color: #2D3436;
+  scrollbar-color: #333 #0F0F1E;
+  scrollbar-width: thin;
 }
 
 .dark-theme df-messenger {
-  --df-messenger-input-placeholder-color: #ccc;
-  --df-messenger-input-background-color: #000000;
-  --df-messenger-input-text-color: #ffffff;
-  --df-messenger-input-border-color: #444;
+  --df-messenger-input-placeholder-color: #999;
+  --df-messenger-input-background-color: #1C1C2E;
+  --df-messenger-input-text-color: #E2E8F0;
+  --df-messenger-input-border-color: #2D3436;
 }
 
-/* Chatbot Toggle Button - Default */
-.chatbot-toggle {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 16px;
+/* ============================================================ */
+/*              DIALOGUE FLOW MESSENGER CUSTOMIZATION          */
+/* ============================================================ */
+
+df-messenger {
+  --df-messenger-z-index: 999;
+  --df-messenger-bot-message-border-radius: 12px;
+  --df-messenger-user-message-border-radius: 12px;
+  --df-messenger-message-padding: 12px 16px;
 }
 
-/* When the chatbot is open */
-.chatbot-open .chatbot-toggle {
-  background-color: #ff6347; /* Change the toggle button color */
-}
+/* ============================================================ */
+/*              RESPONSIVE DESIGN                              */
+/* ============================================================ */
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .chatbot-container {
-    width: 80%; /* Cover 80% of the screen width */
-    bottom: 10px;
-    right: 10px;
+    width: 85vw;
+    bottom: 1rem;
+    right: 1rem;
   }
 
   .chatbot-icon {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
   }
 
   .chatbot-toggle {
-    padding: 8px 10px;
-    font-size: 14px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+@media (max-width: 480px) {
+  .chatbot-container {
+    width: 90vw;
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .chatbot-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .chatbot-toggle {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #111; /* Scrollbar track in dark mode */
+/* ============================================================ */
+/*              ANIMATIONS                                     */
+/* ============================================================ */
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #333; /* Scrollbar thumb in dark mode */
-  border-radius: 10px;
-  border: 2px solid #111; /* Adds padding around the thumb */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+.chatbot-icon.pulse {
+  animation: pulse 2s infinite;
+}
+
+.chatbot-container {
+  animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================ */
+/*              ACCESSIBILITY                                  */
+/* ============================================================ */
+
+.chatbot-toggle:focus,
+.chatbot-icon:focus {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .chatbot-icon,
+  .chatbot-toggle,
+  .chatbot-container {
+    transition: none;
+    animation: none;
+  }
 }

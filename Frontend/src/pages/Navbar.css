@@ -1,118 +1,230 @@
-/* Navbar.css */
+/* ============================================================ */
+/*                    MODERN NAVBAR STYLES                     */
+/* ============================================================ */
+
+:root {
+  --primary-dark: #6C5CE7;
+  --primary-light: #A29BFE;
+  --secondary-dark: #2D3436;
+  --accent-yellow: #FFE66D;
+}
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(90deg, #1e3c72, #2a5298);
-    padding: 15px 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    width: 100%; /* Ensures the navbar spans the entire screen width */
-    z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, var(--primary-dark) 0%, #5F3DC4 100%);
+  padding: 16px 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.navbar-logo h2 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: -0.5px;
+}
+
+.navbar-logo h2:hover {
+  color: var(--accent-yellow);
+  transform: scale(1.05);
+}
+
+.navbar-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+}
+
+.navbar-item {
+  margin: 0;
+  position: relative;
+}
+
+.navbar-link {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.navbar-link .icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-link .link-text {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 600px) {
+  .navbar-link .link-text {
+    display: inline;
   }
-  
+}
+
+/* Underline effect */
+.navbar-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-yellow), #00B894);
+  transition: width 0.3s ease;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.navbar-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: var(--accent-yellow);
+  backdrop-filter: blur(10px);
+}
+
+.navbar-link:hover .icon {
+  transform: translateY(-2px);
+}
+
+.navbar-link:hover::after {
+  width: 70%;
+}
+
+.navbar-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+/* Active link state */
+.navbar-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--accent-yellow);
+}
+
+.navbar-link.active::after {
+  width: 70%;
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .navbar-logo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
   .navbar-logo h2 {
-    color: #ffffff;
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0;
-    cursor: pointer;
-    transition: color 0.3s ease;
+    font-size: 1.25rem;
   }
-  
-  .navbar-logo h2:hover {
-    color: #ffdd57; /* Highlight color on hover */
-  }
-  
+
   .navbar-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    flex-direction: row;
+    width: 100%;
+    gap: 4px;
+    justify-content: space-between;
   }
-  
+
   .navbar-item {
-    margin-left: 25px;
+    flex: 1;
+    min-width: 0;
   }
-  
+
   .navbar-link {
-    display: flex;
-    align-items: center;
-    color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: 500;
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: relative;
+    width: 100%;
+    justify-content: center;
     padding: 8px 12px;
-    transition: background 0.3s ease, color 0.3s ease;
+    font-size: 0.85rem;
+    position: relative;
   }
-  
-  .navbar-link .icon {
-    margin-right: 8px;
-    font-size: 1.2rem;
-  }
-  
+
   .navbar-link .link-text {
     display: none;
   }
-  
-  @media (min-width: 600px) {
-    .navbar-link .link-text {
-      display: inline;
-    }
-  }
-  
-  .navbar-link::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 3px;
-    background: #ffdd57;
-    transition: width 0.3s;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-  }
-  
-  .navbar-link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    color: #ffdd57;
-  }
-  
+
   .navbar-link:hover::after {
-    width: 100%;
+    width: 0;
   }
-  
-  .navbar-link:focus {
-    outline: none;
+
+  .navbar-link {
+    position: relative;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .navbar-list {
-      flex-direction: column;
-      width: 100%;
-    }
-  
-    .navbar-item {
-      margin: 10px 0;
-    }
+
+  .navbar-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
   }
-  .nav-links a:hover {
-    background-color: #555;
+
+  .navbar-link:hover::before {
+    opacity: 1;
   }
-  
-  .nav-links .active {
-    background-color: #007bff; /* Highlight active tab */
-    color: white;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 12px;
   }
+
+  .navbar-logo h2 {
+    font-size: 1.1rem;
+  }
+
+  .navbar-link .icon {
+    margin-right: 0;
+    font-size: 1rem;
+  }
+}
+
+/* Smooth transitions for theme */
+.navbar.light-mode {
+  background: linear-gradient(90deg, #e8e8f8 0%, #f0f0ff 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.navbar.light-mode .navbar-logo h2 {
+  color: var(--primary-dark);
+}
+
+.navbar.light-mode .navbar-link {
+  color: var(--secondary-dark);
+}
+
+.navbar.light-mode .navbar-link:hover {
+  color: var(--primary-dark);
+  background: rgba(108, 92, 231, 0.1);
+}

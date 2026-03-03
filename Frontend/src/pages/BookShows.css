@@ -1,127 +1,472 @@
-/* Container for the whole page */
+/* ============================================================ */
+/*                MODERN BOOKSHOWS PAGE STYLES                 */
+/* ============================================================ */
+
+:root {
+  --primary-dark: #6C5CE7;
+  --primary-light: #A29BFE;
+  --primary-accent: #00B894;
+  --secondary-dark: #2D3436;
+  --secondary-gray: #636E72;
+  --accent-yellow: #FFE66D;
+  --accent-warm: #FF7675;
+  --white: #FFFFFF;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+}
+
+/* ============================================================ */
+/*                    CONTAINER STYLES                         */
+/* ============================================================ */
+
 .bookshows-container {
   min-height: 100vh;
   padding: 2rem;
   position: relative;
-  font-family: 'Arial', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Light mode styles */
 .light-mode {
-  background-color: #f8f9fa;
-  color: #212529;
+  background: linear-gradient(135deg, var(--gray-50) 0%, #F0F4FF 100%);
+  color: var(--secondary-dark);
 }
 
 /* Dark mode styles */
 .dark-mode {
-  background-color: #121212;
-  color: #f8f9fa;
+  background: linear-gradient(135deg, #0F0F1E 0%, #1A1A2E 100%);
+  color: #F8F9FA;
 }
 
-/* Back to User Dashboard button */
-.back-to-dashboard-btn {
+/* ============================================================ */
+/*                   CONTROL BUTTONS                           */
+/* ============================================================ */
+
+.button-container {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
+  top: 2rem;
+  right: 2rem;
+  z-index: 100;
   display: flex;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.dark-mode .back-to-dashboard-btn {
-  background-color: #333;
-  color: #f8f9fa;
-}
-
-.back-to-dashboard-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.dark-mode .back-to-dashboard-btn:hover {
-  background-color: #444;
+  gap: 1rem;
 }
 
 /* Dark Mode Toggle Button */
 .toggle-dark-mode-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
   padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  color: var(--white);
   border: none;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.dark-mode .toggle-dark-mode-btn {
-  background-color: #1c7430;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
 }
 
 .toggle-dark-mode-btn:hover {
-  background-color: #218838;
-  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.5);
+  transform: translateY(-2px);
 }
 
-.dark-mode .toggle-dark-mode-btn:hover {
-  background-color: #145a32;
+.toggle-dark-mode-btn:active {
+  transform: translateY(0);
 }
 
+/* Back to Dashboard Button */
+.back-to-dashboard-btn {
+  padding: 10px 20px;
+  background: rgba(108, 92, 231, 0.2);
+  color: var(--primary-dark);
+  border: 2px solid var(--primary-dark);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-/* Chatbot Button */
+.back-to-dashboard-btn:hover {
+  background: var(--primary-dark);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+}
+
+.dark-mode .back-to-dashboard-btn {
+  color: var(--accent-yellow);
+  border-color: var(--accent-yellow);
+}
+
+.dark-mode .back-to-dashboard-btn:hover {
+  background: var(--accent-yellow);
+  color: var(--secondary-dark);
+}
+
+/* ============================================================ */
+/*                   CHATBOT BUTTON                            */
+/* ============================================================ */
+
 .chatbot-btn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px;
-  background-color: #007bff;
-  color: white;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  color: var(--white);
   border: none;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  z-index: 1000;
-}
-
-.dark-mode .chatbot-btn {
-  background-color: #333;
+  box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
+  transition: all 0.3s ease;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
 }
 
 .chatbot-btn:hover {
-  background-color: #0056b3;
+  box-shadow: 0 12px 32px rgba(108, 92, 231, 0.6);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.chatbot-btn:active {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.dark-mode .chatbot-btn {
+  background: linear-gradient(135deg, var(--accent-yellow), #FFD93D);
+  color: var(--secondary-dark);
+  box-shadow: 0 8px 24px rgba(255, 230, 109, 0.3);
+}
+
+/* ============================================================ */
+/*                     PAGE TITLE                              */
+/* ============================================================ */
+
+.title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin: 3rem 0 2rem;
+  font-weight: 700;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+  color: inherit;
+  letter-spacing: -0.5px;
+  max-width: 800px;
+  line-height: 1.2;
+}
+
+.light-mode .title {
+  color: var(--secondary-dark);
+}
+
+.dark-mode .title {
+  color: var(--white);
+}
+
+/* ============================================================ */
+/*                 CAROUSEL SECTION                            */
+/* ============================================================ */
+
+.carousel-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0;
+}
+
+/* ============================================================ */
+/*              ABOUT MUSEUM SECTION                           */
+/* ============================================================ */
+
+.about-museum-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 3rem auto 2rem;
+}
+
+.toggle-about-museum-btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.toggle-about-museum-btn:hover {
+  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.5);
+  transform: translateY(-2px);
+}
+
+.toggle-about-museum-btn:active {
+  transform: translateY(0);
+}
+
+.dark-mode .toggle-about-museum-btn {
+  background: linear-gradient(135deg, var(--accent-yellow), #FFD93D);
+  color: var(--secondary-dark);
+}
+
+/* ============================================================ */
+/*            ABOUT MUSEUM CONTENT                             */
+/* ============================================================ */
+
+.intro-section,
+.mission-section,
+.features-section {
+  margin-bottom: 2rem;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.intro-section h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: inherit;
+  letter-spacing: -0.5px;
+}
+
+.mission-section h2,
+.features-section h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: inherit;
+  letter-spacing: -0.5px;
+}
+
+.intro-section p,
+.mission-section p,
+.features-section p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: inherit;
+  opacity: 0.9;
+}
+
+/* ============================================================ */
+/*              FEATURE LIST STYLES                            */
+/* ============================================================ */
+
+.features-section ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-section li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: var(--white);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  gap: 1rem;
+}
+
+.features-section li:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  border-color: var(--primary-dark);
+}
+
+.dark-mode .features-section li {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.dark-mode .features-section li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-yellow);
+  box-shadow: 0 8px 20px rgba(255, 230, 109, 0.2);
+}
+
+.feature-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.features-section li:hover .feature-image {
   transform: scale(1.05);
 }
 
-.dark-mode .chatbot-btn:hover {
-  background-color: #444;
+/* ============================================================ */
+/*              BOOKING CONTAINER                             */
+/* ============================================================ */
+
+.book-ticket-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  transition: all 0.3s ease;
 }
 
-/* Page title */
-.title {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  font-weight: bold;
+.dark-mode .book-ticket-container {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.image-section {
+  flex: 1;
   text-align: center;
-  animation: fadeIn 0.8s ease-in-out;
-  color: inherit; /* Inherit color based on mode */
+}
+
+.image-section img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.image-section img:hover {
+  transform: scale(1.03);
+}
+
+.text-section {
+  flex: 1;
+}
+
+.text-section h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+
+.text-section p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: inherit;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+.view-full-manual-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.view-full-manual-btn:hover {
+  box-shadow: 0 8px 20px rgba(108, 92, 231, 0.5);
+  transform: translateY(-2px);
+}
+
+.view-full-manual-btn:active {
+  transform: translateY(0);
+}
+
+.dark-mode .view-full-manual-btn {
+  background: linear-gradient(135deg, var(--accent-yellow), #FFD93D);
+  color: var(--secondary-dark);
+}
+
+/* ============================================================ */
+/*         RESPONSIVE DESIGN                                   */
+/* ============================================================ */
+
+@media (max-width: 768px) {
+  .bookshows-container {
+    padding: 1rem;
+  }
+
+  .button-container {
+    top: 1rem;
+    right: 1rem;
+    gap: 0.5rem;
+  }
+
+  .toggle-dark-mode-btn,
+  .back-to-dashboard-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .chatbot-btn {
+    bottom: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+  }
+
+  .book-ticket-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .image-section img {
+    max-width: 100%;
+  }
+
+  .text-section h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* ============================================================ */
+/*           ANIMATIONS                                        */
+/* ============================================================ */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Carousel container */
