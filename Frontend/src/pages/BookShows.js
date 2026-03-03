@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { FiInfo, FiMoon, FiSun, FiStar, FiTrendingUp } from 'react-icons/fi';
+import { FiInfo, FiMoon, FiSun, FiStar, FiTrendingUp, FiCreditCard } from 'react-icons/fi';
 import Carousel from './Carousel';
 import AboutMuseum from './AboutMuseum';
 import Chatbot from './Chatbot';
@@ -56,6 +56,13 @@ const Bookshows = () => {
                 >
                   <FiTrendingUp className="h-4 w-4" />
                   Explore Events
+                </button>
+                <button
+                  onClick={() => navigate('/my-shows')}
+                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${isDark ? 'bg-purple-800/70 text-purple-100 hover:bg-purple-700' : 'bg-purple-100 text-purple-800 hover:bg-purple-200'}`}
+                >
+                  <FiCreditCard className="h-4 w-4" />
+                  My Shows
                 </button>
                 <button
                   onClick={() => setShowAboutMuseum((prev) => !prev)}

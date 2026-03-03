@@ -13,9 +13,16 @@ export const fetchShows = async () => {
 };
 
 export const createShow = async (payload) => {
+  const initialSeatCount = Number(payload.totalSeats ?? payload.available_seats ?? payload.ticketsLeft);
+  const normalizedSeatCount = Number.isInteger(initialSeatCount) && initialSeatCount > 0
+    ? initialSeatCount
+    : Number(payload.ticketsLeft);
+
   const showPayload = {
     ...payload,
     ticketsLeft: Number(payload.ticketsLeft),
+    totalSeats: normalizedSeatCount,
+    available_seats: normalizedSeatCount,
     price_int: Number(payload.price_int),
     adminId: auth.currentUser?.uid || null,
     adminEmail: auth.currentUser?.email || null,

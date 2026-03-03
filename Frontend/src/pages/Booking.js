@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
-import { getTicketsLeft } from '../services/bookings';
+import { getShowSeatState } from '../services/bookings';
 
 const Booking = () => {
   const location = useLocation();
@@ -10,6 +10,8 @@ const Booking = () => {
   const { isDark, toggleTheme } = useTheme();
   const { event } = location.state || {};
   const [ticketsLeft, setTicketsLeft] = useState(0);
+  const [totalSeats, setTotalSeats] = useState(50);
+  const [bookedSeats, setBookedSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [seatCount, setSeatCount] = useState(1);
   const [error, setError] = useState(null);
@@ -26,8 +28,17 @@ const Booking = () => {
   const fetchTickets = async () => {
     setLoadingTickets(true);
     try {
-      const tickets = await getTicketsLeft(event.id);
-      setTicketsLeft(tickets);
+      const seatState = await getShowSeatState(event.id);
+      setTicketsLeft(seatState.ticketsLeft);
+      setTotalSeats(seatState.totalSeats);
+      setBookedSeats(Array.isArray(seatState.bookedSeats) ? seatState.bookedSeats : []);
+      setSeatCount((prev) => {
+        if (seatState.ticketsLeft <= 0) {
+          return 0;
+        }
+        return Math.min(Math.max(prev, 1), seatState.ticketsLeft);
+      });
+      setSelectedSeats((prev) => prev.filter((seat) => !seatState.bookedSeats.includes(seat)).slice(0, Math.max(seatState.ticketsLeft, 0)));
     } catch (fetchError) {
       console.error('Error fetching tickets:', fetchError);
       setError('Unable to fetch ticket availability right now.');
@@ -40,6 +51,10 @@ const Booking = () => {
     setSelectedSeats((prevSeats) => {
       if (prevSeats.includes(seatNumber)) {
         return prevSeats.filter((seat) => seat !== seatNumber);
+      }
+
+      if (bookedSeats.includes(seatNumber)) {
+        return prevSeats;
       }
 
       if (prevSeats.length >= seatCount) {
@@ -56,8 +71,9 @@ const Booking = () => {
 
   const handleSeatCountChange = (value) => {
     const parsed = Number(value);
-    const safeMax = Math.max(1, Number(ticketsLeft) || 1);
-    const boundedValue = Number.isNaN(parsed) ? 1 : Math.min(Math.max(parsed, 1), safeMax);
+    const safeMax = Math.max(0, Number(ticketsLeft) || 0);
+    const safeMin = safeMax === 0 ? 0 : 1;
+    const boundedValue = Number.isNaN(parsed) ? safeMin : Math.min(Math.max(parsed, safeMin), safeMax);
 
     setSeatCount(boundedValue);
     setSelectedSeats((prev) => prev.slice(0, boundedValue));
@@ -73,7 +89,7 @@ const Booking = () => {
     }
 
     if (seatCount <= 0) {
-      setError('Please choose at least 1 ticket.');
+      setError('No tickets available for this show right now.');
       return;
     }
 
@@ -201,12 +217,17 @@ const Booking = () => {
                 </p>
               </div>
 
+              <p className={`mb-3 text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Seat map shows {totalSeats} total seats (booked seats are locked).
+              </p>
+
               <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-10">
-                {[...Array(50)].map((_, index) => {
+                {[...Array(totalSeats)].map((_, index) => {
                   const seatNumber = index + 1;
                   const isSelected = selectedSeats.includes(seatNumber);
+                  const isBooked = bookedSeats.includes(seatNumber);
                   const isLimitReached = selectedSeats.length >= seatCount;
-                  const disableSeat = !isSelected && isLimitReached;
+                  const disableSeat = isBooked || (!isSelected && isLimitReached) || seatCount === 0;
 
                   return (
                     <motion.button
@@ -217,7 +238,11 @@ const Booking = () => {
                       whileHover={{ scale: disableSeat ? 1 : 1.05 }}
                       whileTap={{ scale: disableSeat ? 1 : 0.95 }}
                       className={`h-10 rounded-lg border text-sm font-bold transition-all ${
-                        isSelected
+                        isBooked
+                          ? isDark
+                            ? 'border-red-500/40 bg-red-900/30 text-red-200'
+                            : 'border-red-200 bg-red-50 text-red-600'
+                          : isSelected
                           ? isDark
                             ? 'border-emerald-400 bg-emerald-500 text-white'
                             : 'border-purple-600 bg-purple-600 text-white'
@@ -241,13 +266,13 @@ const Booking = () => {
                 id="seatCount"
                 type="number"
                 value={seatCount}
-                min="1"
-                max={Math.max(1, ticketsLeft)}
+                min={ticketsLeft > 0 ? '1' : '0'}
+                max={Math.max(0, ticketsLeft)}
                 onChange={(e) => handleSeatCountChange(e.target.value)}
                 className={`mt-2 w-full rounded-xl border px-3 py-2 text-base font-semibold outline-none transition-all focus:ring-2 ${isDark ? 'border-gray-600 bg-gray-800 text-white focus:ring-purple-500' : 'border-gray-300 bg-white text-gray-900 focus:ring-purple-400'}`}
               />
               <p className={`mt-2 text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Max available: {Math.max(1, ticketsLeft)}
+                Max available: {Math.max(0, ticketsLeft)}
               </p>
             </div>
           </div>

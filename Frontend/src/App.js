@@ -19,6 +19,7 @@ import BookShows from './pages/BookShows';
 import Booking from './pages/Booking';
 import Payment from './pages/PaymentConfirmation';
 import AdminManageShows from './pages/AdminManageShows';
+import MyShows from './pages/MyShows';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
               <Route path="/booking-manual" element={<ProtectedRoute><BookingManualPage /></ProtectedRoute>} />
               <Route path="/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
               <Route path="/bookshows" element={<ProtectedRoute><BookShows /></ProtectedRoute>} />
+              <Route path="/my-shows" element={<ProtectedRoute><MyShows /></ProtectedRoute>} />
               <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
               <Route path="/paymentconfirmation" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
             </Routes>
