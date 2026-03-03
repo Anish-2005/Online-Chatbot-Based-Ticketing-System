@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiInfo, FiMoon, FiSun, FiStar, FiTrendingUp, FiCreditCard } from 'react-icons/fi';
 import Carousel from './Carousel';
 import AboutMuseum from './AboutMuseum';
-import Chatbot from './Chatbot';
 import { useTheme } from './ThemeContext';
 import ThemeToggleButton from '../components/ThemeToggleButton';
 
@@ -127,8 +126,6 @@ const Bookshows = () => {
           )}
         </motion.section>
       </main>
-
-      <Chatbot />
     </div>
   );
 };

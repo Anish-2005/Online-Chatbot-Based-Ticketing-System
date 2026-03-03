@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Chatbot from './pages/Chatbot';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import UserDashboard from './pages/UserDashboard';
@@ -21,33 +22,70 @@ import Payment from './pages/PaymentConfirmation';
 import AdminManageShows from './pages/AdminManageShows';
 import MyShows from './pages/MyShows';
 
+import { AnimatePresence, motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 15, scale: 0.98 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    scale: 0.98,
+    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const PageWrapper = ({ children }) => (
+  <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} className="w-full h-full">
+    {children}
+  </motion.div>
+);
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes key={location.pathname}>
+        <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+        <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+
+        {/* Protected Routes */}
+        <Route path="/admindashboard" element={<ProtectedRoute><PageWrapper><AdminDashboard /></PageWrapper></ProtectedRoute>} />
+        <Route path="/adminanalytics" element={<ProtectedRoute><PageWrapper><AdminAnalytics /></PageWrapper></ProtectedRoute>} />
+        <Route path="/adminusers" element={<ProtectedRoute><PageWrapper><AdminUsers /></PageWrapper></ProtectedRoute>} />
+        <Route path="/adminshows" element={<ProtectedRoute><PageWrapper><AdminManageShows /></PageWrapper></ProtectedRoute>} />
+        <Route path="/admintotalearning" element={<ProtectedRoute><PageWrapper><TotalEarnings /></PageWrapper></ProtectedRoute>} />
+        <Route path="/adminSpecialOffers" element={<ProtectedRoute><PageWrapper><SpecialOffers /></PageWrapper></ProtectedRoute>} />
+        <Route path="/adminsettings" element={<ProtectedRoute><PageWrapper><Settings role="admin" /></PageWrapper></ProtectedRoute>} />
+        <Route path="/user" element={<ProtectedRoute><PageWrapper><UserDashboard /></PageWrapper></ProtectedRoute>} />
+        <Route path="/user/profile" element={<ProtectedRoute><PageWrapper><UserProfile /></PageWrapper></ProtectedRoute>} />
+        <Route path="/user/settings" element={<ProtectedRoute><PageWrapper><Settings role="user" /></PageWrapper></ProtectedRoute>} />
+        <Route path="/booking-manual" element={<ProtectedRoute><PageWrapper><BookingManualPage /></PageWrapper></ProtectedRoute>} />
+        <Route path="/events" element={<ProtectedRoute><PageWrapper><EventsPage /></PageWrapper></ProtectedRoute>} />
+        <Route path="/bookshows" element={<ProtectedRoute><PageWrapper><BookShows /></PageWrapper></ProtectedRoute>} />
+        <Route path="/my-shows" element={<ProtectedRoute><PageWrapper><MyShows /></PageWrapper></ProtectedRoute>} />
+        <Route path="/booking" element={<ProtectedRoute><PageWrapper><Booking /></PageWrapper></ProtectedRoute>} />
+        <Route path="/paymentconfirmation" element={<ProtectedRoute><PageWrapper><Payment /></PageWrapper></ProtectedRoute>} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="App">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-
-              <Route path="/admindashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/adminanalytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
-              <Route path="/adminusers" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
-              <Route path="/adminshows" element={<ProtectedRoute><AdminManageShows /></ProtectedRoute>} />
-              <Route path="/admintotalearning" element={<ProtectedRoute><TotalEarnings /></ProtectedRoute>} />
-              <Route path="/adminSpecialOffers" element={<ProtectedRoute><SpecialOffers /></ProtectedRoute>} />
-              <Route path="/adminsettings" element={<ProtectedRoute><Settings role="admin" /></ProtectedRoute>} />
-              <Route path="/user" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
-              <Route path="/user/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
-              <Route path="/user/settings" element={<ProtectedRoute><Settings role="user" /></ProtectedRoute>} />
-              <Route path="/booking-manual" element={<ProtectedRoute><BookingManualPage /></ProtectedRoute>} />
-              <Route path="/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
-              <Route path="/bookshows" element={<ProtectedRoute><BookShows /></ProtectedRoute>} />
-              <Route path="/my-shows" element={<ProtectedRoute><MyShows /></ProtectedRoute>} />
-              <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
-              <Route path="/paymentconfirmation" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-            </Routes>
+          <div className="App min-h-screen bg-transparent transition-colors duration-500">
+            <AnimatedRoutes />
+            <Chatbot />
           </div>
         </Router>
       </AuthProvider>
