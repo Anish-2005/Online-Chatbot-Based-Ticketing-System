@@ -2,14 +2,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Allow authenticated users to read/write shows collection
+    // Allow authenticated users to read and create shows (dev friendly)
     match /shows/{document=**} {
       allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null 
-        && (request.auth.token.email.endsWith('@example.com') 
-            || request.auth.uid == resource.data.adminId);
-      // For development, allow any authenticated user to create/update
-      // In production, restrict to admin users only
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && isAdmin();
     }
     
     // Allow authenticated users to create and read their own payments

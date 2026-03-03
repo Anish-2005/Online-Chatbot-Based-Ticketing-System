@@ -6,14 +6,30 @@ import { useTheme } from './ThemeContext';
 import { createShow, fetchShows } from '../services/shows';
 
 const initialForm = {
-  title: '',
-  image: '',
-  date: '',
-  time: '',
-  location: '',
-  price: '',
+  title: 'Egyptian Heritage Exhibit',
+  image: 'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=500&h=300&fit=crop&q=80',
+  date: '05/03/2026',
+  time: '10:00',
+  location: 'Main Hall A',
+  price: '250',
   ticketsLeft: '100',
-  price_int: '0',
+  price_int: '250',
+};
+
+const normalizeDate = (value) => {
+  if (!value) return value;
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return value;
+  }
+
+  const ddmmyyyy = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (ddmmyyyy) {
+    const [, day, month, year] = ddmmyyyy;
+    return `${year}-${month}-${day}`;
+  }
+
+  return value;
 };
 
 const AdminManageShows = () => {
@@ -50,6 +66,7 @@ const AdminManageShows = () => {
     try {
       const payload = {
         ...form,
+        date: normalizeDate(form.date),
         ticketsLeft: Number(form.ticketsLeft),
         price_int: Number(form.price_int),
       };
@@ -122,7 +139,7 @@ const AdminManageShows = () => {
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiCalendar /> Date</span>
-                <input value={form.date} onChange={(e) => updateField('date', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.date} onChange={(e) => updateField('date', e.target.value)} placeholder="DD/MM/YYYY or YYYY-MM-DD" required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
               </label>
 
               <label className="space-y-2">

@@ -44,6 +44,10 @@ const Carousel = ({ onSlideClick }) => {
   const [slidesToShow, setSlidesToShow] = useState(3); // Default for larger screens
   const navigate = useNavigate();
 
+  const totalShows = shows.length;
+  const visibleSlides = Math.max(1, Math.min(slidesToShow, totalShows || 1));
+  const shouldLoop = totalShows > visibleSlides;
+
   useEffect(() => {
     const fetchSlides = async () => {
       try {
@@ -76,16 +80,16 @@ const Carousel = ({ onSlideClick }) => {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: shouldLoop,
     speed: 3000,
-    slidesToShow: slidesToShow,
+    slidesToShow: visibleSlides,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: shouldLoop,
     autoplaySpeed: 1700,
     arrows: true,
-    centerMode: true,
+    centerMode: totalShows > 1,
     centerPadding: '0',
-    initialSlide: 5,
+    initialSlide: 0,
     beforeChange: (current, next) => {
       setCurrentSlide(next);
     },

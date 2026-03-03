@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import { useTheme } from './ThemeContext';
