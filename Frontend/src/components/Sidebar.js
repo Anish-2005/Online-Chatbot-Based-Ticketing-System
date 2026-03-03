@@ -45,13 +45,13 @@ const Sidebar = () => {
           className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between gap-3'}`}
         >
           <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
-              <span className="text-white font-heading font-bold text-xl">T</span>
+            <div className="w-10 h-10 rounded-xl bg-white/90 dark:bg-gray-800 flex items-center justify-center shadow-lg p-1">
+              <img src="/chat-ticket-logo.svg" alt="ChatTicket logo" className="w-full h-full rounded-lg" />
             </div>
             {!isCollapsed && (
               <div>
                 <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight">
-                  Ticketing
+                  ChatTicket
                 </h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
               </div>
@@ -132,7 +132,7 @@ const Sidebar = () => {
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         <button
           type="button"
-          onClick={toggleTheme}
+          onClick={(event) => toggleTheme(event)}
           className={`mb-3 flex w-full items-center ${isCollapsed ? 'justify-center' : 'justify-center gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${
             isDark
               ? 'bg-gray-800 text-yellow-300 hover:bg-gray-700'
