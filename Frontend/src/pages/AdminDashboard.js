@@ -107,18 +107,18 @@ const AdminDashboard = ({ role }) => {
         >
           <div className="flex justify-between items-center mb-2">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight mb-2">
                 Admin Dashboard
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-3xl">
                 Welcome back! Here's what's happening with your platform today.
               </p>
             </div>
             <button
               onClick={toggleTheme}
-              className="group relative px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/50 dark:from-purple-500 dark:to-pink-500"
+              className="group relative px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-purple-500/50 dark:from-purple-500 dark:to-pink-500 text-base"
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 font-medium">
                 {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
               </span>
             </button>
@@ -149,7 +149,7 @@ const AdminDashboard = ({ role }) => {
                   <div className={`p-3 rounded-xl ${isDark ? stat.bgDark : stat.bgLight}`}>
                     <Icon className={`w-6 h-6 ${stat.iconColor}`} />
                   </div>
-                  <span className={`text-sm font-semibold px-3 py-1 rounded-full ${
+                  <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full tracking-wide ${
                     stat.change.startsWith('+') 
                       ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                       : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
@@ -157,10 +157,10 @@ const AdminDashboard = ({ role }) => {
                     {stat.change}
                   </span>
                 </div>
-                <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">
+                <h3 className="text-gray-600 dark:text-gray-400 text-xs font-semibold mb-2 tracking-wide uppercase">
                   {stat.title}
                 </h3>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                <p className="text-4xl font-heading font-bold text-gray-900 dark:text-white leading-tight">
                   {stat.value}
                 </p>
                 <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.gradient}`} />
@@ -179,8 +179,8 @@ const AdminDashboard = ({ role }) => {
               isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
             }`}
           >
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <FiActivity className="text-purple-600 dark:text-purple-400" />
+            <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
+              <FiActivity className="text-purple-600 dark:text-purple-400 w-6 h-6" />
               Quick Actions
             </h2>
             <div className="space-y-3">
@@ -201,7 +201,7 @@ const AdminDashboard = ({ role }) => {
                     <div className={`p-2 rounded-lg bg-${action.color}-100 dark:bg-${action.color}-900/30`}>
                       <Icon className={`w-5 h-5 text-${action.color}-600 dark:text-${action.color}-400`} />
                     </div>
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                    <span className="font-heading font-semibold text-gray-900 dark:text-white text-base">
                       {action.title}
                     </span>
                   </motion.button>
@@ -219,8 +219,8 @@ const AdminDashboard = ({ role }) => {
               isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
             }`}
           >
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <FiClock className="text-purple-600 dark:text-purple-400" />
+            <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
+              <FiClock className="text-purple-600 dark:text-purple-400 w-6 h-6" />
               Recent Activity
             </h2>
             <div className="space-y-4">
@@ -252,14 +252,14 @@ const AdminDashboard = ({ role }) => {
                     }`} />
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <p className="font-heading font-semibold text-gray-900 dark:text-white text-base">
                       {activity.action}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                       {activity.user}
                     </p>
                   </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
                     {activity.time}
                   </span>
                 </motion.div>

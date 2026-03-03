@@ -59,16 +59,16 @@ const TotalEarningsPage = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
                 Total Earnings
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
                 Comprehensive breakdown of all revenue streams
               </p>
             </div>
             <button
               onClick={toggleTheme}
-              className="px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:shadow-emerald-500/50 dark:from-emerald-500 dark:to-teal-500"
+              className="px-6 py-3 rounded-xl font-heading font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:shadow-emerald-500/50 dark:from-emerald-500 dark:to-teal-500 text-base"
             >
               {isDark ? '☀️ Light' : '🌙 Dark'}
             </button>
@@ -100,13 +100,13 @@ const TotalEarningsPage = ({ role }) => {
                     <FiDollarSign className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <p className="text-white/80 text-sm font-medium">Total Revenue</p>
-                    <p className="text-5xl font-bold text-white">
+                    <p className="text-white/80 text-sm font-heading font-medium tracking-wide">Total Revenue</p>
+                    <p className="text-5xl font-heading font-bold text-white leading-tight tracking-tight">
                       ${totalEarnings.toLocaleString()}
                     </p>
                   </div>
                 </div>
-                <p className="text-white/70 text-sm">
+                <p className="text-white/70 text-base font-medium">
                   All-time earnings across all categories
                 </p>
               </div>
@@ -118,7 +118,7 @@ const TotalEarningsPage = ({ role }) => {
               transition={{ delay: 0.2 }}
               className="mb-6"
             >
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
                 Revenue Breakdown
               </h2>
               
@@ -145,17 +145,17 @@ const TotalEarningsPage = ({ role }) => {
                         <div className={`p-3 rounded-xl bg-${color}-100 dark:bg-${color}-900/20`}>
                           <Icon className={`w-6 h-6 text-${color}-600 dark:text-${color}-400`} />
                         </div>
-                        <span className={`text-xs font-semibold px-3 py-1 rounded-full bg-${color}-100 text-${color}-700 dark:bg-${color}-900/30 dark:text-${color}-400`}>
+                        <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full bg-${color}-100 text-${color}-700 dark:bg-${color}-900/30 dark:text-${color}-400 tracking-wide`}>
                           {percentage}%
                         </span>
                       </div>
                       
-                      <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2 capitalize">
+                      <h3 className="text-gray-600 dark:text-gray-400 text-xs font-heading font-semibold mb-2 capitalize uppercase tracking-wide">
                         {formatCategoryName(key)}
                       </h3>
                       
                       <div className="flex items-baseline gap-2">
-                        <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                        <p className="text-3xl font-heading font-bold text-gray-900 dark:text-white leading-tight">
                           ${value.toLocaleString()}
                         </p>
                       </div>

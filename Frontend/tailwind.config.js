@@ -5,6 +5,11 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
+    fontFamily: {
+      'sans': ['Inter', 'system-ui', 'sans-serif'],
+      'heading': ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+      'mono': ['Fira Code', 'monospace'],
+    },
     extend: {
       colors: {
         // Primary colors

@@ -47,16 +47,16 @@ const Settings = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-2">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
                 Settings
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
                 Manage your account preferences and application settings
               </p>
             </div>
             <button
               onClick={toggleTheme}
-              className="px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-blue-500/50 dark:from-blue-500 dark:to-indigo-500"
+              className="px-6 py-3 rounded-xl font-heading font-semibold shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-blue-500/50 dark:from-blue-500 dark:to-indigo-500 text-base"
             >
               {isDark ? '☀️ Light' : '🌙 Dark'}
             </button>
@@ -94,10 +94,10 @@ const Settings = ({ role }) => {
                         }`} />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h3 className="text-lg font-heading font-semibold text-gray-900 dark:text-white leading-tight">
                           {setting.name}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                           {setting.description}
                         </p>
                       </div>
