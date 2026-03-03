@@ -2,9 +2,9 @@ import ThemeToggleButton from './ThemeToggleButton';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
+import {
   FiHome, FiBarChart2, FiDollarSign, FiTag, FiSettings,
-  FiChevronRight, FiCalendar, FiChevronLeft, FiMoon, FiSun
+  FiChevronRight, FiCalendar, FiChevronLeft
 } from 'react-icons/fi';
 import { useTheme } from '../pages/ThemeContext';
 
@@ -31,12 +31,11 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className={`fixed inset-y-0 left-0 ${isCollapsed ? 'w-20' : 'w-64'} ${
-      isDark 
-        ? 'bg-gray-900 border-r border-gray-800' 
+    <div className={`fixed inset-y-0 left-0 ${isCollapsed ? 'w-20' : 'w-64'} ${isDark
+        ? 'bg-gray-900 border-r border-gray-800'
         : 'bg-white border-r border-gray-200'
-    } shadow-2xl z-50 flex flex-col transition-all duration-300`}>
-      
+      } shadow-2xl z-50 flex flex-col transition-all duration-300`}>
+
       {/* Logo/Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
         <motion.div
@@ -77,7 +76,7 @@ const Sidebar = () => {
         {links.map((link, index) => {
           const Icon = link.icon;
           const isActive = location.pathname === link.path;
-          
+
           return (
             <motion.div
               key={link.name}
@@ -87,13 +86,12 @@ const Sidebar = () => {
             >
               <Link
                 to={link.path}
-                className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                  isActive
+                className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50'
                     : isDark
-                    ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                } ${isCollapsed ? 'justify-center px-2' : ''}`}
+                      ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  } ${isCollapsed ? 'justify-center px-2' : ''}`}
               >
                 {/* Active Indicator */}
                 {isActive && (
@@ -103,25 +101,23 @@ const Sidebar = () => {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
-                
-                <Icon className={`w-5 h-5 ${
-                  isActive 
-                    ? 'text-white' 
+
+                <Icon className={`w-5 h-5 ${isActive
+                    ? 'text-white'
                     : 'group-hover:scale-110 transition-transform'
-                }`} />
-                
+                  }`} />
+
                 {!isCollapsed && (
                   <span className="font-heading font-semibold flex-1 tracking-tight">
                     {link.name}
                   </span>
                 )}
-                
+
                 {!isCollapsed && (
-                  <FiChevronRight className={`w-4 h-4 transform transition-all ${
-                    isActive 
-                      ? 'opacity-100 translate-x-0' 
+                  <FiChevronRight className={`w-4 h-4 transform transition-all ${isActive
+                      ? 'opacity-100 translate-x-0'
                       : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
-                  }`} />
+                    }`} />
                 )}
               </Link>
             </motion.div>
@@ -132,7 +128,7 @@ const Sidebar = () => {
       {/* Return to Home Button */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         <ThemeToggleButton isCollapsed={isCollapsed} />
-{isCollapsed && (
+        {isCollapsed && (
           <button
             type="button"
             onClick={() => setIsCollapsed(false)}
@@ -145,11 +141,10 @@ const Sidebar = () => {
 
         <Link
           to="/"
-          className={`flex items-center justify-center ${isCollapsed ? '' : 'gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${
-            isDark
+          className={`flex items-center justify-center ${isCollapsed ? '' : 'gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${isDark
               ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
+            }`}
         >
           <FiHome className="w-4 h-4" />
           {!isCollapsed && 'Return to Home'}

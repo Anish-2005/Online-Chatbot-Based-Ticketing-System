@@ -88,7 +88,7 @@ const AdminDashboard = ({ role }) => {
     gray: isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700',
   };
 
-  const kpis = dashboardData?.kpis || {
+  const kpis = useMemo(() => dashboardData?.kpis || {
     totalRevenue: 0,
     activeUsers: 0,
     bookingsToday: 0,
@@ -97,7 +97,7 @@ const AdminDashboard = ({ role }) => {
     totalShows: 0,
     todayRevenue: 0,
     upcomingShows: 0,
-  };
+  }, [dashboardData?.kpis]);
 
   const stats = useMemo(() => [
     {
@@ -234,8 +234,8 @@ const AdminDashboard = ({ role }) => {
                     variants={itemVariants}
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     className={`relative overflow-hidden rounded-2xl shadow-lg ${isDark
-                        ? 'bg-gray-800 border border-gray-700'
-                        : 'bg-white border border-gray-100'
+                      ? 'bg-gray-800 border border-gray-700'
+                      : 'bg-white border border-gray-100'
                       } p-6 transition-all duration-300 hover:shadow-2xl`}
                   >
                     <div className="flex items-start justify-between mb-4">
@@ -283,8 +283,8 @@ const AdminDashboard = ({ role }) => {
                         whileTap={{ scale: 0.98 }}
                         onClick={() => navigate(action.path)}
                         className={`w-full flex items-center justify-between gap-4 p-4 rounded-xl transition-all duration-300 ${isDark
-                            ? 'bg-gray-700/50 hover:bg-gray-700 border border-gray-600'
-                            : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                          ? 'bg-gray-700/50 hover:bg-gray-700 border border-gray-600'
+                          : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
                           }`}
                       >
                         <div className="flex items-center gap-3">
@@ -326,17 +326,17 @@ const AdminDashboard = ({ role }) => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5 + index * 0.08 }}
                         className={`flex items-start gap-4 p-4 rounded-xl transition-all duration-300 ${isDark
-                            ? 'bg-gray-700/30 hover:bg-gray-700/50'
-                            : 'bg-gray-50 hover:bg-gray-100'
+                          ? 'bg-gray-700/30 hover:bg-gray-700/50'
+                          : 'bg-gray-50 hover:bg-gray-100'
                           }`}
                       >
                         <div className={`mt-0.5 p-2 rounded-full ${activity.status === 'success'
-                            ? 'bg-green-100 dark:bg-green-900/30'
-                            : 'bg-blue-100 dark:bg-blue-900/30'
+                          ? 'bg-green-100 dark:bg-green-900/30'
+                          : 'bg-blue-100 dark:bg-blue-900/30'
                           }`}>
                           <FiCheckCircle className={`w-4 h-4 ${activity.status === 'success'
-                              ? 'text-green-600 dark:text-green-400'
-                              : 'text-blue-600 dark:text-blue-400'
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-blue-600 dark:text-blue-400'
                             }`} />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -397,10 +397,10 @@ const AdminDashboard = ({ role }) => {
                           <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">{show.ticketsLeft}</td>
                           <td className="px-4 py-3">
                             <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${Number(show.occupancyRate) >= 70
-                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
-                                : Number(show.occupancyRate) >= 40
-                                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                                  : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300'
+                              ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+                              : Number(show.occupancyRate) >= 40
+                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                                : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300'
                               }`}>
                               {Number(show.occupancyRate).toFixed(1)}%
                             </span>

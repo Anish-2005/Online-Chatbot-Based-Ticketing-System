@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from './ThemeContext';
 import './Chatbot.css';
-import img1 from '../images/Favicon1.ico.png';
+
 
 const Chatbot = () => {
   const { isDark } = useTheme();

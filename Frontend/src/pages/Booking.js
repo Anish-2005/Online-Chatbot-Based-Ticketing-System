@@ -24,6 +24,7 @@ const Booking = () => {
     } else {
       navigate('/booking-manual');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event, navigate]);
 
   const fetchTickets = async () => {
@@ -146,7 +147,7 @@ const Booking = () => {
               ← Back to Details
             </motion.button>
             <ThemeToggleButton />
-</div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -245,19 +246,18 @@ const Booking = () => {
                       disabled={disableSeat}
                       whileHover={{ scale: disableSeat ? 1 : 1.05 }}
                       whileTap={{ scale: disableSeat ? 1 : 0.95 }}
-                      className={`relative h-10 rounded-lg border text-sm font-bold transition-all ${
-                        isBooked
+                      className={`relative h-10 rounded-lg border text-sm font-bold transition-all ${isBooked
                           ? isDark
                             ? 'border-red-700 bg-gray-900 text-gray-600 line-through cursor-not-allowed'
                             : 'border-red-400 bg-gray-300 text-gray-500 line-through cursor-not-allowed'
                           : isSelected
-                          ? isDark
-                            ? 'border-emerald-400 bg-emerald-500 text-white'
-                            : 'border-purple-600 bg-purple-600 text-white'
-                          : isDark
-                            ? 'border-gray-600 bg-gray-700 text-gray-200 hover:bg-gray-600'
-                            : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50'
-                      } ${isBooked ? '' : disableSeat ? 'cursor-not-allowed opacity-50' : ''}`}
+                            ? isDark
+                              ? 'border-emerald-400 bg-emerald-500 text-white'
+                              : 'border-purple-600 bg-purple-600 text-white'
+                            : isDark
+                              ? 'border-gray-600 bg-gray-700 text-gray-200 hover:bg-gray-600'
+                              : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50'
+                        } ${isBooked ? '' : disableSeat ? 'cursor-not-allowed opacity-50' : ''}`}
                     >
                       {isBooked && (
                         <span className={`absolute inset-0 flex items-center justify-center text-xs font-black ${isDark ? 'text-red-700' : 'text-red-600'}`}>

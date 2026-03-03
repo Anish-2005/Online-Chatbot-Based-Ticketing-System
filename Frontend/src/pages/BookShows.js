@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { FiInfo, FiMoon, FiSun, FiStar, FiTrendingUp, FiCreditCard } from 'react-icons/fi';
+import { FiInfo, FiStar, FiTrendingUp, FiCreditCard } from 'react-icons/fi';
 import Carousel from './Carousel';
 import AboutMuseum from './AboutMuseum';
 import { useTheme } from './ThemeContext';
