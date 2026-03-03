@@ -54,9 +54,9 @@ const Booking = () => {
   };
 
   return (
-    <div className={`booking-page ${isDark ? 'dark' : 'light'}`}>
+    <div className={`booking-page ${isDark ? 'dark-mode' : 'light-mode'}`}>
       <button
-        className={`dark-mode-toggle ${isDark ? 'dark' : ''}`}
+        className="dark-mode-toggle"
         onClick={toggleTheme}
       >
         {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}

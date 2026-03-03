@@ -1,47 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
 import { fetchShows } from '../services/shows';
 import './Carousel.css';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-// Custom arrow components
-const CustomPrevArrow = ({ className, style, onClick }) => (
-  <div
-    className={className}
-    style={{
-      ...style,
-      display: 'block',
-      background: 'gray', // Change arrow background color
-      borderRadius: '50%', // Make it circular
-      zIndex: 5 // Ensure the arrow is visible above other elements
-    }}
+const CustomPrevArrow = ({ className, onClick }) => (
+  <button
+    type="button"
+    className={`${className} carousel-3d-arrow carousel-3d-arrow-prev`}
     onClick={onClick}
+    aria-label="Previous show"
   />
 );
 
-const CustomNextArrow = ({ className, style, onClick }) => (
-  <div
-    className={className}
-    style={{
-      ...style,
-      display: 'block',
-      background: 'gray', // Change arrow background color
-      borderRadius: '50%',
-      zIndex: 5
-    }}
+const CustomNextArrow = ({ className, onClick }) => (
+  <button
+    type="button"
+    className={`${className} carousel-3d-arrow carousel-3d-arrow-next`}
     onClick={onClick}
+    aria-label="Next show"
   />
 );
 
 const Carousel = ({ onSlideClick }) => {
   const { isDark } = useTheme();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [shows, setSlides] = useState([]);
-  const [slidesToShow, setSlidesToShow] = useState(3); // Default for larger screens
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [shows, setShows] = useState([]);
+  const [slidesToShow, setSlidesToShow] = useState(3);
   const navigate = useNavigate();
 
   const totalShows = shows.length;
@@ -52,26 +41,28 @@ const Carousel = ({ onSlideClick }) => {
     const fetchSlides = async () => {
       try {
         const data = await fetchShows();
-        setSlides(data);
+        setShows(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Failed to fetch slides:', error);
       }
     };
+
     fetchSlides();
   }, []);
 
   useEffect(() => {
-    // Update the slidesToShow based on screen width
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setSlidesToShow(1); // Show only 1 slide on smaller screens
+      if (window.innerWidth <= 640) {
+        setSlidesToShow(1);
+      } else if (window.innerWidth <= 1024) {
+        setSlidesToShow(2);
       } else {
-        setSlidesToShow(3); // Default for larger screens
+        setSlidesToShow(3);
       }
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Set the initial state
+    handleResize();
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -81,24 +72,46 @@ const Carousel = ({ onSlideClick }) => {
   const settings = {
     dots: true,
     infinite: shouldLoop,
-    speed: 3000,
+    speed: 800,
+    cssEase: 'cubic-bezier(0.22, 1, 0.36, 1)',
     slidesToShow: visibleSlides,
     slidesToScroll: 1,
     autoplay: shouldLoop,
-    autoplaySpeed: 1700,
-    arrows: true,
+    autoplaySpeed: 2300,
+    pauseOnHover: true,
+    arrows: totalShows > 1,
     centerMode: totalShows > 1,
-    centerPadding: '0',
+    centerPadding: '0px',
     initialSlide: 0,
-    beforeChange: (current, next) => {
-      setCurrentSlide(next);
+    swipeToSlide: true,
+    draggable: true,
+    focusOnSelect: true,
+    afterChange: (next) => {
+      setActiveIndex(next);
     },
-    prevArrow: <CustomPrevArrow />,  // Apply custom arrow for previous
-    nextArrow: <CustomNextArrow />  // Apply custom arrow for next
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+  };
+
+  const getSlideStateClass = (index) => {
+    if (totalShows <= 1) return 'is-active';
+
+    const rightDistance = (index - activeIndex + totalShows) % totalShows;
+    const leftDistance = (activeIndex - index + totalShows) % totalShows;
+
+    if (rightDistance === 0) return 'is-active';
+    if (rightDistance === 1) return 'is-next';
+    if (leftDistance === 1) return 'is-prev';
+    if (rightDistance === 2) return 'is-next-2';
+    if (leftDistance === 2) return 'is-prev-2';
+    return 'is-far';
   };
 
   const handleSlideClick = (item) => {
-    onSlideClick(item);
+    if (onSlideClick) {
+      onSlideClick(item);
+    }
+
     navigate('/booking-manual', { state: { event: item } });
   };
 
@@ -107,30 +120,23 @@ const Carousel = ({ onSlideClick }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`carousel-container ${isDark ? 'dark-mode' : ''}`}
+      className={`carousel-3d-container ${isDark ? 'dark-mode' : ''}`}
     >
-      <h2
-        className="carousel-title"
-        style={{
-          color: isDark ? '#ffffff' : '#333333', // White in dark mode, dark gray in light mode
-        }}
-      >
-        Featured Events
-      </h2>
-      <Slider {...settings} className="carousel-slider">
+      <h2 className="carousel-3d-title">Trending Shows</h2>
+
+      <Slider {...settings} className="carousel-3d-track">
         {shows.map((item, index) => (
           <div
             key={item.id || item._id || `${item.title}-${index}`}
-            className={`carousel-slide ${index === currentSlide ? 'active' : 'inactive'}`}
+            className={`carousel-3d-slide ${getSlideStateClass(index)}`}
             onClick={() => handleSlideClick(item)}
           >
-            <img src={item.image} alt={item.title} className="carousel-image" />
-            <div className="carousel-content">
-              <h3 className="carousel-slide-title">{item.title}</h3>
-              <p>{item.date}</p>
-              <p>{item.time}</p>
-              <p>{item.location}</p>
-              <p>{item.price}</p>
+            <img src={item.image} alt={item.title} className="carousel-3d-image" />
+            <div className="carousel-3d-overlay">
+              <h3 className="carousel-3d-slide-title">{item.title}</h3>
+              <p className="carousel-3d-meta">{item.date} • {item.time}</p>
+              <p className="carousel-3d-meta">{item.location}</p>
+              <p className="carousel-3d-price">{item.price}</p>
             </div>
           </div>
         ))}

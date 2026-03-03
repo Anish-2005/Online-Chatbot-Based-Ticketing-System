@@ -2,22 +2,33 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 // Create the Theme Context
 export const ThemeContext = createContext();
+const THEME_STORAGE_KEY = 'app-theme';
+const LEGACY_THEME_STORAGE_KEY = 'theme';
+
+const getInitialTheme = () => {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
+
+  const savedTheme =
+    localStorage.getItem(THEME_STORAGE_KEY) ||
+    localStorage.getItem(LEGACY_THEME_STORAGE_KEY);
+
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    return savedTheme;
+  }
+
+  return 'light';
+};
 
 // Create a ThemeProvider component
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    // Initialize from localStorage
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('app-theme');
-      return savedTheme || 'light';
-    }
-    return 'light';
-  });
+  const [theme, setTheme] = useState(getInitialTheme);
 
   // Apply theme to document whenever it changes
   useEffect(() => {
-    // Save to localStorage
-    localStorage.setItem('app-theme', theme);
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    localStorage.setItem(LEGACY_THEME_STORAGE_KEY, theme);
     
     // Apply to document root
     const htmlElement = document.documentElement;
@@ -32,7 +43,29 @@ export const ThemeProvider = ({ children }) => {
       bodyElement.classList.add('light');
       bodyElement.classList.remove('dark');
     }
+
+    htmlElement.setAttribute('data-theme', theme);
+    bodyElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const handleStorageSync = (event) => {
+      if (event.key !== THEME_STORAGE_KEY && event.key !== LEGACY_THEME_STORAGE_KEY) {
+        return;
+      }
+
+      const nextTheme = event.newValue;
+      if (nextTheme === 'dark' || nextTheme === 'light') {
+        setTheme(nextTheme);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageSync);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageSync);
+    };
+  }, []);
 
   const toggleTheme = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));

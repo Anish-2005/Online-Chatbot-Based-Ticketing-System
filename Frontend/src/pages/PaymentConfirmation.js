@@ -77,7 +77,7 @@ const PaymentConfirmation = () => {
       </motion.h1>
 
       <motion.div
-        className={`payment-details ${isDark ? 'dark-mode' : 'light-mode'}`}
+        className="payment-details"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}

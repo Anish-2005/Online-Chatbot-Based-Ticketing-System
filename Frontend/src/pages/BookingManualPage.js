@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
 import './BookingManualPage.css';
-import { FaHome } from 'react-icons/fa';
 
 const BookingManualPage = () => {
   const { isDark } = useTheme();
@@ -13,11 +12,6 @@ const BookingManualPage = () => {
   // Access the event data from location state
   const { event } = location.state || {};
 
-  // Navigate back to home
-  const handleBackToHome = () => {
-    navigate('/home');
-  };
-
   useEffect(() => {
     if (!event) {
       console.warn('No event data received');
@@ -25,7 +19,7 @@ const BookingManualPage = () => {
   }, [event]);
 
   return (
-    <div className={`booking-manual-page ${isDark ? 'dark' : 'light'}`}>
+    <div className={`booking-manual-page ${isDark ? 'dark-mode' : 'light-mode'}`}>
       {!event ? (
         <div className="no-show-selected">
           <motion.h1
@@ -40,7 +34,7 @@ const BookingManualPage = () => {
         </div>
       ) : (
         <motion.div
-          className={`movie-box ${isDark ? 'dark' : ''}`}
+          className="movie-box"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -48,11 +42,11 @@ const BookingManualPage = () => {
         >
           <img src={event.image} alt={event.title} className="movie-image" />
           <div className="movie-details">
-            <h1 className={`movie-title ${isDark ? 'dark' : ''}`}>{event.title}</h1>
-            <p className={`movie-info ${isDark ? 'dark' : ''}`}><strong>Date:</strong> {event.date}</p>
-            <p className={`movie-info ${isDark ? 'dark' : ''}`}><strong>Location:</strong> {event.location}</p>
-            <p className={`movie-info ${isDark ? 'dark' : ''}`}><strong>Price:</strong> {event.price}</p>
-            <p className={`movie-description ${isDark ? 'dark' : ''}`}>
+            <h1 className="movie-title">{event.title}</h1>
+            <p className="movie-info"><strong>Date:</strong> {event.date}</p>
+            <p className="movie-info"><strong>Location:</strong> {event.location}</p>
+            <p className="movie-info"><strong>Price:</strong> {event.price}</p>
+            <p className="movie-description">
               Enjoy the detailed view of this event. You can book tickets, view more details, and much more here.
             </p>
           </div>
@@ -61,7 +55,7 @@ const BookingManualPage = () => {
 
       <div className="action-buttons">
         <motion.button
-          className={`book-tickets-button ${isDark ? 'dark' : ''}`}
+          className="book-tickets-button"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate('/booking', { state: { event } })}

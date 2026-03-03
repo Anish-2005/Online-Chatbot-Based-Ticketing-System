@@ -44,6 +44,10 @@
   background-color: #1c1c1c;
 }
 
+.payment-confirmation-page.dark-mode .payment-details {
+  background-color: #1c1c1c;
+}
+
 /* Payment Details Text */
 .payment-details p {
   margin: 10px 0;
