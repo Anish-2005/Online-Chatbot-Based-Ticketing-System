@@ -79,7 +79,7 @@ const ChatPreview = () => (
     initial={{ opacity: 0, y: 30 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, delay: 0.5 }}
-    className="w-full max-w-[280px] xs:max-w-sm glass-premium rounded-[2rem] sm:rounded-[2.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl overflow-hidden pointer-events-none select-none mx-auto"
+    className="w-full max-w-[260px] xs:max-w-sm glass-premium rounded-[2rem] sm:rounded-[2.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl overflow-hidden pointer-events-none select-none mx-auto"
   >
     <div className="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500">
@@ -96,17 +96,17 @@ const ChatPreview = () => (
 
     <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 h-[200px] xs:h-[260px] sm:h-[300px] flex flex-col justify-end">
       <div className="flex flex-col gap-2 max-w-[85%]">
-        <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl rounded-bl-none bg-slate-100 dark:bg-slate-900 text-[11px] sm:text-[13px] font-medium text-slate-600 dark:text-slate-400">
+        <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl rounded-bl-none bg-slate-100 dark:bg-slate-800 text-[11px] sm:text-[13px] font-medium text-slate-600 dark:text-slate-100">
           How can I help you today?
         </div>
       </div>
       <div className="flex flex-col gap-2 max-w-[80%] self-end">
-        <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl rounded-br-none bg-indigo-600 text-[11px] sm:text-[13px] font-medium text-white shadow-lg shadow-indigo-600/20">
+        <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl rounded-br-none bg-indigo-600 dark:bg-indigo-500 text-[11px] sm:text-[13px] font-medium text-white shadow-lg shadow-indigo-500/20">
           Book a museum pass.
         </div>
       </div>
       <div className="flex flex-col gap-2 max-w-[90%]">
-        <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl rounded-bl-none bg-slate-100 dark:bg-slate-900 text-[11px] sm:text-[13px] font-medium text-slate-600 dark:text-slate-400 leading-tight">
+        <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl rounded-bl-none bg-slate-100 dark:bg-slate-800 text-[11px] sm:text-[13px] font-medium text-slate-600 dark:text-slate-100 leading-tight">
           Sure! We have 24 exhibits. Any particular era?
         </div>
       </div>

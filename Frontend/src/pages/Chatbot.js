@@ -34,11 +34,11 @@ const Chatbot = () => {
       {isScriptLoaded && (
         <df-messenger
           intent="WELCOME"
-          chat-title="ChatTicket"
+          chat-title="ChatTicket Concierge"
           chat-icon="https://cdn-icons-png.flaticon.com/512/8943/8943377.png"
           agent-id="f869a013-1615-48d8-a6fb-c732a3460178"
           language-code="en"
-          className={isDark ? 'dark-theme' : 'light-theme'}
+          className={isDark ? 'dark-theme' : ''}
         ></df-messenger>
       )}
     </div>
