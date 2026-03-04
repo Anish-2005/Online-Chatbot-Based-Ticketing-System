@@ -4,8 +4,9 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from './pages/ThemeContext';
 import { VscAccount } from 'react-icons/vsc';
 import { FaTicketAlt, FaClock, FaShieldAlt, FaHeadset, FaArrowRight, FaStar, FaMapMarkerAlt } from 'react-icons/fa';
-import { FiZap, FiSmartphone, FiGlobe, FiChevronRight } from 'react-icons/fi';
+import { FiZap, FiSmartphone, FiGlobe, FiChevronRight, FiUser } from 'react-icons/fi';
 import ThemeToggleButton from './components/ThemeToggleButton';
+import { useAuth } from './pages/AuthContext';
 
 /* ─── Animated counter hook ──────────────────────────────── */
 const useCounter = (end, duration = 2000) => {
@@ -48,7 +49,7 @@ const StatItem = ({ value, suffix = '', label }) => {
 };
 
 /* ─── Navbar component ──────────────────────────────── */
-const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
+const Navbar = ({ isDark, navigate, handleAdminLogin, currentUser }) => {
   const { scrollY } = useScroll();
   const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.9]);
   const borderOpacity = useTransform(scrollY, [0, 100], [0, 0.1]);
@@ -81,30 +82,45 @@ const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
         </motion.div>
 
         {/* Right controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggleButton isCollapsed={true} />
 
-          <motion.button
-            onClick={handleAdminLogin}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${isDark
-              ? 'bg-slate-900/50 text-slate-300 hover:bg-slate-800 border border-slate-800'
-              : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-          >
-            <VscAccount size={16} />
-            Admin
-          </motion.button>
+          {!currentUser ? (
+            <>
+              <motion.button
+                onClick={handleAdminLogin}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${isDark
+                  ? 'bg-slate-900/50 text-slate-300 hover:bg-slate-800 border border-slate-800'
+                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
+                  }`}
+              >
+                <VscAccount size={16} />
+                Admin
+              </motion.button>
 
-          <motion.button
-            onClick={() => navigate('/login')}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-xl shadow-indigo-500/20 active:shadow-indigo-500/10 transition-all"
-          >
-            Sign In
-          </motion.button>
+              <motion.button
+                onClick={() => navigate('/login')}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-xl shadow-indigo-500/20 active:shadow-indigo-500/10 transition-all font-heading"
+              >
+                Sign In
+              </motion.button>
+            </>
+          ) : (
+            <motion.button
+              onClick={() => navigate('/bookshows')}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-xl shadow-indigo-500/20 active:shadow-indigo-500/10 transition-all font-heading"
+            >
+              <FiUser className="w-4 h-4" />
+              <span className="hidden sm:inline">My Experience</span>
+              <span className="sm:hidden">Account</span>
+            </motion.button>
+          )}
         </div>
       </div>
     </motion.nav>
@@ -136,6 +152,8 @@ const FeatureCard = ({ icon: Icon, title, description, gradient, delay }) => (
 function Home() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const { currentUser } = useAuth();
+
 
   const handleAdminLogin = () => navigate('/admindashboard');
 
@@ -180,7 +198,7 @@ function Home() {
 
   return (
     <div className={`min-h-screen w-full ${isDark ? 'dark bg-slate-950' : 'bg-white'} overflow-hidden selection:bg-indigo-500/30`}>
-      <Navbar isDark={isDark} navigate={navigate} handleAdminLogin={handleAdminLogin} />
+      <Navbar isDark={isDark} navigate={navigate} handleAdminLogin={handleAdminLogin} currentUser={currentUser} />
 
       {/* ─── HERO SECTION ─── */}
       <section className="relative min-h-screen flex items-center pt-24 pb-12 bg-mesh">
@@ -384,17 +402,20 @@ function Home() {
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center justify-center gap-3 px-12 py-6 rounded-[2rem] font-heading font-black text-xl bg-white text-indigo-700 shadow-2xl transition-all"
               >
-                Go to Bookings
+                {currentUser ? 'Go to Bookings' : 'Book Now'}
                 <FaArrowRight />
               </motion.button>
-              <motion.button
-                onClick={() => navigate('/login')}
-                whileHover={{ scale: 1.05, y: -4 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-3 px-12 py-6 rounded-[2rem] font-heading font-black text-xl text-white border-2 border-white/20 hover:bg-white/10 transition-all"
-              >
-                Sign In
-              </motion.button>
+
+              {!currentUser && (
+                <motion.button
+                  onClick={() => navigate('/login')}
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center justify-center gap-3 px-12 py-6 rounded-[2rem] font-heading font-black text-xl text-white border-2 border-white/20 hover:bg-white/10 transition-all"
+                >
+                  Sign In
+                </motion.button>
+              )}
             </div>
           </motion.div>
         </div>
