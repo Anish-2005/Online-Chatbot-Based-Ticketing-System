@@ -82,9 +82,7 @@ const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
           className="flex items-center gap-3 cursor-pointer"
           onClick={() => navigate('/')}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-            <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
-          </div>
+          <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-10 h-10 drop-shadow-lg" />
           <span className="text-xl font-heading font-bold tracking-tight text-gray-900 dark:text-white">
             Chat<span className="bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">Ticket</span>
           </span>
@@ -99,8 +97,8 @@ const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${isDark
-                ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+              ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
               }`}
           >
             <VscAccount size={16} />
@@ -109,7 +107,7 @@ const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
 
           <motion.button
             onClick={() => navigate('/login')}
-            whileHover={{ scale: 1.05, boxShadow: '0 8px 24px rgba(79,70,229,.4)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 8px 24px rgba(124,58,237,.4)' }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/25 transition-all"
           >
@@ -238,7 +236,7 @@ function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <motion.button
                   onClick={() => navigate('/bookshows')}
-                  whileHover={{ scale: 1.04, boxShadow: '0 20px 40px rgba(79,70,229,.4)' }}
+                  whileHover={{ scale: 1.04, boxShadow: '0 20px 40px rgba(124,58,237,.4)' }}
                   whileTap={{ scale: 0.96 }}
                   className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xl shadow-violet-500/25 transition-all"
                 >
@@ -251,8 +249,8 @@ function Home() {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                   className={`flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg border-2 transition-all ${isDark
-                      ? 'border-gray-700 text-gray-300 hover:border-violet-500/50 hover:bg-violet-900/20'
-                      : 'border-gray-200 text-gray-700 hover:border-violet-400 hover:bg-violet-50'
+                    ? 'border-gray-700 text-gray-300 hover:border-violet-500/50 hover:bg-violet-900/20'
+                    : 'border-gray-200 text-gray-700 hover:border-violet-400 hover:bg-violet-50'
                     }`}
                 >
                   <FiZap className="w-5 h-5" />
@@ -306,8 +304,8 @@ function Home() {
                   animate={{ y: [0, -16, 0] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 0.6 }}
                   className={`relative rounded-3xl p-6 border shadow-2xl ${isDark
-                      ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-violet-500/30'
-                      : 'bg-white border-violet-200'
+                    ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-violet-500/30'
+                    : 'bg-white border-violet-200'
                     }`}
                 >
                   {/* Ticket header */}
@@ -363,8 +361,8 @@ function Home() {
                           <div
                             key={i}
                             className={`rounded-[1px] ${Math.random() > 0.4
-                                ? isDark ? 'bg-gray-900' : 'bg-white'
-                                : isDark ? 'bg-gray-300' : 'bg-gray-600'
+                              ? isDark ? 'bg-gray-900' : 'bg-white'
+                              : isDark ? 'bg-gray-300' : 'bg-gray-600'
                               }`}
                           />
                         ))}
@@ -473,9 +471,7 @@ function Home() {
             {/* Brand column */}
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg">
-                  <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
-                </div>
+                <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-10 h-10 drop-shadow-lg" />
                 <span className="text-xl font-heading font-bold text-gray-900 dark:text-white">
                   Chat<span className="text-violet-600 dark:text-violet-400">Ticket</span>
                 </span>

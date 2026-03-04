@@ -171,7 +171,7 @@ const Settings = ({ role }) => {
                         <motion.div
                           animate={{
                             backgroundColor: setting.enabled 
-                              ? '#3B82F6' 
+                              ? '#6366F1' 
                               : isDark ? '#374151' : '#E5E7EB'
                           }}
                           className="w-14 h-7 rounded-full p-1 cursor-pointer"

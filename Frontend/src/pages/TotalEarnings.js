@@ -13,12 +13,12 @@ const formatCurrency = (value) => new Intl.NumberFormat('en-IN', {
 }).format(Number(value || 0));
 
 const colorSets = [
-  { bg: 'bg-violet-100 dark:bg-violet-900/20', text: 'text-violet-600 dark:text-violet-400', chip: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300', fill: '#4F46E5' },
+  { bg: 'bg-violet-100 dark:bg-violet-900/20', text: 'text-violet-600 dark:text-violet-400', chip: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300', fill: '#7C3AED' },
   { bg: 'bg-indigo-100 dark:bg-indigo-900/20', text: 'text-indigo-600 dark:text-indigo-400', chip: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300', fill: '#2563EB' },
   { bg: 'bg-emerald-100 dark:bg-emerald-900/20', text: 'text-emerald-600 dark:text-emerald-400', chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300', fill: '#10B981' },
   { bg: 'bg-indigo-100 dark:bg-indigo-900/20', text: 'text-indigo-600 dark:text-indigo-400', chip: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300', fill: '#DB2777' },
   { bg: 'bg-orange-100 dark:bg-orange-900/20', text: 'text-orange-600 dark:text-orange-400', chip: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300', fill: '#EA580C' },
-  { bg: 'bg-violet-100 dark:bg-violet-900/20', text: 'text-violet-600 dark:text-violet-400', chip: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300', fill: '#4F46E5' },
+  { bg: 'bg-violet-100 dark:bg-violet-900/20', text: 'text-violet-600 dark:text-violet-400', chip: 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300', fill: '#7C3AED' },
 ];
 
 const TotalEarningsPage = ({ role }) => {

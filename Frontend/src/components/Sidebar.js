@@ -45,9 +45,7 @@ const Sidebar = () => {
           className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between gap-3'}`}
         >
           <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-            <div className="w-10 h-10 rounded-xl bg-white/90 dark:bg-gray-800 flex items-center justify-center shadow-lg p-1">
-              <img src="/chat-ticket-logo.svg" alt="ChatTicket logo" className="w-full h-full rounded-lg" />
-            </div>
+            <img src="/chat-ticket-logo.svg" alt="ChatTicket logo" className="w-10 h-10 drop-shadow-lg" />
             {!isCollapsed && (
               <div>
                 <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent leading-tight tracking-tight">

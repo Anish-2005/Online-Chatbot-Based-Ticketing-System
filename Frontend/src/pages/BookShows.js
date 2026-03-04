@@ -28,9 +28,7 @@ const Bookshows = () => {
                   onClick={() => navigate('/')}
                   className="flex items-center gap-3 group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20 group-hover:shadow-violet-500/30 transition-shadow">
-                    <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
-                  </div>
+                  <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-10 h-10 drop-shadow-lg" />
                   <span className={`text-lg font-heading font-bold tracking-tight hidden sm:inline ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     Chat<span className="bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">Ticket</span>
                   </span>
