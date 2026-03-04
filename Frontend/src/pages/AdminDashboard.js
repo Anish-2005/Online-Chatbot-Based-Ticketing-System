@@ -79,17 +79,19 @@ const AdminDashboard = ({ role }) => {
   ], [kpis]);
 
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark bg-slate-950' : 'bg-slate-50'} bg-mesh`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark bg-slate-950' : 'bg-slate-50'} bg-mesh selection:bg-indigo-500/30`}>
       <Sidebar role={role} />
 
-      <main className="flex-1 p-6 lg:p-10 transition-all duration-300 overflow-x-hidden" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
+      <main className="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 overflow-x-hidden min-w-0" style={{ marginLeft: 'var(--admin-sidebar-width, 0rem)' }}>
+        {/* Mobile Spacer (for floating toggle button) */}
+        <div className="h-20 lg:hidden" />
         {/* Header Section */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
             <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-5xl font-heading font-black tracking-tight mb-2"
+              className="text-4xl sm:text-5xl font-heading font-black tracking-tight mb-2"
             >
               Control <span className="gradient-text">Hub.</span>
             </motion.h1>
