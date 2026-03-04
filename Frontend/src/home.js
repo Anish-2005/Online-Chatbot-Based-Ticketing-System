@@ -39,7 +39,7 @@ const StatItem = ({ value, suffix = '', label }) => {
   const ref = useCounter(value);
   return (
     <div className="text-center">
-      <div className="text-4xl sm:text-5xl font-heading font-black bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+      <div className="text-4xl sm:text-5xl font-heading font-black bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
         <span ref={ref}>0</span>{suffix}
       </div>
       <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{label}</p>
@@ -50,8 +50,8 @@ const StatItem = ({ value, suffix = '', label }) => {
 /* ─── Floating orb component ──────────────────────────────── */
 const FloatingOrbs = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-    <div className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-purple-500/10 dark:bg-purple-500/5 blur-[100px] animate-float" />
-    <div className="absolute -bottom-[20%] -left-[10%] w-[450px] h-[450px] rounded-full bg-pink-500/10 dark:bg-pink-500/5 blur-[100px] animate-float-delayed" />
+    <div className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-indigo-500/10 dark:bg-indigo-500/5 blur-[100px] animate-float" />
+    <div className="absolute -bottom-[20%] -left-[10%] w-[450px] h-[450px] rounded-full bg-blue-500/10 dark:bg-blue-500/5 blur-[100px] animate-float-delayed" />
     <div className="absolute top-[40%] left-[30%] w-[300px] h-[300px] rounded-full bg-blue-500/5 dark:bg-blue-500/3 blur-[80px] animate-float-slow" />
   </div>
 );
@@ -82,11 +82,11 @@ const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
           className="flex items-center gap-3 cursor-pointer"
           onClick={() => navigate('/')}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
             <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
           </div>
           <span className="text-xl font-heading font-bold tracking-tight text-gray-900 dark:text-white">
-            Chat<span className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Ticket</span>
+            Chat<span className="bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">Ticket</span>
           </span>
         </motion.div>
 
@@ -109,9 +109,9 @@ const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
 
           <motion.button
             onClick={() => navigate('/login')}
-            whileHover={{ scale: 1.05, boxShadow: '0 8px 24px rgba(124,58,237,.4)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 8px 24px rgba(79,70,229,.4)' }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/25 transition-all"
           >
             Sign In
           </motion.button>
@@ -152,13 +152,13 @@ function Home() {
       icon: FaTicketAlt,
       title: 'Instant Booking',
       description: 'Book museum tickets and shows in under 30 seconds with our streamlined checkout.',
-      gradient: 'from-purple-600 to-violet-600',
+      gradient: 'from-indigo-600 to-violet-600',
     },
     {
       icon: FaHeadset,
       title: 'AI-Powered Chatbot',
       description: 'Get 24/7 intelligent ticket booking assistance powered by Dialogflow AI.',
-      gradient: 'from-pink-600 to-rose-600',
+      gradient: 'from-blue-600 to-sky-600',
     },
     {
       icon: FaShieldAlt,
@@ -208,16 +208,16 @@ function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-700/50"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700/50"
               >
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">
+                <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
                   Live • Museum Booking Platform
                 </span>
               </motion.div>
 
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-black leading-[1.08] tracking-tight">
-                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-500 dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent">
                   Experience
                 </span>
                 <br />
@@ -238,9 +238,9 @@ function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <motion.button
                   onClick={() => navigate('/bookshows')}
-                  whileHover={{ scale: 1.04, boxShadow: '0 20px 40px rgba(124,58,237,.4)' }}
+                  whileHover={{ scale: 1.04, boxShadow: '0 20px 40px rgba(79,70,229,.4)' }}
                   whileTap={{ scale: 0.96 }}
-                  className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl shadow-purple-500/25 transition-all"
+                  className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-xl shadow-indigo-500/25 transition-all"
                 >
                   Book Now
                   <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -251,8 +251,8 @@ function Home() {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                   className={`flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg border-2 transition-all ${isDark
-                      ? 'border-gray-700 text-gray-300 hover:border-purple-500/50 hover:bg-purple-900/20'
-                      : 'border-gray-200 text-gray-700 hover:border-purple-400 hover:bg-purple-50'
+                      ? 'border-gray-700 text-gray-300 hover:border-indigo-500/50 hover:bg-indigo-900/20'
+                      : 'border-gray-200 text-gray-700 hover:border-indigo-400 hover:bg-indigo-50'
                     }`}
                 >
                   <FiZap className="w-5 h-5" />
@@ -281,7 +281,7 @@ function Home() {
               className="relative hidden lg:flex items-center justify-center"
             >
               {/* Background glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-[3rem] blur-3xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-blue-500/20 rounded-[3rem] blur-3xl" />
 
               {/* Card stack illustration */}
               <div className="relative w-full max-w-md">
@@ -306,18 +306,18 @@ function Home() {
                   animate={{ y: [0, -16, 0] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 0.6 }}
                   className={`relative rounded-3xl p-6 border shadow-2xl ${isDark
-                      ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-purple-500/30'
-                      : 'bg-white border-purple-200'
+                      ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-indigo-500/30'
+                      : 'bg-white border-indigo-200'
                     }`}
                 >
                   {/* Ticket header */}
                   <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center">
                         <FaTicketAlt className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">E-Ticket</p>
+                        <p className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">E-Ticket</p>
                         <p className="text-sm font-bold text-gray-900 dark:text-white">ChatTicket</p>
                       </div>
                     </div>
@@ -340,7 +340,7 @@ function Home() {
                     ].map((item) => (
                       <div
                         key={item.label}
-                        className={`rounded-xl p-3 text-center ${isDark ? 'bg-gray-700/50' : 'bg-purple-50'
+                        className={`rounded-xl p-3 text-center ${isDark ? 'bg-gray-700/50' : 'bg-indigo-50'
                           }`}
                       >
                         <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{item.label}</p>
@@ -399,11 +399,11 @@ function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <span className="badge badge-purple mb-4">Features</span>
+            <span className="badge badge-indigo mb-4">Features</span>
             <h2 className="text-4xl sm:text-5xl font-heading font-black text-gray-900 dark:text-white tracking-tight mt-4">
               Everything You Need for
               <br />
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent">
                 Seamless Booking
               </span>
             </h2>
@@ -422,7 +422,7 @@ function Home() {
 
       {/* ─── CTA SECTION ─── */}
       <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-rose-600" />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-600" />
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-2 border-white/30" />
           <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full border-2 border-white/20" />
@@ -448,7 +448,7 @@ function Home() {
                 onClick={() => navigate('/bookshows')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-white text-purple-700 shadow-xl hover:shadow-2xl transition-all"
+                className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-white text-indigo-700 shadow-xl hover:shadow-2xl transition-all"
               >
                 Start Booking
                 <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -473,11 +473,11 @@ function Home() {
             {/* Brand column */}
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-lg">
                   <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
                 </div>
                 <span className="text-xl font-heading font-bold text-gray-900 dark:text-white">
-                  Chat<span className="text-purple-600 dark:text-purple-400">Ticket</span>
+                  Chat<span className="text-indigo-600 dark:text-indigo-400">Ticket</span>
                 </span>
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed">
@@ -493,7 +493,7 @@ function Home() {
                   <li key={link}>
                     <button
                       onClick={() => navigate(link === 'Book Shows' ? '/bookshows' : link === 'Events' ? '/events' : '/my-shows')}
-                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                     >
                       {link}
                     </button>

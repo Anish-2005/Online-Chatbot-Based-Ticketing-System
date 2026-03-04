@@ -14,11 +14,11 @@ const initialForm = {
 
 const colorSets = [
   {
-    surface: 'from-purple-500/10 to-purple-600/10',
-    badge: 'from-purple-500 to-purple-600',
-    icon: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
-    button: 'from-purple-500 to-purple-600 hover:shadow-purple-500/50',
-    bottom: 'from-purple-500 to-purple-600',
+    surface: 'from-indigo-500/10 to-indigo-600/10',
+    badge: 'from-indigo-500 to-indigo-600',
+    icon: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400',
+    button: 'from-indigo-500 to-indigo-600 hover:shadow-indigo-500/50',
+    bottom: 'from-indigo-500 to-indigo-600',
   },
   {
     surface: 'from-blue-500/10 to-blue-600/10',
@@ -35,11 +35,11 @@ const colorSets = [
     bottom: 'from-emerald-500 to-emerald-600',
   },
   {
-    surface: 'from-pink-500/10 to-pink-600/10',
-    badge: 'from-pink-500 to-pink-600',
-    icon: 'bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400',
-    button: 'from-pink-500 to-pink-600 hover:shadow-pink-500/50',
-    bottom: 'from-pink-500 to-pink-600',
+    surface: 'from-blue-500/10 to-blue-600/10',
+    badge: 'from-blue-500 to-blue-600',
+    icon: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+    button: 'from-blue-500 to-blue-600 hover:shadow-blue-500/50',
+    bottom: 'from-blue-500 to-blue-600',
   },
 ];
 
@@ -110,7 +110,7 @@ const SpecialOffers = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-400 dark:to-rose-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-blue-600 to-sky-600 dark:from-blue-400 dark:to-sky-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
                 Special Offers & Promotions
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
@@ -172,7 +172,7 @@ const SpecialOffers = ({ role }) => {
           <button
             type="submit"
             disabled={saving}
-            className="mt-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 disabled:opacity-60"
+            className="mt-4 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-105 disabled:opacity-60"
           >
             {saving ? 'Publishing...' : 'Publish Offer'}
           </button>
@@ -180,7 +180,7 @@ const SpecialOffers = ({ role }) => {
 
         {loading ? (
           <div className="flex items-center justify-center h-56">
-            <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-pink-600" />
+            <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-blue-600" />
           </div>
         ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

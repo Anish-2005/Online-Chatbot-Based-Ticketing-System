@@ -107,10 +107,10 @@ const Booking = () => {
     return (
       <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
         <div className="relative overflow-hidden">
-          <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50 to-white'}`} />
+          <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-indigo-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-indigo-50 to-white'}`} />
 
           <div className="relative mx-auto flex min-h-screen w-full max-w-4xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
-            <div className={`w-full rounded-3xl border p-8 text-center shadow-2xl ${isDark ? 'border-purple-700/30 bg-gray-800/60' : 'border-purple-200 bg-white'}`}>
+            <div className={`w-full rounded-3xl border p-8 text-center shadow-2xl ${isDark ? 'border-indigo-700/30 bg-gray-800/60' : 'border-indigo-200 bg-white'}`}>
               <h1 className={`text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 No Show Selected
               </h1>
@@ -120,7 +120,7 @@ const Booking = () => {
               <button
                 type="button"
                 onClick={() => navigate('/bookshows')}
-                className="mt-5 inline-flex items-center rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:from-purple-700 hover:to-pink-700"
+                className="mt-5 inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:from-indigo-700 hover:to-blue-700"
               >
                 Go to Book Shows
               </button>
@@ -134,7 +134,7 @@ const Booking = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50 to-white'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-indigo-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-indigo-50 to-white'}`} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -155,7 +155,7 @@ const Booking = () => {
             transition={{ duration: 0.45 }}
             className="mt-8"
           >
-            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
+            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 ${isDark ? 'dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
               Seat Selection
               <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {event.title}
@@ -173,27 +173,27 @@ const Booking = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.1 }}
-          className={`rounded-3xl border p-6 shadow-2xl sm:p-8 ${isDark ? 'border-purple-700/30 bg-gray-800/60' : 'border-purple-200 bg-white'}`}
+          className={`rounded-3xl border p-6 shadow-2xl sm:p-8 ${isDark ? 'border-indigo-700/30 bg-gray-800/60' : 'border-indigo-200 bg-white'}`}
         >
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>Date</p>
+            <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
+              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Date</p>
               <p className={`mt-1 text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.date || 'TBA'}</p>
             </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>Time</p>
+            <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
+              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Time</p>
               <p className={`mt-1 text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.time || 'TBA'}</p>
             </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>Location</p>
+            <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
+              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Location</p>
               <p className={`mt-1 text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.location || 'Venue TBA'}</p>
             </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>Price</p>
-              <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-purple-300' : 'text-purple-700'}`}>{event.price || '—'}</p>
+            <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
+              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Price</p>
+              <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-indigo-300' : 'text-indigo-700'}`}>{event.price || '—'}</p>
             </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>Tickets Left</p>
+            <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
+              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Tickets Left</p>
               <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 {loadingTickets ? 'Loading...' : ticketsLeft}
               </p>
@@ -217,7 +217,7 @@ const Booking = () => {
                   <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Available</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-emerald-400 bg-emerald-500' : 'border-purple-600 bg-purple-600'}`}></div>
+                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-emerald-400 bg-emerald-500' : 'border-indigo-600 bg-indigo-600'}`}></div>
                   <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Selected</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ const Booking = () => {
                           : isSelected
                             ? isDark
                               ? 'border-emerald-400 bg-emerald-500 text-white'
-                              : 'border-purple-600 bg-purple-600 text-white'
+                              : 'border-indigo-600 bg-indigo-600 text-white'
                             : isDark
                               ? 'border-gray-600 bg-gray-700 text-gray-200 hover:bg-gray-600'
                               : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50'
@@ -271,8 +271,8 @@ const Booking = () => {
               </div>
             </div>
 
-            <div className={`w-full rounded-2xl border p-4 lg:w-56 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}>
-              <label htmlFor="seatCount" className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+            <div className={`w-full rounded-2xl border p-4 lg:w-56 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
+              <label htmlFor="seatCount" className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>
                 Number of Tickets
               </label>
               <input
@@ -282,7 +282,7 @@ const Booking = () => {
                 min={ticketsLeft > 0 ? '1' : '0'}
                 max={Math.max(0, ticketsLeft)}
                 onChange={(e) => handleSeatCountChange(e.target.value)}
-                className={`mt-2 w-full rounded-xl border px-3 py-2 text-base font-semibold outline-none transition-all focus:ring-2 ${isDark ? 'border-gray-600 bg-gray-800 text-white focus:ring-purple-500' : 'border-gray-300 bg-white text-gray-900 focus:ring-purple-400'}`}
+                className={`mt-2 w-full rounded-xl border px-3 py-2 text-base font-semibold outline-none transition-all focus:ring-2 ${isDark ? 'border-gray-600 bg-gray-800 text-white focus:ring-indigo-500' : 'border-gray-300 bg-white text-gray-900 focus:ring-indigo-400'}`}
               />
               <p className={`mt-2 text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 Max available: {Math.max(0, ticketsLeft)}
@@ -302,7 +302,7 @@ const Booking = () => {
               onClick={handleConfirmBooking}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-purple-700 hover:to-pink-700 hover:shadow-purple-500/40"
+              className="inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-indigo-700 hover:to-blue-700 hover:shadow-indigo-500/40"
             >
               Confirm Booking
             </motion.button>

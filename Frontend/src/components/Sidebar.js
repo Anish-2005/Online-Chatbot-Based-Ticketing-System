@@ -32,8 +32,8 @@ const Sidebar = () => {
 
   return (
     <div className={`fixed inset-y-0 left-0 ${isCollapsed ? 'w-20' : 'w-64'} ${isDark
-        ? 'bg-gray-900 border-r border-gray-800'
-        : 'bg-white border-r border-gray-200'
+      ? 'bg-gray-900 border-r border-gray-800'
+      : 'bg-white border-r border-gray-200'
       } shadow-2xl z-50 flex flex-col transition-all duration-300`}>
 
       {/* Logo/Header */}
@@ -50,7 +50,7 @@ const Sidebar = () => {
             </div>
             {!isCollapsed && (
               <div>
-                <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight">
+                <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent leading-tight tracking-tight">
                   ChatTicket
                 </h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
@@ -87,10 +87,10 @@ const Sidebar = () => {
               <Link
                 to={link.path}
                 className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50'
-                    : isDark
-                      ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/50'
+                  : isDark
+                    ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                   } ${isCollapsed ? 'justify-center px-2' : ''}`}
               >
                 {/* Active Indicator */}
@@ -103,8 +103,8 @@ const Sidebar = () => {
                 )}
 
                 <Icon className={`w-5 h-5 ${isActive
-                    ? 'text-white'
-                    : 'group-hover:scale-110 transition-transform'
+                  ? 'text-white'
+                  : 'group-hover:scale-110 transition-transform'
                   }`} />
 
                 {!isCollapsed && (
@@ -115,8 +115,8 @@ const Sidebar = () => {
 
                 {!isCollapsed && (
                   <FiChevronRight className={`w-4 h-4 transform transition-all ${isActive
-                      ? 'opacity-100 translate-x-0'
-                      : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
+                    ? 'opacity-100 translate-x-0'
+                    : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
                     }`} />
                 )}
               </Link>
@@ -126,13 +126,15 @@ const Sidebar = () => {
       </nav>
 
       {/* Return to Home Button */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-        <ThemeToggleButton isCollapsed={isCollapsed} />
+      <div className="p-4 border-t border-gray-200 dark:border-gray-800 flex flex-col items-center gap-3">
+        <div className="w-full flex justify-center">
+          <ThemeToggleButton isCollapsed={isCollapsed} />
+        </div>
         {isCollapsed && (
           <button
             type="button"
             onClick={() => setIsCollapsed(false)}
-            className={`mb-3 flex w-full items-center justify-center rounded-xl p-2 transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+            className={`flex w-full items-center justify-center rounded-xl p-2 transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
             aria-label="Expand sidebar"
           >
             <FiChevronRight className="h-4 w-4" />
@@ -142,8 +144,8 @@ const Sidebar = () => {
         <Link
           to="/"
           className={`flex items-center justify-center ${isCollapsed ? '' : 'gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${isDark
-              ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
         >
           <FiHome className="w-4 h-4" />

@@ -47,12 +47,12 @@ const Login = () => {
         <motion.div
           animate={{ x: [0, 30, 0], y: [0, -30, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
-          className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-purple-500/15 dark:bg-purple-500/8 blur-[100px]"
+          className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-indigo-500/15 dark:bg-indigo-500/8 blur-[100px]"
         />
         <motion.div
           animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
           transition={{ duration: 25, repeat: Infinity }}
-          className="absolute -bottom-[20%] -left-[15%] w-[450px] h-[450px] rounded-full bg-pink-500/15 dark:bg-pink-500/8 blur-[100px]"
+          className="absolute -bottom-[20%] -left-[15%] w-[450px] h-[450px] rounded-full bg-blue-500/15 dark:bg-blue-500/8 blur-[100px]"
         />
         <motion.div
           animate={{ x: [0, 15, 0], y: [0, 15, 0] }}
@@ -88,8 +88,8 @@ const Login = () => {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className={`relative z-10 w-full max-w-md rounded-3xl border p-8 sm:p-10 ${isDark
-            ? 'bg-gray-900/80 border-gray-700/50 shadow-2xl shadow-purple-500/5'
-            : 'bg-white/80 border-gray-200/60 shadow-2xl shadow-purple-500/10'
+            ? 'bg-gray-900/80 border-gray-700/50 shadow-2xl shadow-indigo-500/5'
+            : 'bg-white/80 border-gray-200/60 shadow-2xl shadow-indigo-500/10'
           } backdrop-blur-xl`}
       >
         {/* Logo & Brand */}
@@ -98,7 +98,7 @@ const Login = () => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
-            className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-xl shadow-purple-500/25 mb-5"
+            className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-xl shadow-indigo-500/25 mb-5"
           >
             <FaTicketAlt className="w-7 h-7 text-white" />
           </motion.div>
@@ -118,13 +118,13 @@ const Login = () => {
           whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
           whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
           className={`w-full flex items-center justify-center gap-3 px-5 py-4 rounded-2xl font-heading font-semibold text-base transition-all border-2 ${isDark
-              ? 'bg-gray-800 border-gray-600 text-white hover:bg-gray-700 hover:border-purple-600/50'
-              : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-purple-400'
+              ? 'bg-gray-800 border-gray-600 text-white hover:bg-gray-700 hover:border-indigo-600/50'
+              : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-indigo-400'
             } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
         >
           {isSubmitting ? (
             <>
-              <div className="w-5 h-5 border-2 border-gray-400 border-t-purple-600 rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-gray-400 border-t-indigo-600 rounded-full animate-spin" />
               Signing in...
             </>
           ) : (

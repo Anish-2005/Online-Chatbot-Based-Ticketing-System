@@ -19,7 +19,7 @@ const UserSidebar = () => {
       isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900 border-r border-gray-200'
     }`}>
       <motion.h2
-        className={`text-3xl font-bold mb-10 ${isDark ? 'text-purple-300' : 'text-blue-900'}`}
+        className={`text-3xl font-bold mb-10 ${isDark ? 'text-indigo-300' : 'text-blue-900'}`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}

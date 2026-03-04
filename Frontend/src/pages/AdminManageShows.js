@@ -98,7 +98,7 @@ const AdminManageShows = () => {
         >
           <div className="flex justify-between items-center mb-2">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight mb-2">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent leading-tight tracking-tight mb-2">
                 Manage Shows
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-3xl">
@@ -145,49 +145,49 @@ const AdminManageShows = () => {
             }`}
           >
             <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <FiPlusCircle className="text-purple-600 dark:text-purple-400" />
+              <FiPlusCircle className="text-indigo-600 dark:text-indigo-400" />
               Add New Show
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300">Title</span>
-                <input value={form.title} onChange={(e) => updateField('title', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.title} onChange={(e) => updateField('title', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiImage /> Image URL</span>
-                <input value={form.image} onChange={(e) => updateField('image', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.image} onChange={(e) => updateField('image', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiCalendar /> Date</span>
-                <input value={form.date} onChange={(e) => updateField('date', e.target.value)} placeholder="DD/MM/YYYY or YYYY-MM-DD" required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.date} onChange={(e) => updateField('date', e.target.value)} placeholder="DD/MM/YYYY or YYYY-MM-DD" required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiClock /> Time</span>
-                <input value={form.time} onChange={(e) => updateField('time', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.time} onChange={(e) => updateField('time', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiMapPin /> Location</span>
-                <input value={form.location} onChange={(e) => updateField('location', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.location} onChange={(e) => updateField('location', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiTag /> Display Price</span>
-                <input value={form.price} onChange={(e) => updateField('price', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input value={form.price} onChange={(e) => updateField('price', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300">Tickets Left</span>
-                <input type="number" min="1" value={form.ticketsLeft} onChange={(e) => updateField('ticketsLeft', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input type="number" min="1" value={form.ticketsLeft} onChange={(e) => updateField('ticketsLeft', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
 
               <label className="space-y-2">
                 <span className="text-sm font-heading font-semibold text-gray-700 dark:text-gray-300">Numeric Price</span>
-                <input type="number" min="0" value={form.price_int} onChange={(e) => updateField('price_int', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input type="number" min="0" value={form.price_int} onChange={(e) => updateField('price_int', e.target.value)} required className="w-full px-4 py-3 rounded-xl border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
               </label>
             </div>
 
@@ -197,7 +197,7 @@ const AdminManageShows = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full md:w-auto px-8 py-3 rounded-xl font-heading font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 transition-all ${loading ? 'opacity-60 cursor-not-allowed' : 'hover:scale-105'}`}
+              className={`w-full md:w-auto px-8 py-3 rounded-xl font-heading font-bold text-white bg-gradient-to-r from-indigo-600 to-blue-600 transition-all ${loading ? 'opacity-60 cursor-not-allowed' : 'hover:scale-105'}`}
             >
               {loading ? 'Adding Show...' : 'Add Show'}
             </button>
@@ -226,7 +226,7 @@ const AdminManageShows = () => {
                   <p className="font-heading font-semibold text-gray-900 dark:text-white">{show.title}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{show.date} • {show.time}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{show.location}</p>
-                  <p className="text-sm text-purple-600 dark:text-purple-400 font-semibold mt-1">{show.price}</p>
+                  <p className="text-sm text-indigo-600 dark:text-indigo-400 font-semibold mt-1">{show.price}</p>
                   <div className="mt-2 inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
                     <FiCheckCircle /> Live in Book Shows
                   </div>

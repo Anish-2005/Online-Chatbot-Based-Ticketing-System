@@ -219,8 +219,8 @@ const Settings = ({ role }) => {
           }`}
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
-              <FiSettingsIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+              <FiSettingsIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">

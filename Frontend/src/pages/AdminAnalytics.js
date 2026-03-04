@@ -47,7 +47,7 @@ const AdminAnalyticsPage = ({ role }) => {
     if (active && payload && payload.length) {
       return (
         <div className={`rounded-lg shadow-xl border p-3 ${
-          isDark ? 'bg-gray-800 border-purple-500/50' : 'bg-white border-purple-200'
+          isDark ? 'bg-gray-800 border-indigo-500/50' : 'bg-white border-indigo-200'
         }`}>
           <p className={`font-semibold mb-2 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>
             {label}
@@ -98,7 +98,7 @@ const AdminAnalyticsPage = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
                 Analytics Dashboard
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
@@ -122,7 +122,7 @@ const AdminAnalyticsPage = ({ role }) => {
               } shadow-lg hover:shadow-xl transition-all duration-300`}
             >
               <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-xl ${isDark ? 'bg-purple-900/20 text-purple-300' : 'bg-purple-100 text-purple-700'}`}>
+                <div className={`p-3 rounded-xl ${isDark ? 'bg-indigo-900/20 text-indigo-300' : 'bg-indigo-100 text-indigo-700'}`}>
                   <stat.icon className="w-6 h-6" />
                 </div>
               </div>
@@ -145,7 +145,7 @@ const AdminAnalyticsPage = ({ role }) => {
           >
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-2">
-                <FiActivity className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <FiActivity className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white tracking-tight">
                   Booking Trend (Last 7 Days)
                 </h2>
@@ -157,7 +157,7 @@ const AdminAnalyticsPage = ({ role }) => {
             
             {loading ? (
               <div className="flex items-center justify-center h-80">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
               </div>
             ) : error ? (
               <div className={`rounded-xl border px-4 py-6 text-sm ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
@@ -225,7 +225,7 @@ const AdminAnalyticsPage = ({ role }) => {
           >
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-2">
-                <FiDollarSign className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <FiDollarSign className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white tracking-tight">
                   Show Performance
                 </h2>
@@ -237,7 +237,7 @@ const AdminAnalyticsPage = ({ role }) => {
             
             {loading ? (
               <div className="flex items-center justify-center h-80">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
               </div>
             ) : error ? (
               <div className={`rounded-xl border px-4 py-6 text-sm ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>

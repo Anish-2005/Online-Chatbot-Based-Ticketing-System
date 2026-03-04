@@ -77,7 +77,7 @@ const AdminDashboard = ({ role }) => {
   }, [loadDashboard]);
 
   const quickActions = useMemo(() => [
-    { title: 'View Analytics', icon: FiBarChart2, path: '/adminanalytics', color: 'purple' },
+    { title: 'View Analytics', icon: FiBarChart2, path: '/adminanalytics', color: 'indigo' },
     { title: 'Manage Shows', icon: FiCalendar, path: '/adminshows', color: 'indigo' },
     { title: 'Total Earnings', icon: FiDollarSign, path: '/admintotalearning', color: 'green' },
     { title: 'Manage Users', icon: FiUsers, path: '/adminusers', color: 'blue' },
@@ -85,7 +85,7 @@ const AdminDashboard = ({ role }) => {
   ], []);
 
   const actionColorClasses = {
-    purple: isDark ? 'bg-purple-900/30 text-purple-300' : 'bg-purple-100 text-purple-700',
+    indigo: isDark ? 'bg-indigo-900/30 text-indigo-300' : 'bg-indigo-100 text-indigo-700',
     indigo: isDark ? 'bg-indigo-900/30 text-indigo-300' : 'bg-indigo-100 text-indigo-700',
     green: isDark ? 'bg-emerald-900/30 text-emerald-300' : 'bg-emerald-100 text-emerald-700',
     blue: isDark ? 'bg-blue-900/30 text-blue-300' : 'bg-blue-100 text-blue-700',
@@ -132,10 +132,10 @@ const AdminDashboard = ({ role }) => {
       value: kpis.bookingsToday.toLocaleString(),
       helper: `${kpis.totalTicketsSold.toLocaleString()} tickets sold total`,
       icon: FiCalendar,
-      gradient: 'from-purple-500 to-pink-600',
-      bgLight: 'bg-purple-50',
-      bgDark: 'bg-purple-900/20',
-      iconColor: 'text-purple-600 dark:text-purple-400',
+      gradient: 'from-indigo-500 to-blue-600',
+      bgLight: 'bg-indigo-50',
+      bgDark: 'bg-indigo-900/20',
+      iconColor: 'text-indigo-600 dark:text-indigo-400',
     },
     {
       id: 4,
@@ -186,7 +186,7 @@ const AdminDashboard = ({ role }) => {
         >
           <div className="flex justify-between items-center mb-2">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent leading-tight tracking-tight mb-2">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent leading-tight tracking-tight mb-2">
                 Admin Dashboard
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-3xl">
@@ -216,7 +216,7 @@ const AdminDashboard = ({ role }) => {
 
         {loading ? (
           <div className={`mb-8 rounded-2xl p-10 text-center shadow-lg ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'}`}>
-            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-purple-600" />
+            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-indigo-600" />
             <p className={`mt-4 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               Loading real-time dashboard data...
             </p>
@@ -246,7 +246,7 @@ const AdminDashboard = ({ role }) => {
                       <div className={`p-3 rounded-xl ${isDark ? stat.bgDark : stat.bgLight}`}>
                         <Icon className={`w-6 h-6 ${stat.iconColor}`} />
                       </div>
-                      <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full tracking-wide ${isDark ? 'bg-purple-900/30 text-purple-300' : 'bg-purple-100 text-purple-700'}`}>
+                      <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full tracking-wide ${isDark ? 'bg-indigo-900/30 text-indigo-300' : 'bg-indigo-100 text-indigo-700'}`}>
                         Live
                       </span>
                     </div>
@@ -274,7 +274,7 @@ const AdminDashboard = ({ role }) => {
                   }`}
               >
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
-                  <FiActivity className="text-purple-600 dark:text-purple-400 w-6 h-6" />
+                  <FiActivity className="text-indigo-600 dark:text-indigo-400 w-6 h-6" />
                   Quick Actions
                 </h2>
                 <div className="space-y-3">
@@ -314,7 +314,7 @@ const AdminDashboard = ({ role }) => {
                   }`}
               >
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
-                  <FiClock className="text-purple-600 dark:text-purple-400 w-6 h-6" />
+                  <FiClock className="text-indigo-600 dark:text-indigo-400 w-6 h-6" />
                   Recent Activity
                 </h2>
                 {recentActivity.length === 0 ? (
@@ -372,7 +372,7 @@ const AdminDashboard = ({ role }) => {
               className={`mt-8 rounded-2xl shadow-lg p-6 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'}`}
             >
               <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3 tracking-tight">
-                <FiLayers className="text-purple-600 dark:text-purple-400 w-6 h-6" />
+                <FiLayers className="text-indigo-600 dark:text-indigo-400 w-6 h-6" />
                 Top Performing Shows
               </h2>
 

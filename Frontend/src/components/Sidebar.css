@@ -21,21 +21,21 @@
 }
 
 .sidebar-light .nav-link {
-    color: #6a0dad; /* Light purple */
+    color: #6a0dad; /* Light indigo */
     text-shadow: 1px 1px 0 black; /* Black border effect */
 }
 
 .sidebar-light .nav-link:hover {
-    color: #8e2de2; /* Slightly darker light purple on hover */
+    color: #8e2de2; /* Slightly darker light indigo on hover */
 }
 
 .sidebar-light .active-link {
-    background-color: #6a0dad; /* Light purple */
+    background-color: #6a0dad; /* Light indigo */
     color: white; /* White text for active link */
 }
 
 .sidebar-light .return-home-btn {
-    background-color: #6a0dad; /* Light purple */
+    background-color: #6a0dad; /* Light indigo */
     color: white;
 }
 
@@ -50,17 +50,17 @@
 }
 
 .sidebar-dark .nav-link {
-    color: #d1c4e9; /* Light purple for dark mode */
+    color: #d1c4e9; /* Light indigo for dark mode */
     text-shadow: 1px 1px 0 black; /* Black border effect */
 }
 
 .sidebar-dark .nav-link:hover {
-    color: #ab47bc; /* Darker light purple on hover in dark mode */
+    color: #ab47bc; /* Darker light indigo on hover in dark mode */
 }
 
 .sidebar-dark .active-link {
     background-color: #2d3748; /* Slightly lighter dark gray */
-    color: #d1c4e9; /* Light purple text for active link */
+    color: #d1c4e9; /* Light indigo text for active link */
 }
 
 .sidebar-dark .return-home-btn {

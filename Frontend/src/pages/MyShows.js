@@ -82,7 +82,7 @@ const MyShows = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50 to-white'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-indigo-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-indigo-50 to-white'}`} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -103,7 +103,7 @@ const MyShows = () => {
             transition={{ duration: 0.45 }}
             className="mt-8"
           >
-            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
+            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 ${isDark ? 'dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
               My Shows
               <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 Paid Tickets
@@ -121,7 +121,7 @@ const MyShows = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.1 }}
-          className={`rounded-3xl border p-5 shadow-2xl sm:p-6 ${isDark ? 'border-purple-700/30 bg-gray-800/60' : 'border-purple-200 bg-white'}`}
+          className={`rounded-3xl border p-5 shadow-2xl sm:p-6 ${isDark ? 'border-indigo-700/30 bg-gray-800/60' : 'border-indigo-200 bg-white'}`}
         >
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className={`text-2xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -129,7 +129,7 @@ const MyShows = () => {
             </h2>
             {!loading && !error && (
               <div className="flex items-center gap-2">
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDark ? 'bg-purple-900/40 text-purple-200' : 'bg-purple-100 text-purple-700'}`}>
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDark ? 'bg-indigo-900/40 text-indigo-200' : 'bg-indigo-100 text-indigo-700'}`}>
                   {tickets.length} paid ticket{tickets.length === 1 ? '' : 's'}
                 </span>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDark ? 'bg-emerald-900/40 text-emerald-200' : 'bg-emerald-100 text-emerald-700'}`}>
@@ -140,7 +140,7 @@ const MyShows = () => {
           </div>
 
           {loading && (
-            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-purple-700/30 bg-gray-900/40 text-gray-300' : 'border-purple-100 bg-purple-50/60 text-gray-700'}`}>
+            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-indigo-700/30 bg-gray-900/40 text-gray-300' : 'border-indigo-100 bg-indigo-50/60 text-gray-700'}`}>
               Loading your paid tickets...
             </div>
           )}
@@ -152,7 +152,7 @@ const MyShows = () => {
           )}
 
           {!loading && !error && tickets.length === 0 && (
-            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-purple-700/30 bg-gray-900/40 text-gray-300' : 'border-purple-100 bg-purple-50/60 text-gray-700'}`}>
+            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-indigo-700/30 bg-gray-900/40 text-gray-300' : 'border-indigo-100 bg-indigo-50/60 text-gray-700'}`}>
               You do not have any paid tickets yet. Book a show to see it here.
             </div>
           )}
@@ -165,7 +165,7 @@ const MyShows = () => {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35 }}
-                  className={`rounded-2xl border p-4 ${isDark ? 'border-purple-700/30 bg-gray-900/40' : 'border-purple-100 bg-purple-50/60'}`}
+                  className={`rounded-2xl border p-4 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}
                 >
                   <div className="mb-3 flex items-start justify-between gap-3">
                     <h3 className={`text-lg font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -180,11 +180,11 @@ const MyShows = () => {
                     <img
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(getTicketQrData(ticket))}`}
                       alt={`QR for ${getTicketCode(ticket)}`}
-                      className="h-[100px] w-[100px] rounded-lg border border-purple-200 bg-white p-1"
+                      className="h-[100px] w-[100px] rounded-lg border border-indigo-200 bg-white p-1"
                     />
 
                     <div>
-                      <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
+                      <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>
                         Ticket Code
                       </p>
                       <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -202,7 +202,7 @@ const MyShows = () => {
                   <p className={`mt-1 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                     Paid On: {formatDateTime(ticket.createdAt)}
                   </p>
-                  <p className={`mt-3 text-sm font-extrabold ${isDark ? 'text-purple-300' : 'text-purple-700'}`}>
+                  <p className={`mt-3 text-sm font-extrabold ${isDark ? 'text-indigo-300' : 'text-indigo-700'}`}>
                     Amount: ₹{Number(ticket.amount || 0)}
                   </p>
                 </motion.div>
