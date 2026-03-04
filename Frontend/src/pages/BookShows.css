@@ -17,27 +17,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-html {
-  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.01em;
-}
-
-/* ============================================================ */
-/*                    CONTAINER STYLES                         */
-/* ============================================================ */
-
+/* BookShows.css - Localized styles */
 .bookshows-container {
   min-height: 100vh;
   padding: 2rem;
   position: relative;
-  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Light mode styles */
@@ -472,6 +460,7 @@ html {
     opacity: 0;
     transform: translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -541,6 +530,7 @@ html {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -706,7 +696,7 @@ html {
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
-.dark-mode .details-section h2, 
+.dark-mode .details-section h2,
 .dark-mode .details-section p {
   color: #f8f9fa;
 }
@@ -750,21 +740,27 @@ html {
   opacity: 1;
   visibility: visible;
 }
+
 /* Dark mode styles for Admin Login Button */
 .dark-mode .admin-login-btn {
   background-color: #333;
 }
+
 .dark-mode .admin-login-btn:hover {
   background-color: #444;
 }
+
 .dark-mode .toggle-dark-mode-btn {
   background-color: #333;
 }
+
 .dark-mode .toggle-dark-mode-btn:hover {
   background-color: #444;
 }
+
 /* Media query for mobile screens (768px or less) */
 @media (max-width: 768px) {
+
   /* Ensure that only one slide appears on the screen */
   .carousel-container {
     width: 100%;
@@ -792,14 +788,16 @@ html {
   }
 
   .back-to-dashboard-btn,
-  .toggle-dark-mode-btn{
+  .toggle-dark-mode-btn {
     padding: 8px 16px;
     font-size: 0.9rem;
   }
+
   .chatbot-btn {
     padding: 8px 16px;
     font-size: 1.5rem;
   }
+
   .back-to-dashboard-btn,
   .toggle-dark-mode-btn {
     top: 10px;

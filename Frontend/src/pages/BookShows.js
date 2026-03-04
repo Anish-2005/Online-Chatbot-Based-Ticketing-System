@@ -1,158 +1,56 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { FiInfo, FiStar, FiTrendingUp, FiCreditCard, FiUser } from 'react-icons/fi';
-import Carousel from './Carousel';
-import AboutMuseum from './AboutMuseum';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
-import ThemeToggleButton from '../components/ThemeToggleButton';
+import AboutMuseum from './AboutMuseum';
+import BookShowsNav from '../components/BookShows/BookShowsNav';
+import BookShowsHero from '../components/BookShows/BookShowsHero';
+import PriorityBookingCard from '../components/BookShows/PriorityBookingCard';
+import CatalogSection from '../components/BookShows/CatalogSection';
 
 const Bookshows = () => {
   const { isDark } = useTheme();
   const [showAboutMuseum, setShowAboutMuseum] = useState(false);
-  const navigate = useNavigate();
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'}`}>
-      {/* Subtle background gradient */}
-      <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-950 via-violet-950/20 to-gray-950' : 'bg-gradient-to-br from-white via-violet-50/50 to-white'}`} />
-
-        {/* Top Navigation Bar */}
-        <div className="relative z-20">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-4">
-              {/* Left: Logo + Brand */}
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => navigate('/')}
-                  className="flex items-center gap-3 group"
-                >
-                  <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-10 h-10 drop-shadow-lg" />
-                  <span className={`text-lg font-heading font-bold tracking-tight hidden sm:inline ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Chat<span className="bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">Ticket</span>
-                  </span>
-                </button>
-
-                <div className={`hidden md:inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider ${isDark ? 'border-violet-700/50 bg-violet-900/30 text-violet-300' : 'border-violet-200 bg-violet-50/80 text-violet-600'}`}>
-                  <FiStar className="h-3 w-3" />
-                  Curated Museum Experiences
-                </div>
-              </div>
-
-              {/* Right: Navigation actions */}
-              <div className="flex items-center gap-2 sm:gap-3">
-                <button
-                  onClick={() => navigate('/my-shows')}
-                  className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700/50' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'}`}
-                >
-                  <FiCreditCard className="h-4 w-4" />
-                  My Shows
-                </button>
-                <ThemeToggleButton />
-                <button
-                  onClick={() => navigate('/my-shows')}
-                  className={`sm:hidden p-2 rounded-xl transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-                  title="My Shows"
-                >
-                  <FiUser className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Section */}
-        <div className="relative mx-auto w-full max-w-7xl px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pt-6">
-          <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-8"
-            >
-              <h1
-                className="text-4xl font-heading font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]"
-              >
-                <span className="bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
-                  Discover & Book
-                </span>
-                <br />
-                <span className={isDark ? 'text-white' : 'text-gray-900'}>Premium Shows</span>
-              </h1>
-              <p className={`mt-5 max-w-2xl text-base sm:text-lg leading-relaxed font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Browse handpicked exhibitions and live museum programs. Tap any show card below to book in seconds.
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <motion.button
-                  onClick={() => navigate('/events')}
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-500/25"
-                >
-                  <FiTrendingUp className="h-4 w-4" />
-                  Explore All Events
-                </motion.button>
-                <button
-                  onClick={() => setShowAboutMuseum((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700/50' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'}`}
-                >
-                  <FiInfo className="h-4 w-4" />
-                  {showAboutMuseum ? 'Hide Museum Info' : 'About the Museum'}
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Booking Tip Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-4"
-            >
-              <div className={`rounded-2xl border p-5 backdrop-blur-sm ${isDark ? 'border-gray-700/50 bg-gray-800/60' : 'border-violet-200 bg-violet-50/60'}`}>
-                <p className={`text-[11px] font-bold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
-                  💡 Booking Tip
-                </p>
-                <h3 className={`mt-2 text-xl font-heading font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Best Slots Fill Fast
-                </h3>
-                <p className={`mt-2 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Book early to secure premium seating. Available spots fill quickly during peak times.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+    <div className={`min-h-screen relative ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} overflow-x-hidden`}>
+      {/* Background Ambience */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div className="absolute top-[-10%] right-[-5%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-indigo-600/10 rounded-full blur-[80px] sm:blur-[120px] animate-float" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] bg-violet-600/10 rounded-full blur-[70px] sm:blur-[100px] animate-pulse-subtle" />
       </div>
 
-      {/* Carousel Section */}
-      <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'border-gray-700/50 bg-gray-800/40' : 'border-gray-200 bg-white shadow-lg shadow-gray-200/50'}`}
-        >
-          <Carousel onSlideClick={() => { }} />
-        </motion.section>
+      <div className="relative z-10">
+        <BookShowsNav />
 
-        {/* About Museum Section */}
-        {showAboutMuseum && (
-          <motion.section
-            initial={{ opacity: 0, y: 16, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: 'auto' }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.4 }}
-            className="mt-6"
-          >
-            <div className={`rounded-2xl border p-6 ${isDark ? 'border-gray-700/50 bg-gray-800/40' : 'border-gray-200 bg-gray-50'}`}>
-              <AboutMuseum />
-            </div>
-          </motion.section>
-        )}
-      </main>
+        {/* Hero & Priority Grid */}
+        <header className="mx-auto max-w-7xl px-4 pt-10 sm:pt-16 pb-8 sm:pb-12 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <BookShowsHero onShowAboutMuseum={() => setShowAboutMuseum(!showAboutMuseum)} />
+            <PriorityBookingCard />
+          </div>
+        </header>
+
+        {/* Dynamic Catalog Section */}
+        <main className="mx-auto max-w-7xl px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
+          <CatalogSection />
+
+          {/* Directory Reveal */}
+          <AnimatePresence>
+            {showAboutMuseum && (
+              <motion.section
+                initial={{ opacity: 0, height: 0, y: 20 }}
+                animate={{ opacity: 1, height: 'auto', y: 0 }}
+                exit={{ opacity: 0, height: 0, y: 20 }}
+                className="mt-8 sm:mt-12 overflow-hidden"
+              >
+                <div className="glass-premium p-6 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-white/20 dark:border-slate-800/30 shadow-2xl">
+                  <AboutMuseum />
+                </div>
+              </motion.section>
+            )}
+          </AnimatePresence>
+        </main>
+      </div>
     </div>
   );
 };

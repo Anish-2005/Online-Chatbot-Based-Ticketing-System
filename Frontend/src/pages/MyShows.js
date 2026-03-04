@@ -1,19 +1,15 @@
 import ThemeToggleButton from '../components/ThemeToggleButton';
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
 import { getMyPaidTickets } from '../services/bookings';
+import { FiArrowLeft, FiTag, FiCalendar, FiMapPin, FiCheckCircle, FiActivity, FiCreditCard } from 'react-icons/fi';
 
 const formatDateTime = (value) => {
   if (!value) return '—';
-
   const dateValue = value?.toDate ? value.toDate() : new Date(value);
-
-  if (Number.isNaN(dateValue.getTime())) {
-    return '—';
-  }
-
+  if (Number.isNaN(dateValue.getTime())) return '—';
   return dateValue.toLocaleString('en-IN', {
     day: '2-digit',
     month: 'short',
@@ -24,19 +20,13 @@ const formatDateTime = (value) => {
 };
 
 const getTicketCode = (ticket) => {
-  if (ticket.ticketCode) {
-    return ticket.ticketCode;
-  }
-
+  if (ticket.ticketCode) return ticket.ticketCode;
   const baseId = (ticket.id || '').toString().slice(0, 10).toUpperCase();
   return baseId ? `TKT-${baseId}` : 'TKT-UNKNOWN';
 };
 
 const getTicketQrData = (ticket) => {
-  if (ticket.qrData) {
-    return ticket.qrData;
-  }
-
+  if (ticket.qrData) return ticket.qrData;
   return JSON.stringify({
     type: 'museum_ticket',
     ticketCode: getTicketCode(ticket),
@@ -60,17 +50,15 @@ const MyShows = () => {
     const loadTickets = async () => {
       setLoading(true);
       setError('');
-
       try {
         const data = await getMyPaidTickets();
         setTickets(Array.isArray(data) ? data : []);
       } catch (ticketsError) {
-        setError(ticketsError.message || 'Unable to load your tickets right now.');
+        setError(ticketsError.message || 'Unable to load your tickets.');
       } finally {
         setLoading(false);
       }
     };
-
     loadTickets();
   }, []);
 
@@ -80,137 +68,146 @@ const MyShows = () => {
   );
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-violet-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-violet-50 to-white'}`} />
-
-        <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <motion.button
-              onClick={() => navigate('/bookshows')}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.96 }}
-              className={`inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
-            >
-              ← Back to Book Shows
-            </motion.button>
-            <ThemeToggleButton />
-</div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="mt-8"
-          >
-            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 ${isDark ? 'dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
-              My Shows
-              <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Paid Tickets
-              </span>
-            </h1>
-            <p className={`mt-4 max-w-3xl text-base sm:text-lg font-medium leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              View all your confirmed paid bookings and revisit show details anytime.
-            </p>
-          </motion.div>
-        </div>
+    <div className={`min-h-screen relative ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} overflow-x-hidden`}>
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] animate-float" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[100px] animate-pulse-subtle" />
       </div>
 
-      <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.1 }}
-          className={`rounded-3xl border p-5 shadow-2xl sm:p-6 ${isDark ? 'border-violet-700/30 bg-gray-800/60' : 'border-violet-200 bg-white'}`}
-        >
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 className={`text-2xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Ticket History
-            </h2>
-            {!loading && !error && (
-              <div className="flex items-center gap-2">
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDark ? 'bg-violet-900/40 text-violet-200' : 'bg-violet-100 text-violet-700'}`}>
-                  {tickets.length} paid ticket{tickets.length === 1 ? '' : 's'}
-                </span>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDark ? 'bg-emerald-900/40 text-emerald-200' : 'bg-emerald-100 text-emerald-700'}`}>
-                  Total Spent: ₹{totalSpent}
-                </span>
-              </div>
-            )}
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-10 pb-20">
+        {/* Header Navigation */}
+        <header className="flex items-center justify-between mb-16">
+          <motion.button
+            onClick={() => navigate('/bookshows')}
+            whileHover={{ scale: 1.05, x: -5 }}
+            whileTap={{ scale: 0.95 }}
+            className={`flex items-center gap-3 px-6 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-black text-sm shadow-xl transition-all`}
+          >
+            <FiArrowLeft className="text-indigo-500" />
+            Back to Shows
+          </motion.button>
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Investment</span>
+              <span className="text-xl font-heading font-black gradient-text">₹{totalSpent.toLocaleString()}</span>
+            </div>
+            <ThemeToggleButton />
           </div>
+        </header>
 
-          {loading && (
-            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-violet-700/30 bg-gray-900/40 text-gray-300' : 'border-violet-100 bg-violet-50/60 text-gray-700'}`}>
-              Loading your paid tickets...
+        {/* Hero Title */}
+        <div className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 text-[10px] font-black uppercase tracking-widest mb-6"
+          >
+            <FiCheckCircle />
+            Your Private Experiences
+          </motion.div>
+          <h1 className="text-6xl sm:text-7xl font-heading font-black leading-[0.9] tracking-tight mb-6">
+            My <span className="gradient-text">Experiences.</span>
+          </h1>
+          <p className="text-lg sm:text-xl text-slate-500 dark:text-slate-400 font-medium max-w-2xl leading-relaxed">
+            Manage your high-access tickets and past gallery viewings in your centralized digital vault.
+          </p>
+        </div>
+
+        {/* Content Section */}
+        <main>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[1, 2, 3, 4].map(i => <div key={i} className="h-64 rounded-[2.5rem] skeleton" />)}
             </div>
-          )}
-
-          {!loading && error && (
-            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-red-500/30 bg-red-900/20 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
-              {error}
+          ) : error ? (
+            <div className="glass-premium p-10 rounded-[2.5rem] text-center border border-red-500/20">
+              <p className="text-red-500 font-black mb-4">{error}</p>
+              <button onClick={() => window.location.reload()} className="px-6 py-3 rounded-xl bg-slate-900 text-white font-bold">Try Syncing Again</button>
             </div>
-          )}
-
-          {!loading && !error && tickets.length === 0 && (
-            <div className={`rounded-2xl border p-5 text-sm font-medium ${isDark ? 'border-violet-700/30 bg-gray-900/40 text-gray-300' : 'border-violet-100 bg-violet-50/60 text-gray-700'}`}>
-              You do not have any paid tickets yet. Book a show to see it here.
+          ) : tickets.length === 0 ? (
+            <div className="glass-premium p-20 rounded-[3rem] text-center border border-white/20">
+              <div className="w-20 h-20 rounded-3xl bg-slate-100 dark:bg-slate-900 mx-auto flex items-center justify-center mb-8">
+                <FiTag className="text-4xl text-slate-400" />
+              </div>
+              <h3 className="text-3xl font-heading font-black mb-4">Your collection is empty.</h3>
+              <p className="text-slate-500 font-medium mb-10">Start your journey by reserving your seat at our latest exhibitions.</p>
+              <button onClick={() => navigate('/bookshows')} className="px-10 py-4 rounded-2xl bg-indigo-600 text-white font-black shadow-2xl shadow-indigo-600/30">Browse Showings</button>
             </div>
-          )}
-
-          {!loading && !error && tickets.length > 0 && (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {tickets.map((ticket) => (
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {tickets.map((ticket, idx) => (
                 <motion.div
                   key={ticket.id}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className={`rounded-2xl border p-4 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}
+                  transition={{ delay: idx * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="glass-premium rounded-[2.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl overflow-hidden group"
                 >
-                  <div className="mb-3 flex items-start justify-between gap-3">
-                    <h3 className={`text-lg font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                      {ticket.eventTitle || 'Show'}
-                    </h3>
-                    <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wide ${isDark ? 'bg-emerald-900/40 text-emerald-200' : 'bg-emerald-100 text-emerald-700'}`}>
-                      PAID
-                    </span>
-                  </div>
+                  <div className="p-8">
+                    <div className="flex justify-between items-start mb-8">
+                      <div>
+                        <h3 className="text-2xl font-heading font-black mb-1 group-hover:text-indigo-500 transition-colors uppercase tracking-tight">{ticket.eventTitle || 'Exhibition Title'}</h3>
+                        <div className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest">
+                          <FiCalendar className="text-indigo-500" />
+                          {formatDateTime(ticket.createdAt)}
+                        </div>
+                      </div>
+                      <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-black uppercase tracking-widest">
+                        Confirmed
+                      </div>
+                    </div>
 
-                  <div className="mb-3 flex items-center gap-4">
-                    <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(getTicketQrData(ticket))}`}
-                      alt={`QR for ${getTicketCode(ticket)}`}
-                      className="h-[100px] w-[100px] rounded-lg border border-violet-200 bg-white p-1"
-                    />
+                    <div className="flex gap-8 items-center">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="p-3 bg-white rounded-3xl shadow-xl shadow-indigo-500/5 border border-slate-100 dark:border-slate-800 shrink-0"
+                      >
+                        <img
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(getTicketQrData(ticket))}`}
+                          alt="Ticket QR"
+                          className="w-28 h-28"
+                        />
+                      </motion.div>
+                      <div className="space-y-4 flex-1">
+                        <div>
+                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Access Code</span>
+                          <span className="text-lg font-heading font-black text-indigo-500">{getTicketCode(ticket)}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Seats</span>
+                            <span className="text-sm font-bold">{Array.isArray(ticket.selectedSeats) ? ticket.selectedSeats.join(', ') : 'N/A'}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Amount</span>
+                            <span className="text-sm font-bold">₹{ticket.amount}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                    <div>
-                      <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
-                        Ticket Code
-                      </p>
-                      <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                        {getTicketCode(ticket)}
-                      </p>
+                    <div className="mt-8 pt-8 border-t border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
+                        <FiMapPin className="text-indigo-500" />
+                        Main Exhibition Wing
+                      </div>
+                      <motion.button
+                        whileHover={{ x: 5 }}
+                        className="text-indigo-500 font-black text-xs uppercase tracking-widest flex items-center gap-2"
+                      >
+                        View Details
+                        <FiActivity />
+                      </motion.button>
                     </div>
                   </div>
-
-                  <p className={`mt-2 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Seats: {Array.isArray(ticket.selectedSeats) ? ticket.selectedSeats.join(', ') : '—'}
-                  </p>
-                  <p className={`mt-1 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Tickets: {ticket.seatCount || 0}
-                  </p>
-                  <p className={`mt-1 text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Paid On: {formatDateTime(ticket.createdAt)}
-                  </p>
-                  <p className={`mt-3 text-sm font-extrabold ${isDark ? 'text-violet-300' : 'text-violet-700'}`}>
-                    Amount: ₹{Number(ticket.amount || 0)}
-                  </p>
                 </motion.div>
               ))}
             </div>
           )}
-        </motion.section>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };

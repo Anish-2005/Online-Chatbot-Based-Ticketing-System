@@ -1,148 +1,171 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeContext';
 import { fetchShows } from '../services/shows';
+import { FiChevronLeft, FiChevronRight, FiCalendar, FiMapPin, FiStar } from 'react-icons/fi';
 import './Carousel.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const CustomPrevArrow = ({ className, onClick }) => (
-  <button
-    type="button"
-    className={`${className} carousel-3d-arrow carousel-3d-arrow-prev`}
+const CustomPrevArrow = ({ onClick }) => (
+  <motion.button
+    whileHover={{ scale: 1.1, x: -5 }}
+    whileTap={{ scale: 0.9 }}
     onClick={onClick}
-    aria-label="Previous show"
-  />
+    className="absolute left-[-20px] top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-2xl hover:bg-indigo-600 transition-colors hidden md:flex"
+  >
+    <FiChevronLeft size={24} />
+  </motion.button>
 );
 
-const CustomNextArrow = ({ className, onClick }) => (
-  <button
-    type="button"
-    className={`${className} carousel-3d-arrow carousel-3d-arrow-next`}
+const CustomNextArrow = ({ onClick }) => (
+  <motion.button
+    whileHover={{ scale: 1.1, x: 5 }}
+    whileTap={{ scale: 0.9 }}
     onClick={onClick}
-    aria-label="Next show"
-  />
+    className="absolute right-[-20px] top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-2xl hover:bg-indigo-600 transition-colors hidden md:flex"
+  >
+    <FiChevronRight size={24} />
+  </motion.button>
 );
 
 const Carousel = ({ onSlideClick }) => {
   const { isDark } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const [shows, setShows] = useState([]);
-  const [slidesToShow, setSlidesToShow] = useState(3);
   const navigate = useNavigate();
-
-  const totalShows = shows.length;
-  const visibleSlides = Math.max(1, Math.min(slidesToShow, totalShows || 1));
-  const shouldLoop = totalShows > 1;
   const sliderRef = React.useRef(null);
 
   useEffect(() => {
     const fetchSlides = async () => {
       try {
         const data = await fetchShows();
-        setShows(Array.isArray(data) ? data : []);
+        // Add some mock data if empty for demo or fallback
+        setShows(Array.isArray(data) && data.length > 0 ? data : []);
       } catch (error) {
         console.error('Failed to fetch slides:', error);
       }
     };
-
     fetchSlides();
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 640) {
-        setSlidesToShow(1);
-      } else if (window.innerWidth <= 1024) {
-        setSlidesToShow(2);
-      } else {
-        setSlidesToShow(3);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
   }, []);
 
   const settings = {
     dots: true,
-    infinite: shouldLoop,
-    speed: 800,
-    cssEase: 'cubic-bezier(0.22, 1, 0.36, 1)',
-    slidesToShow: visibleSlides,
+    infinite: shows.length > 1,
+    speed: 1000,
+    cssEase: 'cubic-bezier(0.23, 1, 0.32, 1)',
+    slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: totalShows > 1,
-    autoplaySpeed: 2000,
-    pauseOnHover: true,
-    arrows: totalShows > 1,
-    centerMode: totalShows > 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    arrows: true,
+    centerMode: true,
     centerPadding: '0px',
-    initialSlide: 0,
     swipeToSlide: true,
-    draggable: true,
     focusOnSelect: true,
-    afterChange: (next) => {
-      setActiveIndex(next);
-    },
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
-  };
-
-  const getSlideStateClass = (index) => {
-    if (totalShows <= 1) return 'is-active';
-
-    const rightDistance = (index - activeIndex + totalShows) % totalShows;
-    const leftDistance = (activeIndex - index + totalShows) % totalShows;
-
-    if (rightDistance === 0) return 'is-active';
-    if (rightDistance === 1) return 'is-next';
-    if (leftDistance === 1) return 'is-prev';
-    if (rightDistance === 2) return 'is-next-2';
-    if (leftDistance === 2) return 'is-prev-2';
-    return 'is-far';
+    beforeChange: (current, next) => setActiveIndex(next),
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          centerMode: true,
+        }
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          centerMode: true,
+          centerPadding: '20px',
+          arrows: false,
+        }
+      }
+    ],
+    appendDots: dots => (
+      <div className="mt-8">
+        <ul className="flex justify-center gap-2"> {dots} </ul>
+      </div>
+    ),
+    customPaging: i => (
+      <div className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${i === activeIndex ? 'w-8 bg-indigo-500' : 'bg-slate-300 dark:bg-slate-700'}`} />
+    )
   };
 
   const handleSlideClick = (item) => {
-    if (onSlideClick) {
-      onSlideClick(item);
-    }
-
+    if (onSlideClick) onSlideClick(item);
     navigate('/booking-manual', { state: { event: item } });
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={`carousel-3d-container ${isDark ? 'dark-mode' : ''}`}
-    >
-      <h2 className="carousel-3d-title">Trending Shows</h2>
-
-      <Slider {...settings} ref={sliderRef} className="carousel-3d-track">
+    <div className={`relative px-2 sm:px-6 ${isDark ? 'dark' : ''}`}>
+      <Slider {...settings} ref={sliderRef}>
         {shows.map((item, index) => (
-          <div
-            key={item.id || item._id || `${item.title}-${index}`}
-            className={`carousel-3d-slide ${getSlideStateClass(index)}`}
-            onClick={() => handleSlideClick(item)}
-          >
-            <img src={item.image} alt={item.title} className="carousel-3d-image" />
-            <div className="carousel-3d-overlay">
-              <h3 className="carousel-3d-slide-title">{item.title}</h3>
-              <p className="carousel-3d-meta">{item.date} • {item.time}</p>
-              <p className="carousel-3d-meta">{item.location}</p>
-              <p className="carousel-3d-price">{item.price}</p>
-            </div>
+          <div key={item.id || index} className="px-3 py-4 outline-none">
+            <motion.div
+              animate={{
+                scale: activeIndex === index ? 1 : 0.9,
+                opacity: activeIndex === index ? 1 : 0.6,
+                y: activeIndex === index ? 0 : 10
+              }}
+              transition={{ duration: 0.6 }}
+              onClick={() => handleSlideClick(item)}
+              className="relative group cursor-pointer"
+            >
+              {/* Image Container */}
+              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 dark:border-slate-800/50">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80" />
+
+                {/* Badge */}
+                <div className="absolute top-6 left-6 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-black uppercase tracking-widest text-white flex items-center gap-1.5">
+                  <FiStar className="text-yellow-400 fill-yellow-400" />
+                  Premium Show
+                </div>
+
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 w-full p-8 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-2xl font-heading font-black text-white mb-3 line-clamp-1">{item.title}</h3>
+                  <div className="space-y-2 mb-6">
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-300">
+                      <FiCalendar className="text-indigo-400" />
+                      {item.date} • {item.time}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs font-medium text-slate-300">
+                      <FiMapPin className="text-indigo-400" />
+                      {item.location}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-black text-indigo-400">₹{item.price}</span>
+                    <motion.div
+                      whileHover={{ x: 5 }}
+                      className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white"
+                    >
+                      <FiChevronRight size={20} />
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Hover Glow */}
+              <div className="absolute -inset-4 bg-indigo-500/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            </motion.div>
           </div>
         ))}
       </Slider>
-    </motion.div>
+    </div>
   );
 };
 

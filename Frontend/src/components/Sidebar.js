@@ -1,10 +1,10 @@
 import ThemeToggleButton from './ThemeToggleButton';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiHome, FiBarChart2, FiDollarSign, FiTag, FiSettings,
-  FiChevronRight, FiCalendar, FiChevronLeft
+  FiChevronRight, FiCalendar, FiChevronLeft, FiLogOut
 } from 'react-icons/fi';
 import { useTheme } from '../pages/ThemeContext';
 
@@ -16,139 +16,111 @@ const Sidebar = () => {
   });
 
   useEffect(() => {
-    const width = isCollapsed ? '5rem' : '16rem';
+    const width = isCollapsed ? '5.5rem' : '18rem';
     document.documentElement.style.setProperty('--admin-sidebar-width', width);
     localStorage.setItem('adminSidebarCollapsed', String(isCollapsed));
   }, [isCollapsed]);
 
   const links = [
-    { name: 'Dashboard', path: '/admindashboard', icon: FiHome },
+    { name: 'Insights', path: '/admindashboard', icon: FiHome },
     { name: 'Analytics', path: '/adminanalytics', icon: FiBarChart2 },
-    { name: 'Manage Shows', path: '/adminshows', icon: FiCalendar },
-    { name: 'Total Earnings', path: '/admintotalearning', icon: FiDollarSign },
-    { name: 'Special Offers', path: '/adminSpecialOffers', icon: FiTag },
-    { name: 'Settings', path: '/adminsettings', icon: FiSettings }
+    { name: 'Schedule', path: '/adminshows', icon: FiCalendar },
+    { name: 'Revenue', path: '/admintotalearning', icon: FiDollarSign },
+    { name: 'Promotions', path: '/adminSpecialOffers', icon: FiTag },
+    { name: 'Management', path: '/adminsettings', icon: FiSettings }
   ];
 
   return (
-    <div className={`fixed inset-y-0 left-0 ${isCollapsed ? 'w-20' : 'w-64'} ${isDark
-      ? 'bg-gray-900 border-r border-gray-800'
-      : 'bg-white border-r border-gray-200'
-      } shadow-2xl z-50 flex flex-col transition-all duration-300`}>
+    <div className={`fixed inset-y-0 left-0 ${isCollapsed ? 'w-[5.5rem]' : 'w-[18rem]'} z-50 flex flex-col transition-all duration-500 ease-[0.22, 1, 0.36, 1]`}>
+      <div className={`h-full m-4 glass-premium rounded-[2.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl flex flex-col overflow-hidden`}>
 
-      {/* Logo/Header */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between gap-3'}`}
-        >
-          <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-            <img src="/chat-ticket-logo.svg" alt="ChatTicket logo" className="w-10 h-10 drop-shadow-lg" />
-            {!isCollapsed && (
-              <div>
-                <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent leading-tight tracking-tight">
-                  ChatTicket
-                </h2>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
-              </div>
-            )}
-          </div>
-
-          {!isCollapsed && (
-            <button
-              type="button"
-              onClick={() => setIsCollapsed(true)}
-              className={`rounded-lg p-2 transition-all ${isDark ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
-              aria-label="Collapse sidebar"
-            >
-              <FiChevronLeft className="h-4 w-4" />
-            </button>
-          )}
-        </motion.div>
-      </div>
-
-      {/* Navigation Links */}
-      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-        {links.map((link, index) => {
-          const Icon = link.icon;
-          const isActive = location.pathname === link.path;
-
-          return (
+        {/* Header Section */}
+        <div className="p-6">
+          <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
             <motion.div
-              key={link.name}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.4 }}
+              layout
+              className="flex items-center gap-3"
             >
-              <Link
-                to={link.path}
-                className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive
-                  ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/50'
-                  : isDark
-                    ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                  } ${isCollapsed ? 'justify-center px-2' : ''}`}
-              >
-                {/* Active Indicator */}
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute left-0 w-1 h-8 bg-white rounded-r-full"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
+              <div className="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 shadow-xl flex items-center justify-center p-2 group shadow-indigo-500/10">
+                <img src="/chat-ticket-logo.svg" alt="Logo" className="w-full h-full group-hover:scale-110 transition-transform" />
+              </div>
+              {!isCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="overflow-hidden"
+                >
+                  <h2 className="text-xl font-heading font-black tracking-tight gradient-text">
+                    ChatTicket
+                  </h2>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Hub</p>
+                </motion.div>
+              )}
+            </motion.div>
 
-                <Icon className={`w-5 h-5 ${isActive
-                  ? 'text-white'
-                  : 'group-hover:scale-110 transition-transform'
-                  }`} />
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors"
+            >
+              <FiChevronLeft className={`transition-transform duration-500 ${isCollapsed ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
+        </div>
+
+        {/* Navigation Section */}
+        <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+          {links.map((link, idx) => {
+            const Icon = link.icon;
+            const isActive = location.pathname === link.path;
+
+            return (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`flex items-center gap-4 px-4 py-4 rounded-[1.5rem] transition-all duration-300 group relative ${isActive
+                    ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20'
+                    : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40 hover:text-indigo-500 dark:hover:text-indigo-400'
+                  }`}
+              >
+                <div className={`flex items-center justify-center ${isCollapsed ? 'w-full' : ''}`}>
+                  <Icon className={`text-xl transition-transform group-hover:scale-110 ${isActive ? 'text-white' : ''}`} />
+                </div>
 
                 {!isCollapsed && (
-                  <span className="font-heading font-semibold flex-1 tracking-tight">
+                  <span className="font-heading font-bold text-sm tracking-tight flex-1">
                     {link.name}
                   </span>
                 )}
 
-                {!isCollapsed && (
-                  <FiChevronRight className={`w-4 h-4 transform transition-all ${isActive
-                    ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
-                    }`} />
+                {isActive && !isCollapsed && (
+                  <motion.div layoutId="sidebar-active" className="w-1.5 h-1.5 rounded-full bg-white" />
+                )}
+
+                {isCollapsed && isActive && (
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-white rounded-l-full" />
                 )}
               </Link>
-            </motion.div>
-          );
-        })}
-      </nav>
+            );
+          })}
+        </nav>
 
-      {/* Return to Home Button */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800 flex flex-col items-center gap-3">
-        <div className="w-full flex justify-center">
-          <ThemeToggleButton isCollapsed={isCollapsed} />
+        {/* Bottom Section */}
+        <div className="p-4 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-200/50 dark:border-slate-800/50">
+          <div className="flex flex-col gap-2">
+            <div className={`flex items-center gap-3 ${isCollapsed ? 'justify-center' : 'px-2'}`}>
+              <ThemeToggleButton isCollapsed={isCollapsed} />
+              {!isCollapsed && <span className="text-xs font-black text-slate-400 uppercase tracking-widest flex-1">Theme</span>}
+            </div>
+
+            <Link
+              to="/"
+              className={`flex items-center gap-4 px-4 py-4 rounded-3xl transition-all hover:bg-rose-500/10 text-rose-500 group ${isCollapsed ? 'justify-center' : ''}`}
+            >
+              <FiLogOut className="text-xl group-hover:scale-110 transition-transform" />
+              {!isCollapsed && <span className="font-heading font-bold text-sm">Exit System</span>}
+            </Link>
+          </div>
         </div>
-        {isCollapsed && (
-          <button
-            type="button"
-            onClick={() => setIsCollapsed(false)}
-            className={`flex w-full items-center justify-center rounded-xl p-2 transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-            aria-label="Expand sidebar"
-          >
-            <FiChevronRight className="h-4 w-4" />
-          </button>
-        )}
-
-        <Link
-          to="/"
-          className={`flex items-center justify-center ${isCollapsed ? '' : 'gap-2'} py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 text-base tracking-tight ${isDark
-            ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-        >
-          <FiHome className="w-4 h-4" />
-          {!isCollapsed && 'Return to Home'}
-        </Link>
       </div>
     </div>
   );
