@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { FiStar, FiArrowRight, FiInfo } from 'react-icons/fi';
 
 const BookShowsHero = ({ onShowAboutMuseum }) => {
+    const navigate = useNavigate();
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -23,6 +26,7 @@ const BookShowsHero = ({ onShowAboutMuseum }) => {
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <motion.button
+                    onClick={() => navigate('/shows')}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-indigo-600 text-white font-black shadow-2xl shadow-indigo-600/30 flex items-center justify-center gap-3 group"

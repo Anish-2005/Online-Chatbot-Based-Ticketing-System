@@ -49,22 +49,28 @@ const StatItem = ({ value, suffix = '', label }) => {
 };
 
 /* ─── Navbar component ──────────────────────────────── */
-const Navbar = ({ isDark, navigate, handleAdminLogin, currentUser }) => {
+const Navbar = ({ isDark, navigate, handleAdminLogin, user }) => {
   const { scrollY } = useScroll();
-  const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.9]);
-  const borderOpacity = useTransform(scrollY, [0, 100], [0, 0.1]);
+  const bgOpacity = useTransform(scrollY, [0, 40], [0, 0.98]);
+  const borderOpacity = useTransform(scrollY, [0, 40], [0, 0.2]);
+  const blurValue = useTransform(scrollY, [0, 40], [0, 32]);
+
+  const backgroundColor = useTransform(bgOpacity, (o) =>
+    isDark ? `rgba(2, 6, 23, ${o})` : `rgba(255, 255, 255, ${o})`
+  );
+  const borderColor = useTransform(borderOpacity, (o) =>
+    isDark ? `rgba(30, 41, 59, ${o})` : `rgba(226, 232, 240, ${o})`
+  );
+  const backdropFilter = useTransform(blurValue, (v) => `blur(${v}px)`);
 
   return (
     <motion.nav
       className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 border-b transition-all duration-300"
       style={{
-        backgroundColor: isDark
-          ? `rgba(2, 6, 23, ${bgOpacity.get?.() ?? 0})`
-          : `rgba(255, 255, 255, ${bgOpacity.get?.() ?? 0})`,
-        borderColor: isDark
-          ? `rgba(30, 41, 59, ${borderOpacity.get?.() ?? 0})`
-          : `rgba(226, 232, 240, ${borderOpacity.get?.() ?? 0})`,
-        backdropFilter: `blur(${scrollY.get?.() > 20 ? '12px' : '0px'})`
+        backgroundColor,
+        borderColor,
+        backdropFilter,
+        WebkitBackdropFilter: backdropFilter // For Safari support
       }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between h-20">
@@ -85,30 +91,28 @@ const Navbar = ({ isDark, navigate, handleAdminLogin, currentUser }) => {
         <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggleButton isCollapsed={true} />
 
-          {!currentUser ? (
-            <>
-              <motion.button
-                onClick={handleAdminLogin}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${isDark
-                  ? 'bg-slate-900/50 text-slate-300 hover:bg-slate-800 border border-slate-800'
-                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
-                  }`}
-              >
-                <VscAccount size={16} />
-                Admin
-              </motion.button>
+          <motion.button
+            onClick={handleAdminLogin}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${isDark
+              ? 'bg-slate-900/50 text-slate-300 hover:bg-slate-800 border border-slate-800'
+              : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
+              }`}
+          >
+            <VscAccount size={16} />
+            Admin
+          </motion.button>
 
-              <motion.button
-                onClick={() => navigate('/login')}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-xl shadow-indigo-500/20 active:shadow-indigo-500/10 transition-all font-heading"
-              >
-                Sign In
-              </motion.button>
-            </>
+          {!user ? (
+            <motion.button
+              onClick={() => navigate('/login')}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-xl shadow-indigo-500/20 active:shadow-indigo-500/10 transition-all font-heading"
+            >
+              Sign In
+            </motion.button>
           ) : (
             <motion.button
               onClick={() => navigate('/bookshows')}
@@ -152,10 +156,22 @@ const FeatureCard = ({ icon: Icon, title, description, gradient, delay }) => (
 function Home() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
-  const { currentUser } = useAuth();
+  const { user } = useAuth();
 
+  const handleAdminLogin = () => {
+    const enteredPin = prompt('Enter Admin PIN:');
+    if (enteredPin === null) return; // User cancelled
 
-  const handleAdminLogin = () => navigate('/admindashboard');
+    // Correctly trim the input
+    const cleanPin = enteredPin.trim();
+    const targetPin = process.env.REACT_APP_ADMIN_PIN || '1430';
+
+    if (cleanPin === targetPin) {
+      navigate('/admindashboard');
+    } else {
+      alert('Invalid PIN. Access Denied.');
+    }
+  };
 
   const features = [
     {
@@ -198,7 +214,7 @@ function Home() {
 
   return (
     <div className={`min-h-screen w-full ${isDark ? 'dark bg-slate-950' : 'bg-white'} overflow-hidden selection:bg-indigo-500/30`}>
-      <Navbar isDark={isDark} navigate={navigate} handleAdminLogin={handleAdminLogin} currentUser={currentUser} />
+      <Navbar isDark={isDark} navigate={navigate} handleAdminLogin={handleAdminLogin} user={user} />
 
       {/* ─── HERO SECTION ─── */}
       <section className="relative min-h-screen flex items-center pt-24 pb-12 bg-mesh">
@@ -217,24 +233,24 @@ function Home() {
               </span>
             </div>
 
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-heading font-black leading-[0.95] tracking-tight">
+            <h1 className="text-4xl sm:text-7xl lg:text-8xl font-heading font-black leading-[1.1] sm:leading-[0.95] tracking-tight">
               <span className="gradient-text pb-2 block">Premium</span>
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Museum</span>
-              <br />
+              <br className="hidden sm:block" />
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Tickets.</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 font-medium max-w-lg mx-auto lg:mx-0 leading-relaxed opacity-90">
+            <p className="text-base sm:text-xl text-slate-600 dark:text-slate-400 font-medium max-w-lg mx-auto lg:mx-0 leading-relaxed opacity-90">
               The world's most advanced museum booking platform.
               Powered by AI, designed for elegance, built for speed.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start">
               <motion.button
                 onClick={() => navigate('/bookshows')}
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.95 }}
-                className="group flex items-center justify-center gap-3 px-10 py-5 rounded-2xl font-heading font-black text-lg bg-indigo-600 text-white shadow-2xl shadow-indigo-500/30 hover:bg-indigo-700 transition-all"
+                className="group flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-heading font-black text-base sm:text-lg bg-indigo-600 text-white shadow-2xl shadow-indigo-500/30 hover:bg-indigo-700 transition-all"
               >
                 Book Now
                 <FaArrowRight className="group-hover:translate-x-1.5 transition-transform" />
@@ -244,7 +260,7 @@ function Home() {
                 onClick={() => navigate('/events')}
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex items-center justify-center gap-3 px-10 py-5 rounded-2xl font-heading font-black text-lg border-2 transition-all ${isDark
+                className={`flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-heading font-black text-base sm:text-lg border-2 transition-all ${isDark
                   ? 'border-indigo-800/50 text-indigo-300 hover:bg-indigo-900/20'
                   : 'border-slate-200 text-slate-700 hover:border-indigo-200 hover:bg-slate-50'
                   }`}
@@ -387,31 +403,31 @@ function Home() {
             viewport={{ once: true }}
             className="space-y-12"
           >
-            <h2 className="text-6xl sm:text-7xl lg:text-8xl font-heading font-black text-white tracking-tight leading-[0.9]">
+            <h2 className="text-4xl sm:text-7xl lg:text-8xl font-heading font-black text-white tracking-tight leading-[1.1] sm:leading-[0.9]">
               Start your
               <br />
               <span className="gradient-text">Journey today.</span>
             </h2>
-            <p className="text-xl sm:text-2xl text-slate-300 font-medium max-w-2xl mx-auto opacity-70">
+            <p className="text-lg sm:text-2xl text-slate-300 font-medium max-w-2xl mx-auto opacity-70">
               Join the elite circle of museum enthusiasts. Experience culture with ChatTicket.
             </p>
-            <div className="pt-6 flex flex-col sm:flex-row gap-5 justify-center">
+            <div className="pt-6 flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center">
               <motion.button
                 onClick={() => navigate('/bookshows')}
                 whileHover={{ scale: 1.05, y: -4 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-3 px-12 py-6 rounded-[2rem] font-heading font-black text-xl bg-white text-indigo-700 shadow-2xl transition-all"
+                className="flex items-center justify-center gap-3 px-10 py-5 sm:px-12 sm:py-6 rounded-[2rem] font-heading font-black text-lg sm:text-xl bg-white text-indigo-700 shadow-2xl transition-all"
               >
-                {currentUser ? 'Go to Bookings' : 'Book Now'}
+                {user ? 'Go to Bookings' : 'Book Now'}
                 <FaArrowRight />
               </motion.button>
 
-              {!currentUser && (
+              {!user && (
                 <motion.button
                   onClick={() => navigate('/login')}
                   whileHover={{ scale: 1.05, y: -4 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center justify-center gap-3 px-12 py-6 rounded-[2rem] font-heading font-black text-xl text-white border-2 border-white/20 hover:bg-white/10 transition-all"
+                  className="flex items-center justify-center gap-3 px-10 py-5 sm:px-12 sm:py-6 rounded-[2rem] font-heading font-black text-lg sm:text-xl text-white border-2 border-white/20 hover:bg-white/10 transition-all"
                 >
                   Sign In
                 </motion.button>
