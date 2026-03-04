@@ -2,13 +2,14 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   runTransaction,
   serverTimestamp,
+  query,
+  where,
 } from 'firebase/firestore';
 import { auth, db } from './firebase';
-import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://online-chatbot-based-ticketing-system-4whh.onrender.com';
 
 export const getShowById = async (showId) => {
   const showRef = doc(db, 'shows', showId);
@@ -149,7 +150,7 @@ export const processShowPayment = async ({
 
 
 
-import { query, where, collection, getDocs } from 'firebase/firestore'; // Note: Ensure these are imported at the top if not already
+
 
 export const getMyPaidTickets = async () => {
   const userEmail = auth.currentUser?.email;
