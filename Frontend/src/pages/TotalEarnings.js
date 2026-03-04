@@ -57,10 +57,12 @@ const TotalEarningsPage = ({ role }) => {
   };
 
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark bg-slate-950' : 'bg-slate-50'} bg-mesh selection:bg-indigo-500/30`}>
       <Sidebar role={role} />
 
-      <div className="flex-1 p-8 transition-all duration-300" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
+      <div className="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 overflow-x-hidden min-w-0" style={{ marginLeft: 'var(--admin-sidebar-width, 0rem)' }}>
+        {/* Mobile Spacer */}
+        <div className="h-20 lg:hidden" />
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -68,8 +70,8 @@ const TotalEarningsPage = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
-                Total Earnings
+              <h1 className="text-4xl sm:text-5xl font-heading font-black tracking-tight mb-2">
+                Revenue <span className="gradient-text">Stream.</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
                 Comprehensive breakdown of all revenue streams
@@ -89,15 +91,14 @@ const TotalEarningsPage = ({ role }) => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className={`rounded-2xl p-8 mb-8 shadow-xl relative overflow-hidden ${
-                isDark 
-                  ? 'bg-gradient-to-br from-emerald-900 to-teal-900 border border-emerald-700' 
+              className={`rounded-2xl p-8 mb-8 shadow-xl relative overflow-hidden ${isDark
+                  ? 'bg-gradient-to-br from-emerald-900 to-teal-900 border border-emerald-700'
                   : 'bg-gradient-to-br from-emerald-500 to-teal-600'
-              }`}
+                }`}
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
               <div className="absolute bottom-0 left-0 w- h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
-              
+
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -131,13 +132,13 @@ const TotalEarningsPage = ({ role }) => {
               <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
                 Revenue by Show
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((item, index) => {
                   const Icon = getCategoryIcon(index);
                   const palette = colorSets[index % colorSets.length];
                   const percentage = totalEarnings > 0 ? ((item.value / totalEarnings) * 100).toFixed(1) : '0.0';
-                  
+
                   return (
                     <motion.div
                       key={item.key}
@@ -145,11 +146,10 @@ const TotalEarningsPage = ({ role }) => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + index * 0.1 }}
                       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                      className={`rounded-2xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl ${
-                        isDark 
-                          ? 'bg-gray-800 border border-gray-700' 
+                      className={`rounded-2xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl ${isDark
+                          ? 'bg-gray-800 border border-gray-700'
                           : 'bg-white border border-gray-200'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className={`p-3 rounded-xl ${palette.bg}`}>
@@ -159,17 +159,17 @@ const TotalEarningsPage = ({ role }) => {
                           {percentage}%
                         </span>
                       </div>
-                      
+
                       <h3 className="text-gray-600 dark:text-gray-400 text-xs font-heading font-semibold mb-2 capitalize uppercase tracking-wide">
                         {item.name}
                       </h3>
-                      
+
                       <div className="flex items-baseline gap-2">
                         <p className="text-3xl font-heading font-bold text-gray-900 dark:text-white leading-tight">
                           {formatCurrency(item.value)}
                         </p>
                       </div>
-                      
+
                       <div className="mt-4 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}

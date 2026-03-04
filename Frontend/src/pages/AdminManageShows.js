@@ -87,19 +87,21 @@ const AdminManageShows = () => {
   };
 
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark bg-slate-950' : 'bg-slate-50'} bg-mesh selection:bg-indigo-500/30`}>
       <Sidebar />
 
-      <div className="flex-1 p-8 transition-all duration-300" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
+      <div className="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 overflow-x-hidden min-w-0" style={{ marginLeft: 'var(--admin-sidebar-width, 0rem)' }}>
+        {/* Mobile Spacer */}
+        <div className="h-20 lg:hidden" />
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-2">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent leading-tight tracking-tight mb-2">
-                Manage Shows
+              <h1 className="text-4xl sm:text-5xl font-heading font-black tracking-tight mb-2">
+                Show <span className="gradient-text">Manager.</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-3xl">
                 Add new shows that users can see and book from the Book Shows page.
@@ -140,9 +142,8 @@ const AdminManageShows = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             onSubmit={handleSubmit}
-            className={`lg:col-span-2 rounded-2xl shadow-lg p-6 space-y-5 ${
-              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
-            }`}
+            className={`lg:col-span-2 rounded-2xl shadow-lg p-6 space-y-5 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
+              }`}
           >
             <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white flex items-center gap-3">
               <FiPlusCircle className="text-violet-600 dark:text-violet-400" />
@@ -206,9 +207,8 @@ const AdminManageShows = () => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className={`rounded-2xl shadow-lg p-6 ${
-              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
-            }`}
+            className={`rounded-2xl shadow-lg p-6 ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-100'
+              }`}
           >
             <h3 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-4">Recently Available</h3>
             <div className="space-y-3 max-h-[520px] overflow-auto pr-1">
@@ -219,9 +219,8 @@ const AdminManageShows = () => {
               ) : shows.slice(0, 8).map((show, index) => (
                 <div
                   key={show.id || show._id || `${show.title}-${index}`}
-                  className={`rounded-xl p-4 border ${
-                    isDark ? 'border-gray-700 bg-gray-900/40' : 'border-gray-200 bg-gray-50'
-                  }`}
+                  className={`rounded-xl p-4 border ${isDark ? 'border-gray-700 bg-gray-900/40' : 'border-gray-200 bg-gray-50'
+                    }`}
                 >
                   <p className="font-heading font-semibold text-gray-900 dark:text-white">{show.title}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{show.date} • {show.time}</p>

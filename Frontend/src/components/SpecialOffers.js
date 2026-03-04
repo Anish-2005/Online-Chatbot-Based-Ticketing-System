@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
 import { useTheme } from '../pages/ThemeContext';
-import { FiTag, FiCalendar, FiPercent, FiGift } from 'react-icons/fi';
+import { FiTag, FiCalendar, FiPercent, FiGift, FiMenu } from 'react-icons/fi';
 import { createSpecialOffer, fetchSpecialOffers, updateSpecialOfferStatus } from '../services/offers';
 
 const initialForm = {
@@ -99,10 +99,12 @@ const SpecialOffers = ({ role }) => {
   };
 
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark bg-slate-950' : 'bg-slate-50'} bg-mesh selection:bg-indigo-500/30`}>
       <Sidebar role={role} />
 
-      <div className="flex-1 p-8 transition-all duration-300" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
+      <div className="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 overflow-x-hidden min-w-0" style={{ marginLeft: 'var(--admin-sidebar-width, 0rem)' }}>
+        {/* Mobile Spacer */}
+        <div className="h-20 lg:hidden" />
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -110,8 +112,8 @@ const SpecialOffers = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
-                Special Offers & Promotions
+              <h1 className="text-4xl sm:text-5xl font-heading font-black tracking-tight mb-2">
+                Promotional <span className="gradient-text">Hub.</span>
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
                 Exclusive deals and promotional campaigns
@@ -183,66 +185,65 @@ const SpecialOffers = ({ role }) => {
             <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-indigo-600" />
           </div>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {offers.map((offer, index) => {
-            const Icon = index % 4 === 0 ? FiPercent : index % 4 === 1 ? FiGift : index % 4 === 2 ? FiTag : FiCalendar;
-            const palette = colorSets[index % colorSets.length];
-            
-            return (
-              <motion.div
-                key={offer.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -8, transition: { duration: 0.2 } }}
-                className={`group relative rounded-2xl p-6 shadow-lg transition-all duration-300 hover:shadow-2xl overflow-hidden ${
-                  isDark 
-                    ? 'bg-gray-800 border border-gray-700' 
-                    : 'bg-white border border-gray-200'
-                }`}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${palette.surface} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                
-                <div className="absolute top-4 right-4">
-                  <div className={`px-4 py-2 rounded-full bg-gradient-to-r ${palette.badge} text-white font-heading font-bold text-sm shadow-lg tracking-tight`}>
-                    {offer.discountLabel || 'Offer'}
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {offers.map((offer, index) => {
+              const Icon = index % 4 === 0 ? FiPercent : index % 4 === 1 ? FiGift : index % 4 === 2 ? FiTag : FiCalendar;
+              const palette = colorSets[index % colorSets.length];
 
-                <div className="relative z-10">
-                  <div className={`inline-flex p-3 rounded-xl mb-4 ${palette.icon}`}>
-                    <Icon className="w-8 h-8" />
+              return (
+                <motion.div
+                  key={offer.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className={`group relative rounded-2xl p-6 shadow-lg transition-all duration-300 hover:shadow-2xl overflow-hidden ${isDark
+                      ? 'bg-gray-800 border border-gray-700'
+                      : 'bg-white border border-gray-200'
+                    }`}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${palette.surface} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+
+                  <div className="absolute top-4 right-4">
+                    <div className={`px-4 py-2 rounded-full bg-gradient-to-r ${palette.badge} text-white font-heading font-bold text-sm shadow-lg tracking-tight`}>
+                      {offer.discountLabel || 'Offer'}
+                    </div>
                   </div>
 
-                  <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-2 leading-tight">
-                    {offer.title}
-                  </h3>
+                  <div className="relative z-10">
+                    <div className={`inline-flex p-3 rounded-xl mb-4 ${palette.icon}`}>
+                      <Icon className="w-8 h-8" />
+                    </div>
 
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 font-medium">
-                    {offer.description}
-                  </p>
+                    <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-2 leading-tight">
+                      {offer.title}
+                    </h3>
 
-                  <div className="flex items-center gap-2 text-sm font-medium">
-                    <FiCalendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Valid until: <span className="font-heading font-bold text-gray-900 dark:text-white">{offer.validUntil}</span>
-                    </span>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4 font-medium">
+                      {offer.description}
+                    </p>
+
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <FiCalendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Valid until: <span className="font-heading font-bold text-gray-900 dark:text-white">{offer.validUntil}</span>
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => toggleOffer(offer)}
+                      type="button"
+                      className={`mt-6 w-full py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 bg-gradient-to-r ${palette.button} text-white hover:shadow-lg hover:scale-105`}
+                    >
+                      {offer.isActive ? 'Deactivate Offer' : 'Activate Offer'}
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => toggleOffer(offer)}
-                    type="button"
-                    className={`mt-6 w-full py-3 px-4 rounded-xl font-heading font-semibold transition-all duration-300 bg-gradient-to-r ${palette.button} text-white hover:shadow-lg hover:scale-105`}
-                  >
-                    {offer.isActive ? 'Deactivate Offer' : 'Activate Offer'}
-                  </button>
-                </div>
-
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${palette.bottom}`}></div>
-              </motion.div>
-            );
-          })}
-        </div>
+                  <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${palette.bottom}`}></div>
+                </motion.div>
+              );
+            })}
+          </div>
         )}
 
       </div>

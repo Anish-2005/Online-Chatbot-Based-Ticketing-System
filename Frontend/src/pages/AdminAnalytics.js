@@ -46,9 +46,8 @@ const AdminAnalyticsPage = ({ role }) => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className={`rounded-lg shadow-xl border p-3 ${
-          isDark ? 'bg-gray-800 border-violet-500/50' : 'bg-white border-violet-200'
-        }`}>
+        <div className={`rounded-lg shadow-xl border p-3 ${isDark ? 'bg-gray-800 border-violet-500/50' : 'bg-white border-violet-200'
+          }`}>
           <p className={`font-semibold mb-2 ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>
             {label}
           </p>
@@ -85,11 +84,13 @@ const AdminAnalyticsPage = ({ role }) => {
   }, [analyticsData]);
 
   return (
-    <div className={`flex min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`flex min-h-screen ${isDark ? 'dark bg-slate-950' : 'bg-slate-50'} bg-mesh selection:bg-indigo-500/30`}>
       <Sidebar role={role} />
 
       {/* Main Content */}
-      <div className="flex-1 p-8 transition-all duration-300" style={{ marginLeft: 'var(--admin-sidebar-width, 16rem)' }}>
+      <div className="flex-1 p-4 sm:p-6 lg:p-10 transition-all duration-300 overflow-x-hidden min-w-0" style={{ marginLeft: 'var(--admin-sidebar-width, 0rem)' }}>
+        {/* Mobile Spacer */}
+        <div className="h-20 lg:hidden" />
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -117,9 +118,8 @@ const AdminAnalyticsPage = ({ role }) => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
-              className={`p-6 rounded-2xl ${
-                isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
-              } shadow-lg hover:shadow-xl transition-all duration-300`}
+              className={`p-6 rounded-2xl ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+                } shadow-lg hover:shadow-xl transition-all duration-300`}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className={`p-3 rounded-xl ${isDark ? 'bg-violet-900/20 text-violet-300' : 'bg-violet-100 text-violet-700'}`}>
@@ -139,9 +139,8 @@ const AdminAnalyticsPage = ({ role }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className={`rounded-2xl p-6 shadow-lg ${
-              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
-            }`}
+            className={`rounded-2xl p-6 shadow-lg ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+              }`}
           >
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-2">
@@ -154,7 +153,7 @@ const AdminAnalyticsPage = ({ role }) => {
                 Daily bookings, tickets sold and revenue
               </p>
             </div>
-            
+
             {loading ? (
               <div className="flex items-center justify-center h-80">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
@@ -169,22 +168,22 @@ const AdminAnalyticsPage = ({ role }) => {
                   data={analyticsData?.bookingTrend || []}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
-                  <CartesianGrid 
-                    strokeDasharray="3 3" 
+                  <CartesianGrid
+                    strokeDasharray="3 3"
                     stroke={chartStyles.gridStroke}
                     opacity={0.5}
                   />
-                  <XAxis 
+                  <XAxis
                     dataKey="name"
                     stroke={chartStyles.textColor}
                     tick={{ fontSize: 12 }}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke={chartStyles.textColor}
                     tick={{ fontSize: 12 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend 
+                  <Legend
                     wrapperStyle={{ paddingTop: '10px' }}
                     iconType="line"
                   />
@@ -219,9 +218,8 @@ const AdminAnalyticsPage = ({ role }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className={`rounded-2xl p-6 shadow-lg ${
-              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
-            }`}
+            className={`rounded-2xl p-6 shadow-lg ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+              }`}
           >
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-2">
@@ -234,7 +232,7 @@ const AdminAnalyticsPage = ({ role }) => {
                 Top shows by seats sold and occupancy
               </p>
             </div>
-            
+
             {loading ? (
               <div className="flex items-center justify-center h-80">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
@@ -249,38 +247,38 @@ const AdminAnalyticsPage = ({ role }) => {
                   data={analyticsData?.showPerformance || []}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
-                  <CartesianGrid 
-                    strokeDasharray="3 3" 
+                  <CartesianGrid
+                    strokeDasharray="3 3"
                     stroke={chartStyles.gridStroke}
                     opacity={0.5}
                   />
-                  <XAxis 
+                  <XAxis
                     dataKey="name"
                     stroke={chartStyles.textColor}
                     tick={{ fontSize: 12 }}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke={chartStyles.textColor}
                     tick={{ fontSize: 12 }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend wrapperStyle={{ paddingTop: '10px' }} />
-                  <Bar 
-                    dataKey="sold" 
-                    fill="#6C5CE7" 
-                    radius={[8, 8, 0, 0]} 
+                  <Bar
+                    dataKey="sold"
+                    fill="#6C5CE7"
+                    radius={[8, 8, 0, 0]}
                     name="Sold"
                   />
-                  <Bar 
-                    dataKey="left" 
-                    fill="#64748B" 
-                    radius={[8, 8, 0, 0]} 
+                  <Bar
+                    dataKey="left"
+                    fill="#64748B"
+                    radius={[8, 8, 0, 0]}
                     name="Left"
                   />
-                  <Bar 
-                    dataKey="occupancy" 
-                    fill="#00B894" 
-                    radius={[8, 8, 0, 0]} 
+                  <Bar
+                    dataKey="occupancy"
+                    fill="#00B894"
+                    radius={[8, 8, 0, 0]}
                     name="Occupancy %"
                   />
                 </BarChart>
