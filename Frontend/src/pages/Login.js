@@ -1,170 +1,182 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FiMail,
+  FiLock,
+  FiArrowRight,
+  FiEye,
+  FiEyeOff,
+  FiCheckCircle,
+  FiUser
+} from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
-import { FaTicketAlt, FaShieldAlt, FaArrowLeft } from 'react-icons/fa';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth } from '../services/firebase';
 import { useTheme } from './ThemeContext';
-import { useAuth } from './AuthContext';
-import ThemeToggleButton from '../components/ThemeToggleButton';
 
 const Login = () => {
-  const { isDark } = useTheme();
-  const { user, loginWithGoogle } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { isDark } = useTheme();
 
-  const fromPath = location.state?.from?.pathname || '/bookshows';
-
-  useEffect(() => {
-    if (user) {
-      navigate(fromPath, { replace: true });
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/admindashboard');
+    } catch (err) {
+      setError('Invalid email or password. Please try again.');
+    } finally {
+      setLoading(false);
     }
-  }, [user, fromPath, navigate]);
+  };
 
   const handleGoogleLogin = async () => {
+    setLoading(true);
     setError('');
-    setIsSubmitting(true);
-
+    const provider = new GoogleAuthProvider();
     try {
-      await loginWithGoogle();
-      navigate(fromPath, { replace: true });
-    } catch (loginError) {
-      setError(loginError?.message || 'Google sign-in failed. Please try again.');
+      await signInWithPopup(auth, provider);
+      navigate('/admindashboard');
+    } catch (err) {
+      setError('Google Sign-In failed. Please try again.');
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className={`min-h-screen w-full flex items-center justify-center px-4 relative overflow-hidden ${isDark ? 'bg-gray-950' : 'bg-white'
-        }`}
-    >
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <motion.div
-          animate={{ x: [0, 30, 0], y: [0, -30, 0] }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-violet-500/15 dark:bg-violet-500/8 blur-[100px]"
-        />
-        <motion.div
-          animate={{ x: [0, -20, 0], y: [0, 20, 0] }}
-          transition={{ duration: 25, repeat: Infinity }}
-          className="absolute -bottom-[20%] -left-[15%] w-[450px] h-[450px] rounded-full bg-indigo-500/15 dark:bg-indigo-500/8 blur-[100px]"
-        />
-        <motion.div
-          animate={{ x: [0, 15, 0], y: [0, 15, 0] }}
-          transition={{ duration: 22, repeat: Infinity }}
-          className="absolute top-[30%] left-[20%] w-[300px] h-[300px] rounded-full bg-indigo-500/8 dark:bg-indigo-500/5 blur-[80px]"
-        />
+    <div className={`min-h-screen relative flex items-center justify-center p-6 ${isDark ? 'bg-slate-950' : 'bg-slate-50'} overflow-hidden`}>
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] animate-float" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[100px] animate-pulse-subtle" />
       </div>
 
-      {/* Top bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between py-4">
-          <motion.button
-            onClick={() => navigate('/')}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${isDark
-                ? 'bg-gray-800/60 text-gray-300 hover:bg-gray-700 border border-gray-700/50'
-                : 'bg-white/60 text-gray-700 hover:bg-gray-100 border border-gray-200/60'
-              } backdrop-blur-sm`}
-          >
-            <FaArrowLeft className="w-3 h-3" />
-            Home
-          </motion.button>
-          <ThemeToggleButton isCollapsed={true} />
-        </div>
-      </div>
-
-      {/* Login Card */}
       <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className={`relative z-10 w-full max-w-md rounded-3xl border p-8 sm:p-10 ${isDark
-            ? 'bg-gray-900/80 border-gray-700/50 shadow-2xl shadow-violet-500/5'
-            : 'bg-white/80 border-gray-200/60 shadow-2xl shadow-violet-500/10'
-          } backdrop-blur-xl`}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full max-w-md z-10"
       >
-        {/* Logo & Brand */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
-            className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-xl shadow-violet-500/25 mb-5"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="inline-block p-4 rounded-3xl bg-white dark:bg-slate-900 shadow-2xl mb-6"
           >
-            <FaTicketAlt className="w-7 h-7 text-white" />
+            <img src="/chat-ticket-logo.svg" alt="Logo" className="w-12 h-12" />
           </motion.div>
 
-          <h1 className="text-3xl font-heading font-black tracking-tight text-gray-900 dark:text-white">
-            Welcome Back
+          <h1 className="text-4xl font-heading font-black text-slate-900 dark:text-white mb-2 tracking-tight">
+            Welcome <span className="gradient-text">Back.</span>
           </h1>
-          <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-            Sign in to book shows and manage your tickets
+          <p className="text-slate-500 dark:text-slate-400 font-medium">
+            Enter your credentials to access your dashboard.
           </p>
         </div>
 
-        {/* Google login button */}
-        <motion.button
-          onClick={handleGoogleLogin}
-          disabled={isSubmitting}
-          whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
-          whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-          className={`w-full flex items-center justify-center gap-3 px-5 py-4 rounded-2xl font-heading font-semibold text-base transition-all border-2 ${isDark
-              ? 'bg-gray-800 border-gray-600 text-white hover:bg-gray-700 hover:border-violet-600/50'
-              : 'bg-white border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-violet-400'
-            } ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
-        >
-          {isSubmitting ? (
-            <>
-              <div className="w-5 h-5 border-2 border-gray-400 border-t-violet-600 rounded-full animate-spin" />
-              Signing in...
-            </>
-          ) : (
-            <>
-              <FcGoogle className="w-6 h-6" />
-              Continue with Google
-            </>
-          )}
-        </motion.button>
+        <div className="glass-premium p-8 rounded-[2.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <AnimatePresence mode="wait">
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-bold flex items-center gap-3"
+                >
+                  <FiArrowRight className="rotate-180" />
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-        {/* Error message */}
-        {error && (
-          <motion.p
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 text-sm text-red-500 dark:text-red-400 font-medium text-center bg-red-50 dark:bg-red-900/20 rounded-xl px-4 py-3 border border-red-200 dark:border-red-800/40"
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">Email Address</label>
+              <div className="relative group">
+                <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium"
+                  placeholder="name@company.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between items-center ml-1">
+                <label className="text-xs font-black uppercase tracking-widest text-slate-400">Password</label>
+                <button type="button" className="text-xs font-black text-indigo-500 hover:text-indigo-600 transition-colors uppercase tracking-widest">Forgot?</button>
+              </div>
+              <div className="relative group">
+                <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-12 pr-12 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                >
+                  {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                </button>
+              </div>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              disabled={loading}
+              type="submit"
+              className="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-heading font-black text-lg shadow-xl shadow-indigo-500/25 flex items-center justify-center gap-3 group transition-all disabled:opacity-70"
+            >
+              {loading ? (
+                <div className="w-6 h-6 border-3 border-white/20 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  Sign In
+                  <FiArrowRight className="group-hover:translate-x-1.5 transition-transform" />
+                </>
+              )}
+            </motion.button>
+          </form>
+
+          <div className="relative my-10">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200 dark:border-slate-800"></div></div>
+            <div className="relative flex justify-center text-xs uppercase tracking-[0.3em] font-black text-slate-400"><span className="bg-transparent px-4">Or continue with</span></div>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
           >
-            {error}
-          </motion.p>
-        )}
-
-        {/* Divider */}
-        <div className="flex items-center gap-3 my-6">
-          <div className={`flex-1 h-px ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`} />
-          <span className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider">Secured</span>
-          <div className={`flex-1 h-px ${isDark ? 'bg-gray-700' : 'bg-gray-200'}`} />
+            <FcGoogle size={22} />
+            Google Workspace
+          </motion.button>
         </div>
 
-        {/* Trust badges */}
-        <div className="flex items-center justify-center gap-4 text-xs text-gray-400 dark:text-gray-500">
-          <div className="flex items-center gap-1.5">
-            <FaShieldAlt className="w-3.5 h-3.5 text-green-500" />
-            <span className="font-medium">Firebase Auth</span>
-          </div>
-          <div className="w-px h-4 bg-gray-200 dark:bg-gray-700" />
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="font-medium">256-bit SSL</span>
-          </div>
-        </div>
+        <p className="text-center mt-10 text-slate-500 dark:text-slate-400 font-medium">
+          Don't have an account? <button className="text-indigo-500 font-black hover:underline underline-offset-4">Create one</button>
+        </p>
       </motion.div>
     </div>
   );
