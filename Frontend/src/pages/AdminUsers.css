@@ -12,7 +12,7 @@ body {
   body.dark-mode {
     --text-color: #e5e7eb; /* Light gray for text in dark mode */
     --background-color: #1f2937; /* Dark gray background */
-    --heading-text-color: #d8b4fe; /* Light indigo for headings */
+    --heading-text-color: #d8b4fe; /* Light violet for headings */
     --box-bg-color: #374151; /* Darker gray for boxes */
     --table-bg-color: #374151; /* Darker gray for table background */
     --hover-bg-color: #4b5563; /* Darker gray for row hover in dark mode */
@@ -26,7 +26,7 @@ body {
     color: var(--text-color);
   }
   
-  .text-light-indigo {
+  .text-light-violet {
     color: var(--heading-text-color);
   }
   

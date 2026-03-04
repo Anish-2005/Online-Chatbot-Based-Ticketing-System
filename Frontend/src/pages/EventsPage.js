@@ -40,7 +40,7 @@ const EventsPage = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'}`}>
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-950 via-indigo-950/15 to-gray-950' : 'bg-gradient-to-br from-white via-indigo-50/40 to-white'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-950 via-violet-950/15 to-gray-950' : 'bg-gradient-to-br from-white via-violet-50/40 to-white'}`} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">
           {/* Top bar */}
@@ -65,7 +65,7 @@ const EventsPage = () => {
             className="mt-8"
           >
             <h1 className="text-4xl font-heading font-black tracking-tight sm:text-5xl">
-              <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
                 Upcoming
               </span>
               <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -91,26 +91,26 @@ const EventsPage = () => {
                 placeholder="Search events..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${isDark ? 'bg-gray-800 border-gray-700/50 text-white placeholder-gray-500' : 'bg-gray-100 border-gray-200 text-gray-900 placeholder-gray-400'} border`}
+                className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-violet-500/40 ${isDark ? 'bg-gray-800 border-gray-700/50 text-white placeholder-gray-500' : 'bg-gray-100 border-gray-200 text-gray-900 placeholder-gray-400'} border`}
               />
             </div>
 
             <div className={`flex rounded-xl border overflow-hidden ${isDark ? 'border-gray-700/50' : 'border-gray-200'}`}>
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2.5 transition-all ${viewMode === 'grid' ? (isDark ? 'bg-indigo-600 text-white' : 'bg-indigo-600 text-white') : (isDark ? 'bg-gray-800 text-gray-400 hover:text-white' : 'bg-white text-gray-500 hover:text-gray-900')}`}
+                className={`p-2.5 transition-all ${viewMode === 'grid' ? (isDark ? 'bg-violet-600 text-white' : 'bg-violet-600 text-white') : (isDark ? 'bg-gray-800 text-gray-400 hover:text-white' : 'bg-white text-gray-500 hover:text-gray-900')}`}
               >
                 <FiGrid className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2.5 transition-all ${viewMode === 'list' ? (isDark ? 'bg-indigo-600 text-white' : 'bg-indigo-600 text-white') : (isDark ? 'bg-gray-800 text-gray-400 hover:text-white' : 'bg-white text-gray-500 hover:text-gray-900')}`}
+                className={`p-2.5 transition-all ${viewMode === 'list' ? (isDark ? 'bg-violet-600 text-white' : 'bg-violet-600 text-white') : (isDark ? 'bg-gray-800 text-gray-400 hover:text-white' : 'bg-white text-gray-500 hover:text-gray-900')}`}
               >
                 <FiList className="h-4 w-4" />
               </button>
             </div>
 
-            <span className={`rounded-full px-3 py-1.5 text-xs font-bold ${isDark ? 'bg-indigo-900/40 text-indigo-300' : 'bg-indigo-100 text-indigo-700'}`}>
+            <span className={`rounded-full px-3 py-1.5 text-xs font-bold ${isDark ? 'bg-violet-900/40 text-violet-300' : 'bg-violet-100 text-violet-700'}`}>
               {filteredShows.length} event{filteredShows.length === 1 ? '' : 's'}
             </span>
           </motion.div>
@@ -145,7 +145,7 @@ const EventsPage = () => {
             <p className="font-semibold">{error}</p>
             <button
               onClick={loadShows}
-              className="mt-3 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-600 to-blue-600 text-white"
+              className="mt-3 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-violet-600 to-indigo-600 text-white"
             >
               Try Again
             </button>
@@ -176,7 +176,7 @@ const EventsPage = () => {
                 transition={{ delay: index * 0.05, duration: 0.4 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onClick={() => navigate(`/booking/${show.id}`)}
-                className={`group cursor-pointer rounded-2xl border overflow-hidden transition-all duration-300 ${isDark ? 'border-gray-700/50 bg-gray-800/60 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/5' : 'border-gray-200 bg-white hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/10'}`}
+                className={`group cursor-pointer rounded-2xl border overflow-hidden transition-all duration-300 ${isDark ? 'border-gray-700/50 bg-gray-800/60 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/5' : 'border-gray-200 bg-white hover:border-violet-300 hover:shadow-xl hover:shadow-violet-500/10'}`}
               >
                 {/* Image */}
                 <div className="relative overflow-hidden">
@@ -187,7 +187,7 @@ const EventsPage = () => {
                   />
                   {/* Price badge */}
                   <div className="absolute top-3 right-3">
-                    <span className="rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 text-sm font-bold text-indigo-700 dark:text-indigo-300 shadow-lg">
+                    <span className="rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 text-sm font-bold text-violet-700 dark:text-violet-300 shadow-lg">
                       {show.price || '₹100'}
                     </span>
                   </div>
@@ -203,7 +203,7 @@ const EventsPage = () => {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className={`text-lg font-heading font-bold mb-2 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <h3 className={`text-lg font-heading font-bold mb-2 transition-colors group-hover:text-violet-600 dark:group-hover:text-violet-400 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {show.title || 'Museum Show'}
                   </h3>
 
@@ -233,7 +233,7 @@ const EventsPage = () => {
                       <FiUsers className="h-3.5 w-3.5" />
                       <span>{show.ticketsLeft || 0} seats left</span>
                     </div>
-                    <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform">
+                    <span className="text-sm font-bold text-violet-600 dark:text-violet-400 group-hover:translate-x-1 transition-transform">
                       Book Now →
                     </span>
                   </div>

@@ -16,7 +16,7 @@ const Bookshows = () => {
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'}`}>
       {/* Subtle background gradient */}
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-950 via-indigo-950/20 to-gray-950' : 'bg-gradient-to-br from-white via-indigo-50/50 to-white'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-950 via-violet-950/20 to-gray-950' : 'bg-gradient-to-br from-white via-violet-50/50 to-white'}`} />
 
         {/* Top Navigation Bar */}
         <div className="relative z-20">
@@ -28,15 +28,15 @@ const Bookshows = () => {
                   onClick={() => navigate('/')}
                   className="flex items-center gap-3 group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/30 transition-shadow">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20 group-hover:shadow-violet-500/30 transition-shadow">
                     <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
                   </div>
                   <span className={`text-lg font-heading font-bold tracking-tight hidden sm:inline ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Chat<span className="bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">Ticket</span>
+                    Chat<span className="bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">Ticket</span>
                   </span>
                 </button>
 
-                <div className={`hidden md:inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider ${isDark ? 'border-indigo-700/50 bg-indigo-900/30 text-indigo-300' : 'border-indigo-200 bg-indigo-50/80 text-indigo-600'}`}>
+                <div className={`hidden md:inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider ${isDark ? 'border-violet-700/50 bg-violet-900/30 text-violet-300' : 'border-violet-200 bg-violet-50/80 text-violet-600'}`}>
                   <FiStar className="h-3 w-3" />
                   Curated Museum Experiences
                 </div>
@@ -76,7 +76,7 @@ const Bookshows = () => {
               <h1
                 className="text-4xl font-heading font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]"
               >
-                <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent">
                   Discover & Book
                 </span>
                 <br />
@@ -91,7 +91,7 @@ const Bookshows = () => {
                   onClick={() => navigate('/events')}
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/25"
+                  className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-500/25"
                 >
                   <FiTrendingUp className="h-4 w-4" />
                   Explore All Events
@@ -113,8 +113,8 @@ const Bookshows = () => {
               transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="lg:col-span-4"
             >
-              <div className={`rounded-2xl border p-5 backdrop-blur-sm ${isDark ? 'border-gray-700/50 bg-gray-800/60' : 'border-indigo-200 bg-indigo-50/60'}`}>
-                <p className={`text-[11px] font-bold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>
+              <div className={`rounded-2xl border p-5 backdrop-blur-sm ${isDark ? 'border-gray-700/50 bg-gray-800/60' : 'border-violet-200 bg-violet-50/60'}`}>
+                <p className={`text-[11px] font-bold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
                   💡 Booking Tip
                 </p>
                 <h3 className={`mt-2 text-xl font-heading font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>

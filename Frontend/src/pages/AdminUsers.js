@@ -40,7 +40,7 @@
 //         transition={{ duration: 0.5, ease: 'easeOut' }}
 //       >
 //         <div className="flex justify-between items-center mb-6">
-//           <h1 className={`text-3xl font-bold mb-6 ${isDarkMode ? 'text-light-indigo' : 'text-black'}`}>
+//           <h1 className={`text-3xl font-bold mb-6 ${isDarkMode ? 'text-light-violet' : 'text-black'}`}>
 //             User Management
 //           </h1>
 //           <button

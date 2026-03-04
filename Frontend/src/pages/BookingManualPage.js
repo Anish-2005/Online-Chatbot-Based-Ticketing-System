@@ -21,7 +21,7 @@ const BookingManualPage = () => {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-indigo-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-indigo-50 to-white'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-violet-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-violet-50 to-white'}`} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -42,7 +42,7 @@ const BookingManualPage = () => {
             transition={{ duration: 0.45 }}
             className="mt-8"
           >
-            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600 ${isDark ? 'dark:from-indigo-400 dark:via-blue-400 dark:to-sky-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
+            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 ${isDark ? 'dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
               Booking Manual
               <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 Event Details
@@ -61,7 +61,7 @@ const BookingManualPage = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className={`rounded-3xl border p-8 text-center shadow-xl ${isDark ? 'border-indigo-700/30 bg-gray-800/50' : 'border-indigo-200 bg-white'}`}
+            className={`rounded-3xl border p-8 text-center shadow-xl ${isDark ? 'border-violet-700/30 bg-gray-800/50' : 'border-violet-200 bg-white'}`}
           >
             <h2 className={`text-2xl font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
               No Show Selected
@@ -72,7 +72,7 @@ const BookingManualPage = () => {
             <button
               type="button"
               onClick={() => navigate('/bookshows')}
-              className="mt-5 inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:from-indigo-700 hover:to-blue-700"
+              className="mt-5 inline-flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-700"
             >
               Go to Book Shows
             </button>
@@ -82,7 +82,7 @@ const BookingManualPage = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
-            className={`overflow-hidden rounded-3xl border shadow-2xl ${isDark ? 'border-indigo-700/30 bg-gray-800/60' : 'border-indigo-200 bg-white'}`}
+            className={`overflow-hidden rounded-3xl border shadow-2xl ${isDark ? 'border-violet-700/30 bg-gray-800/60' : 'border-violet-200 bg-white'}`}
           >
             <div className="grid gap-0 lg:grid-cols-5">
               <div className="lg:col-span-2">
@@ -99,24 +99,24 @@ const BookingManualPage = () => {
                 </h2>
 
                 <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Date</p>
+                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
+                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Date</p>
                     <p className={`mt-1 text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.date || 'TBA'}</p>
                   </div>
 
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Time</p>
+                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
+                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Time</p>
                     <p className={`mt-1 text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.time || 'TBA'}</p>
                   </div>
 
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Location</p>
+                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
+                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Location</p>
                     <p className={`mt-1 text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.location || 'Venue TBA'}</p>
                   </div>
 
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-indigo-700/30 bg-gray-900/40' : 'border-indigo-100 bg-indigo-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-indigo-300' : 'text-indigo-600'}`}>Price</p>
-                    <p className={`mt-1 text-base font-extrabold ${isDark ? 'text-indigo-300' : 'text-indigo-700'}`}>{event.price || '—'}</p>
+                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
+                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Price</p>
+                    <p className={`mt-1 text-base font-extrabold ${isDark ? 'text-violet-300' : 'text-violet-700'}`}>{event.price || '—'}</p>
                   </div>
                 </div>
 
@@ -127,7 +127,7 @@ const BookingManualPage = () => {
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <motion.button
                     type="button"
-                    className="inline-flex items-center rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-indigo-700 hover:to-blue-700 hover:shadow-indigo-500/40"
+                    className="inline-flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-700 hover:shadow-violet-500/40"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate('/booking', { state: { event } })}

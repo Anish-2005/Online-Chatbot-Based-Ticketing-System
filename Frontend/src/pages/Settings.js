@@ -78,7 +78,7 @@ const Settings = ({ role }) => {
         >
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
+              <h1 className="text-5xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent mb-2 leading-tight tracking-tight">
                 Settings
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
@@ -97,7 +97,7 @@ const Settings = ({ role }) => {
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-blue-600" />
+            <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-indigo-600" />
           </div>
         ) : (
         <>
@@ -122,12 +122,12 @@ const Settings = ({ role }) => {
                     <div className="flex items-center gap-3 mb-2">
                       <div className={`p-2 rounded-lg ${
                         setting.enabled && !setting.isCustom
-                          ? 'bg-blue-100 dark:bg-blue-900/30'
+                          ? 'bg-indigo-100 dark:bg-indigo-900/30'
                           : 'bg-gray-100 dark:bg-gray-700'
                       }`}>
                         <Icon className={`w-5 h-5 ${
                           setting.enabled && !setting.isCustom
-                            ? 'text-blue-600 dark:text-blue-400'
+                            ? 'text-indigo-600 dark:text-indigo-400'
                             : 'text-gray-600 dark:text-gray-400'
                         }`} />
                       </div>
@@ -219,8 +219,8 @@ const Settings = ({ role }) => {
           }`}
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
-              <FiSettingsIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <div className="p-2 rounded-lg bg-violet-100 dark:bg-violet-900/30">
+              <FiSettingsIcon className="w-5 h-5 text-violet-600 dark:text-violet-400" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -260,7 +260,7 @@ const Settings = ({ role }) => {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 disabled:opacity-60"
+            className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 disabled:opacity-60"
           >
             {saving ? 'Saving...' : 'Save Settings'}
           </button>

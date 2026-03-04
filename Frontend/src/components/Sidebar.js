@@ -50,7 +50,7 @@ const Sidebar = () => {
             </div>
             {!isCollapsed && (
               <div>
-                <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-400 dark:to-blue-400 bg-clip-text text-transparent leading-tight tracking-tight">
+                <h2 className="text-xl font-heading font-bold bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent leading-tight tracking-tight">
                   ChatTicket
                 </h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
@@ -87,7 +87,7 @@ const Sidebar = () => {
               <Link
                 to={link.path}
                 className={`group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive
-                  ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/50'
+                  ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/50'
                   : isDark
                     ? 'text-gray-400 hover:bg-gray-800 hover:text-white'
                     : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'

@@ -4,9 +4,9 @@
 
   <defs>
     <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#5B21B6"/>
-      <stop offset="55%" stop-color="#7C3AED"/>
-      <stop offset="100%" stop-color="#DB2777"/>
+      <stop offset="0%" stop-color="#3730A3"/>
+      <stop offset="55%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#2563EB"/>
     </linearGradient>
   </defs>
 
@@ -19,7 +19,7 @@
     <circle cx="18" cy="45" r="8" fill="#FFFFFF"/>
     <circle cx="162" cy="45" r="8" fill="#FFFFFF"/>
 
-    <path d="M52 34c0-10.5 8.5-19 19-19h44v13H74c-5 0-9 4-9 9v16c0 5 4 9 9 9h41v13H71c-10.5 0-19-8.5-19-19V34z" fill="#C4B5FD"/>
-    <path d="M98 22h56v12h-42v11h35v12h-35v21H98V22z" fill="#F9A8D4"/>
+    <path d="M52 34c0-10.5 8.5-19 19-19h44v13H74c-5 0-9 4-9 9v16c0 5 4 9 9 9h41v13H71c-10.5 0-19-8.5-19-19V34z" fill="#A5B4FC"/>
+    <path d="M98 22h56v12h-42v11h35v12h-35v21H98V22z" fill="#93C5FD"/>
   </g>
 </svg>

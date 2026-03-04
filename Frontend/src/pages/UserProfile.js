@@ -58,7 +58,7 @@ const UserProfile = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
-            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+            <button type="submit" className="bg-indigo-500 text-white py-2 px-4 rounded">
               Update Profile
             </button>
           </form>
