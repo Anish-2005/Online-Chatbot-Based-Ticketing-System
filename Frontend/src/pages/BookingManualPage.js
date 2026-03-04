@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
+import { FiArrowLeft, FiCalendar } from 'react-icons/fi';
 
 const BookingManualPage = () => {
   const { isDark } = useTheme();
@@ -19,128 +20,135 @@ const BookingManualPage = () => {
   }, [event]);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-violet-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-violet-50 to-white'}`} />
+    <div className={`min-h-screen relative transition-colors duration-500 overflow-x-hidden ${isDark ? 'dark bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} selection:bg-indigo-500/30`}>
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div className="absolute top-[-5%] right-[-10%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-indigo-600/10 rounded-full blur-[80px] sm:blur-[120px] animate-float opacity-50 sm:opacity-100" />
+        <div className="absolute bottom-[20%] left-[-5%] w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-violet-600/10 rounded-full blur-[70px] sm:blur-[100px] animate-pulse-subtle opacity-50 sm:opacity-100" />
+      </div>
 
-        <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="relative z-10 w-full">
+        {/* Header Content */}
+        <div className="mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+          {/* Nav bar */}
+          <div className="flex items-center justify-between gap-4 mb-10 sm:mb-16">
             <motion.button
               onClick={() => navigate('/bookshows')}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.96 }}
-              className={`inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+              whileHover={{ scale: 1.05, x: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`flex items-center gap-2 sm:gap-3 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-black text-xs sm:text-sm shadow-xl transition-all`}
             >
-              ← Back to Shows
+              <FiArrowLeft className="text-indigo-500" />
+              <span className="hidden xs:inline">Back to Catalog</span>
+              <span className="xs:hidden">Back</span>
             </motion.button>
             <ThemeToggleButton />
-</div>
+          </div>
 
+          {/* Title Area */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="mt-8"
+            transition={{ duration: 0.6 }}
+            className="mb-10 sm:mb-16"
           >
-            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 ${isDark ? 'dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
-              Booking Manual
-              <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                Event Details
-              </span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest mb-6">
+              <FiCalendar className="text-xs" />
+              Reservation Manual
+            </div>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-black leading-[1.1] sm:leading-[0.9] tracking-tight mb-6">
+              Booking <span className="gradient-text">Manual.</span>
             </h1>
-            <p className={`mt-4 max-w-3xl text-base sm:text-lg font-medium leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              Review your selected event information and continue to seat selection securely.
+            <p className="text-base sm:text-lg md:text-xl text-slate-500 dark:text-slate-400 font-medium max-w-2xl leading-relaxed">
+              Review your selected exhibition details and confirm your security protocols before seat selection.
             </p>
           </motion.div>
         </div>
       </div>
 
-      <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         {!event ? (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className={`rounded-3xl border p-8 text-center shadow-xl ${isDark ? 'border-violet-700/30 bg-gray-800/50' : 'border-violet-200 bg-white'}`}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="glass-premium p-10 sm:p-20 rounded-[2rem] sm:rounded-[3rem] text-center border border-white/20 dark:border-slate-800/50 shadow-2xl"
           >
-            <h2 className={`text-2xl font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              No Show Selected
-            </h2>
-            <p className={`mt-3 text-sm sm:text-base ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              Please return to Book Shows and select an event from the carousel.
-            </p>
+            <div className="w-16 h-16 rounded-3xl bg-slate-100 dark:bg-slate-900 mx-auto flex items-center justify-center mb-8">
+              <FiArrowLeft className="text-3xl text-slate-400" />
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-heading font-black mb-4 uppercase tracking-tight">No Experience Selected</h3>
+            <p className="text-slate-500 font-medium mb-10 max-w-sm mx-auto">Please return to the main catalog and choose an exhibition to begin your booking process.</p>
             <button
-              type="button"
               onClick={() => navigate('/bookshows')}
-              className="mt-5 inline-flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-700"
+              className="px-8 py-4 rounded-xl sm:rounded-2xl bg-indigo-600 text-white font-black shadow-2xl shadow-indigo-600/30 w-full sm:w-auto transition-transform hover:scale-105 active:scale-95"
             >
-              Go to Book Shows
+              Browse Catalog
             </button>
           </motion.div>
         ) : (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className={`overflow-hidden rounded-3xl border shadow-2xl ${isDark ? 'border-violet-700/30 bg-gray-800/60' : 'border-violet-200 bg-white'}`}
+            transition={{ duration: 0.6 }}
+            className="glass-premium rounded-[2rem] sm:rounded-[3.5rem] border border-white/20 dark:border-slate-800/50 shadow-2xl overflow-hidden"
           >
-            <div className="grid gap-0 lg:grid-cols-5">
-              <div className="lg:col-span-2">
+            <div className="flex flex-col lg:flex-row">
+              {/* Event Visual */}
+              <div className="w-full lg:w-[40%] h-64 sm:h-96 lg:h-auto overflow-hidden">
                 <img
                   src={event.image}
                   alt={event.title}
-                  className="h-full min-h-[280px] w-full object-cover lg:min-h-[420px]"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                 />
               </div>
 
-              <div className="lg:col-span-3 p-6 sm:p-8">
-                <h2 className={`text-3xl sm:text-4xl font-black leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {event.title}
-                </h2>
+              {/* Event Data */}
+              <div className="flex-1 p-8 sm:p-12 lg:p-16">
+                <h2 className="text-3xl sm:text-5xl font-heading font-black mb-8 uppercase tracking-tighter leading-none">{event.title}</h2>
 
-                <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Date</p>
-                    <p className={`mt-1 text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.date || 'TBA'}</p>
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 sm:gap-6 mb-10">
+                  <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Exhibition Date</span>
+                    <p className="text-lg font-bold">{event.date || 'TBA'}</p>
                   </div>
 
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Time</p>
-                    <p className={`mt-1 text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.time || 'TBA'}</p>
+                  <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Primary Time</span>
+                    <p className="text-lg font-bold">{event.time || 'TBA'}</p>
                   </div>
 
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Location</p>
-                    <p className={`mt-1 text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.location || 'Venue TBA'}</p>
+                  <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Venue Location</span>
+                    <p className="text-lg font-bold truncate">{event.location || 'Venue TBA'}</p>
                   </div>
 
-                  <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-                    <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Price</p>
-                    <p className={`mt-1 text-base font-extrabold ${isDark ? 'text-violet-300' : 'text-violet-700'}`}>{event.price || '—'}</p>
+                  <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-indigo-500/5 dark:bg-indigo-500/10 border border-indigo-500/20">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-indigo-500 block mb-2">Access Price</span>
+                    <p className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{event.price || '—'}</p>
                   </div>
                 </div>
 
-                <p className={`mt-6 text-sm sm:text-base leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Continue to booking to select seats and confirm your tickets for this event.
-                </p>
+                <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 mb-10">
+                  <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic">
+                    "Secure encryption protocols are active. By continuing, you agree to the exhibition terms of service."
+                  </p>
+                </div>
 
-                <div className="mt-6 flex flex-wrap items-center gap-3">
+                <div className="flex flex-col xs:flex-row gap-4">
                   <motion.button
-                    type="button"
-                    className="inline-flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-700 hover:shadow-violet-500/40"
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate('/booking', { state: { event } })}
+                    className="flex-1 px-8 py-4 sm:py-5 rounded-2xl bg-indigo-600 text-white font-black shadow-2xl shadow-indigo-600/30 flex items-center justify-center gap-3"
                   >
-                    Book Tickets
+                    Confirm & Select Seats
+                    <FiArrowLeft className="rotate-180" />
                   </motion.button>
-
                   <button
-                    type="button"
                     onClick={() => navigate('/events')}
-                    className={`inline-flex items-center rounded-xl px-5 py-3 text-sm font-semibold transition-all ${isDark ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+                    className="px-8 py-4 sm:py-5 rounded-2xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-black transition-colors hover:bg-slate-300 dark:hover:bg-slate-700"
                   >
-                    Browse More Events
+                    Browse Others
                   </button>
                 </div>
               </div>

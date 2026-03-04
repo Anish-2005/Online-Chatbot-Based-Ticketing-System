@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from './ThemeContext';
 import { getShowSeatState } from '../services/bookings';
-
+import { FiArrowLeft, FiTag } from 'react-icons/fi';
 const Booking = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -105,26 +105,20 @@ const Booking = () => {
 
   if (!event) {
     return (
-      <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-        <div className="relative overflow-hidden">
-          <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-violet-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-violet-50 to-white'}`} />
-
-          <div className="relative mx-auto flex min-h-screen w-full max-w-4xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
-            <div className={`w-full rounded-3xl border p-8 text-center shadow-2xl ${isDark ? 'border-violet-700/30 bg-gray-800/60' : 'border-violet-200 bg-white'}`}>
-              <h1 className={`text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                No Show Selected
-              </h1>
-              <p className={`mt-3 text-sm sm:text-base ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                Please go back to Book Shows and select an event first.
-              </p>
-              <button
-                type="button"
-                onClick={() => navigate('/bookshows')}
-                className="mt-5 inline-flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-700"
-              >
-                Go to Book Shows
-              </button>
-            </div>
+      <div className={`min-h-screen relative transition-colors duration-500 overflow-x-hidden ${isDark ? 'dark bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+          <div className="absolute top-[-5%] right-[-10%] w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[80px]" />
+        </div>
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-4xl items-center justify-center px-4 py-10">
+          <div className="glass-premium p-10 sm:p-20 rounded-[2rem] sm:rounded-[3rem] text-center border border-white/20 dark:border-slate-800/50 shadow-2xl">
+            <h1 className="text-3xl font-heading font-black mb-4">No Experience Selected</h1>
+            <p className="text-slate-500 font-medium mb-8">Please select an exhibition from the catalog first.</p>
+            <button
+              onClick={() => navigate('/bookshows')}
+              className="px-8 py-4 rounded-xl sm:rounded-2xl bg-indigo-600 text-white font-black shadow-2xl"
+            >
+              Go to Catalog
+            </button>
           </div>
         </div>
       </div>
@@ -132,191 +126,200 @@ const Booking = () => {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-violet-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-violet-50 to-white'}`} />
+    <div className={`min-h-screen relative transition-colors duration-500 overflow-x-hidden ${isDark ? 'dark bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} selection:bg-indigo-500/30`}>
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div className="absolute top-[-5%] right-[-10%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-indigo-600/10 rounded-full blur-[80px] sm:blur-[120px] animate-float opacity-50 sm:opacity-100" />
+        <div className="absolute bottom-[20%] left-[-5%] w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-violet-600/10 rounded-full blur-[70px] sm:blur-[100px] animate-pulse-subtle opacity-50 sm:opacity-100" />
+      </div>
 
-        <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8 lg:pt-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="relative z-10 w-full">
+        {/* Header Content */}
+        <div className="mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+          {/* Nav bar */}
+          <div className="flex items-center justify-between gap-4 mb-10 sm:mb-16">
             <motion.button
               onClick={() => navigate('/booking-manual', { state: { event } })}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.96 }}
-              className={`inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+              whileHover={{ scale: 1.05, x: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className={`flex items-center gap-2 sm:gap-3 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-black text-xs sm:text-sm shadow-xl transition-all`}
             >
-              ← Back to Details
+              <FiArrowLeft className="text-indigo-500" />
+              <span className="hidden xs:inline">Back to Details</span>
+              <span className="xs:hidden">Back</span>
             </motion.button>
             <ThemeToggleButton />
           </div>
 
+          {/* Title Area */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="mt-8"
+            transition={{ duration: 0.6 }}
+            className="mb-10 sm:mb-16"
           >
-            <h1 className={`text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.15] bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 ${isDark ? 'dark:from-violet-400 dark:via-indigo-400 dark:to-blue-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`}>
-              Seat Selection
-              <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {event.title}
-              </span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 text-[9px] sm:text-[10px] font-black uppercase tracking-widest mb-6">
+              <FiTag className="text-xs" />
+              Seat Allocation
+            </div>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-black leading-[1.1] sm:leading-[0.9] tracking-tight mb-6">
+              Spatial <span className="gradient-text">Mapping.</span>
             </h1>
-            <p className={`mt-4 max-w-3xl text-base sm:text-lg font-medium leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              Choose your preferred seats and confirm the number of tickets before moving to payment.
+            <p className="text-base sm:text-lg md:text-xl text-slate-500 dark:text-slate-400 font-medium max-w-2xl leading-relaxed">
+              Define your physical footprint within the <span className="text-indigo-500 font-bold">{event.title}</span> experience.
             </p>
           </motion.div>
+
+          <main className="pb-32">
+            <motion.section
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-premium rounded-[2.5rem] sm:rounded-[4rem] border border-white/20 dark:border-slate-800/50 shadow-2xl p-6 sm:p-12 lg:p-16"
+            >
+              {/* Event Metadata Bar */}
+              <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 mb-12 sm:mb-20">
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Date</span>
+                  <p className="text-xs sm:text-sm font-black whitespace-nowrap">{event.date || 'TBA'}</p>
+                </div>
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Time</span>
+                  <p className="text-xs sm:text-sm font-black">{event.time || 'TBA'}</p>
+                </div>
+                <div className="hidden lg:block p-6 rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Location</span>
+                  <p className="text-sm font-black truncate">{event.location || 'Venue TBA'}</p>
+                </div>
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 block">Price</span>
+                  <p className="text-xs sm:text-sm font-black text-indigo-500">{event.price || '—'}</p>
+                </div>
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-indigo-500/5 dark:bg-indigo-500/10 border border-indigo-500/20">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-indigo-500 mb-2 block">Available</span>
+                  <p className="text-xs sm:text-sm font-black">{loadingTickets ? '...' : ticketsLeft} Seats</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col xl:flex-row gap-12 sm:gap-20">
+                {/* Seat Mapping Area */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-8 sm:mb-12">
+                    <h2 className="text-xl sm:text-2xl font-heading font-black uppercase tracking-tighter">Spatial Grid</h2>
+                    <div className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-800">
+                      Selected: <span className="text-indigo-500">{selectedSeats.length} / {seatCount}</span>
+                    </div>
+                  </div>
+
+                  {/* Legend */}
+                  <div className="flex flex-wrap gap-4 sm:gap-8 mb-10 p-4 sm:p-6 rounded-2xl bg-slate-100/30 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase tracking-widest">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-4 h-4 rounded-md border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900" />
+                      <span className="text-slate-500">Available</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-4 h-4 rounded-md bg-indigo-600 border-2 border-indigo-500 shadow-lg shadow-indigo-600/20" />
+                      <span className="text-indigo-600 dark:text-indigo-400">Selected</span>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-4 h-4 rounded-md bg-rose-500/20 border-2 border-rose-500/30 relative flex items-center justify-center opacity-70">
+                        <span className="text-rose-500">✕</span>
+                      </div>
+                      <span className="text-rose-400">Reserved</span>
+                    </div>
+                  </div>
+
+                  {/* Grid */}
+                  <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 sm:gap-4">
+                    {[...Array(totalSeats)].map((_, index) => {
+                      const seatNumber = index + 1;
+                      const isSelected = selectedSeats.includes(seatNumber);
+                      const isBooked = bookedSeats.includes(seatNumber);
+                      const isLimitReached = selectedSeats.length >= seatCount;
+                      const disableSeat = isBooked || (!isSelected && isLimitReached) || seatCount === 0;
+
+                      return (
+                        <motion.button
+                          key={seatNumber}
+                          onClick={() => handleSeatSelection(seatNumber)}
+                          disabled={disableSeat}
+                          whileHover={{ scale: disableSeat ? 1 : 1.1, y: disableSeat ? 0 : -2 }}
+                          whileTap={{ scale: disableSeat ? 1 : 0.9 }}
+                          className={`relative h-11 sm:h-14 rounded-xl border-2 font-black transition-all duration-300 text-xs sm:text-sm ${isBooked
+                            ? 'border-rose-500/20 bg-rose-500/5 text-rose-500/20 cursor-not-allowed'
+                            : isSelected
+                              ? 'border-indigo-600 bg-indigo-600 text-white shadow-xl shadow-indigo-600/30'
+                              : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-400 hover:border-indigo-500 hover:text-indigo-500'
+                            } ${!isBooked && disableSeat && !isSelected ? 'opacity-40 cursor-not-allowed' : ''}`}
+                        >
+                          {isBooked ? '✕' : seatNumber}
+                          {isSelected && <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white animate-pulse" />}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Reservation Controller */}
+                <div className="xl:w-80">
+                  <div className="glass-premium p-8 rounded-3xl border border-white/20 dark:border-slate-800/50 shadow-xl sticky top-8">
+                    <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-6">Reservation Control</h3>
+
+                    <div className="space-y-8">
+                      <div>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-indigo-500 mb-3 block">Quantity Adjustment</label>
+                        <div className="relative group">
+                          <input
+                            type="number"
+                            value={seatCount}
+                            min={ticketsLeft > 0 ? '1' : '0'}
+                            max={Math.max(0, ticketsLeft)}
+                            onChange={(e) => handleSeatCountChange(e.target.value)}
+                            className="w-full bg-slate-100 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-800 rounded-2xl px-5 py-4 font-black transition-all focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                          />
+                          <p className="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            Ceiling: <span className="text-slate-600 dark:text-slate-200">{Math.max(0, ticketsLeft)} Tickets Available</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-8 border-t border-slate-200 dark:border-slate-800">
+                        <div className="flex justify-between items-end mb-8">
+                          <div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">Total Payload</span>
+                            <span className="text-3xl font-heading font-black">{selectedSeats.length} <span className="text-base text-slate-400">Seats</span></span>
+                          </div>
+                          <FiTag className="text-indigo-500 text-2xl mb-1" />
+                        </div>
+
+                        {error && (
+                          <motion.div
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-bold mb-6"
+                          >
+                            {error}
+                          </motion.div>
+                        )}
+
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleConfirmBooking}
+                          className="w-full py-5 rounded-2xl bg-indigo-600 text-white font-black shadow-2xl shadow-indigo-600/30 transition-all hover:bg-indigo-500 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+                        >
+                          Confirm Selection
+                          <FiArrowLeft className="rotate-180" />
+                        </motion.button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+          </main>
         </div>
       </div>
-
-      <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.1 }}
-          className={`rounded-3xl border p-6 shadow-2xl sm:p-8 ${isDark ? 'border-violet-700/30 bg-gray-800/60' : 'border-violet-200 bg-white'}`}
-        >
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Date</p>
-              <p className={`mt-1 text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.date || 'TBA'}</p>
-            </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Time</p>
-              <p className={`mt-1 text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.time || 'TBA'}</p>
-            </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Location</p>
-              <p className={`mt-1 text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{event.location || 'Venue TBA'}</p>
-            </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Price</p>
-              <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-violet-300' : 'text-violet-700'}`}>{event.price || '—'}</p>
-            </div>
-            <div className={`rounded-xl border p-3 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-              <p className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>Tickets Left</p>
-              <p className={`mt-1 text-sm font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                {loadingTickets ? 'Loading...' : ticketsLeft}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-7 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div>
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className={`text-lg font-extrabold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Select Your Seats
-                </h2>
-                <p className={`text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Selected: {selectedSeats.length}/{seatCount}
-                </p>
-              </div>
-
-              <div className={`mb-4 flex flex-wrap gap-4 rounded-lg border p-3 text-xs ${isDark ? 'border-gray-700 bg-gray-900/40' : 'border-gray-200 bg-gray-50'}`}>
-                <div className="flex items-center gap-2">
-                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'}`}></div>
-                  <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Available</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-emerald-400 bg-emerald-500' : 'border-violet-600 bg-violet-600'}`}></div>
-                  <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Selected</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`h-5 w-5 rounded border ${isDark ? 'border-red-700 bg-gray-900 line-through' : 'border-red-400 bg-gray-300 line-through'}`}></div>
-                  <span className={`font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Booked (Unavailable)</span>
-                </div>
-              </div>
-
-              <p className={`mb-3 text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Showing {totalSeats} total seats • {bookedSeats.length} already booked • {ticketsLeft} available
-              </p>
-
-              <div className="grid grid-cols-5 gap-2 sm:grid-cols-8 lg:grid-cols-10">
-                {[...Array(totalSeats)].map((_, index) => {
-                  const seatNumber = index + 1;
-                  const isSelected = selectedSeats.includes(seatNumber);
-                  const isBooked = bookedSeats.includes(seatNumber);
-                  const isLimitReached = selectedSeats.length >= seatCount;
-                  const disableSeat = isBooked || (!isSelected && isLimitReached) || seatCount === 0;
-
-                  return (
-                    <motion.button
-                      key={seatNumber}
-                      type="button"
-                      onClick={() => handleSeatSelection(seatNumber)}
-                      disabled={disableSeat}
-                      whileHover={{ scale: disableSeat ? 1 : 1.05 }}
-                      whileTap={{ scale: disableSeat ? 1 : 0.95 }}
-                      className={`relative h-10 rounded-lg border text-sm font-bold transition-all ${isBooked
-                          ? isDark
-                            ? 'border-red-700 bg-gray-900 text-gray-600 line-through cursor-not-allowed'
-                            : 'border-red-400 bg-gray-300 text-gray-500 line-through cursor-not-allowed'
-                          : isSelected
-                            ? isDark
-                              ? 'border-emerald-400 bg-emerald-500 text-white'
-                              : 'border-violet-600 bg-violet-600 text-white'
-                            : isDark
-                              ? 'border-gray-600 bg-gray-700 text-gray-200 hover:bg-gray-600'
-                              : 'border-gray-300 bg-white text-gray-800 hover:bg-gray-50'
-                        } ${isBooked ? '' : disableSeat ? 'cursor-not-allowed opacity-50' : ''}`}
-                    >
-                      {isBooked && (
-                        <span className={`absolute inset-0 flex items-center justify-center text-xs font-black ${isDark ? 'text-red-700' : 'text-red-600'}`}>
-                          ✕
-                        </span>
-                      )}
-                      <span className={isBooked ? 'opacity-40' : ''}>{seatNumber}</span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className={`w-full rounded-2xl border p-4 lg:w-56 ${isDark ? 'border-violet-700/30 bg-gray-900/40' : 'border-violet-100 bg-violet-50/60'}`}>
-              <label htmlFor="seatCount" className={`text-xs font-semibold uppercase tracking-widest ${isDark ? 'text-violet-300' : 'text-violet-600'}`}>
-                Number of Tickets
-              </label>
-              <input
-                id="seatCount"
-                type="number"
-                value={seatCount}
-                min={ticketsLeft > 0 ? '1' : '0'}
-                max={Math.max(0, ticketsLeft)}
-                onChange={(e) => handleSeatCountChange(e.target.value)}
-                className={`mt-2 w-full rounded-xl border px-3 py-2 text-base font-semibold outline-none transition-all focus:ring-2 ${isDark ? 'border-gray-600 bg-gray-800 text-white focus:ring-violet-500' : 'border-gray-300 bg-white text-gray-900 focus:ring-violet-400'}`}
-              />
-              <p className={`mt-2 text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Max available: {Math.max(0, ticketsLeft)}
-              </p>
-            </div>
-          </div>
-
-          {error && (
-            <p className={`mt-5 rounded-xl border px-4 py-3 text-sm font-medium ${isDark ? 'border-red-500/30 bg-red-900/25 text-red-200' : 'border-red-200 bg-red-50 text-red-700'}`}>
-              {error}
-            </p>
-          )}
-
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <motion.button
-              type="button"
-              onClick={handleConfirmBooking}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:from-violet-700 hover:to-indigo-700 hover:shadow-violet-500/40"
-            >
-              Confirm Booking
-            </motion.button>
-
-            <button
-              type="button"
-              onClick={() => navigate('/events')}
-              className={`inline-flex items-center rounded-xl px-6 py-3 text-sm font-semibold transition-all ${isDark ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
-            >
-              Browse Events
-            </button>
-          </div>
-        </motion.section>
-      </main>
     </div>
   );
 };
