@@ -1,4 +1,6 @@
 import os
+os.environ["GRPC_DNS_RESOLVER"] = "native"
+
 import firebase_admin
 from firebase_admin import credentials, firestore
 

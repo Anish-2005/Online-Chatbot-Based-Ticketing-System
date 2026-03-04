@@ -53,45 +53,86 @@ def month_label(key: str):
     d = datetime(year, month, 1)
     return d.strftime('%b %Y')
 
-def get_raw_admin_data():
-    if db is None:
-        raise Exception("Firebase not initialized")
-        
-    shows_ref = db.collection('shows')
-    payments_ref = db.collection('payments')
+import os
+import requests
+from google.oauth2 import service_account
+from google.auth.transport.requests import Request as GoogleRequest
+
+def parse_firestore_doc(doc):
+    fields = doc.get('fields', {})
+    doc_id = doc.get('name', '').split('/')[-1]
+    parsed = {'id': doc_id}
     
-    shows = []
+    for k, v in fields.items():
+        if 'stringValue' in v:
+            parsed[k] = v['stringValue']
+        elif 'integerValue' in v:
+            parsed[k] = int(v['integerValue'])
+        elif 'doubleValue' in v:
+            parsed[k] = float(v['doubleValue'])
+        elif 'booleanValue' in v:
+            parsed[k] = v['booleanValue']
+        elif 'timestampValue' in v:
+            parsed[k] = v['timestampValue']
+        elif 'arrayValue' in v:
+            vals = v['arrayValue'].get('values', [])
+            parsed[k] = []
+            for val in vals:
+                if 'stringValue' in val:
+                    parsed[k].append(val['stringValue'])
+                elif 'integerValue' in val:
+                    parsed[k].append(int(val['integerValue']))
+    return parsed
+
+def get_rest_access_token():
+    # dashboard_api.py is in app/api/, so we need to go up 2 levels
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    key_path = os.path.join(base_dir, "firebase-credentials.json")
+    if not os.path.exists(key_path):
+        raise Exception(f"Firebase credentials not found at {key_path}")
+        
+    creds = service_account.Credentials.from_service_account_file(key_path, scopes=['https://www.googleapis.com/auth/datastore'])
+    creds.refresh(GoogleRequest())
+    return creds.token, creds.project_id
+
+def fetch_collection_rest(collection_name):
+    token, project_id = get_rest_access_token()
+    url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/{collection_name}"
+    headers = {"Authorization": f"Bearer {token}"}
+    documents = []
+    
+    while url:
+        resp = requests.get(url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            print(f"Error fetching {collection_name}:", resp.text)
+            break
+            
+        data = resp.json()
+        for doc in data.get('documents', []):
+            documents.append(parse_firestore_doc(doc))
+            
+        page_token = data.get('nextPageToken')
+        if page_token:
+            url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/{collection_name}?pageToken={page_token}"
+        else:
+            url = None
+            
+    return documents
+
+def get_raw_admin_data():
     try:
-        shows_snapshot = shows_ref.stream()
-        for doc in shows_snapshot:
-            data = doc.to_dict()
-            data['id'] = doc.id
-            shows.append(data)
+        shows = fetch_collection_rest('shows')
     except Exception as e:
         print(f"Warning: Failed to fetch shows: {e}")
+        shows = []
     
     payment_rows = []
     try:
-        # Try filtered query first; fall back to fetching all if index is missing
-        try:
-            payments_snapshot = payments_ref.where(filter=FieldFilter('status', '==', 'paid')).stream()
-            payment_docs = list(payments_snapshot)
-        except Exception:
-            # Fallback: fetch all payments and filter client-side
-            print("Warning: Filtered payments query failed, fetching all payments instead")
-            all_snapshot = payments_ref.stream()
-            payment_docs = [doc for doc in all_snapshot if (doc.to_dict() or {}).get('status') == 'paid']
+        all_payments = fetch_collection_rest('payments')
+        payment_docs = [p for p in all_payments if p.get('status') == 'paid']
         
-        for doc in payment_docs:
-            p = doc.to_dict() if hasattr(doc, 'to_dict') else doc
-            if not isinstance(p, dict):
-                continue
-            p['id'] = doc.id if hasattr(doc, 'id') else p.get('id', '')
-            
-            # Convert createdAt
-            created_at_dt = to_date_value(p.get('createdAt'))
-            
-            p['createdAtDate'] = created_at_dt
+        for p in payment_docs:
+            p['createdAtDate'] = to_date_value(p.get('createdAt'))
             p['amountValue'] = as_number(p.get('amount'), 0.0)
             p['seatCountValue'] = max(as_number(p.get('seatCount'), 0.0), 0.0)
             payment_rows.append(p)
