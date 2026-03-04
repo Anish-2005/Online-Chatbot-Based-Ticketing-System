@@ -30,21 +30,18 @@ const Chatbot = () => {
   }, [isScriptLoaded]);
 
   return (
-    <>
-      {/* Dialogflow Chatbot Button */}
-      <div className="chatbot-container">
-        {isScriptLoaded && (
-          <df-messenger
-            intent="WELCOME"
-            chat-title="Chatticket"
-            chat-icon="https://www.pngkit.com/png/full/502-5023267_itpalooza-is-a-not-for-profit-community-driven.png"
-            agent-id="f869a013-1615-48d8-a6fb-c732a3460178"
-            language-code="en"
-            className={isDark ? 'dark-theme' : 'light-theme'}
-          ></df-messenger>
-        )}
-      </div>
-    </>
+    <div className="chatbot-container" style={{ zIndex: 2147483647 }}>
+      {isScriptLoaded && (
+        <df-messenger
+          intent="WELCOME"
+          chat-title="ChatTicket"
+          chat-icon="https://cdn-icons-png.flaticon.com/512/8943/8943377.png"
+          agent-id="f869a013-1615-48d8-a6fb-c732a3460178"
+          language-code="en"
+          className={isDark ? 'dark-theme' : 'light-theme'}
+        ></df-messenger>
+      )}
+    </div>
   );
 };
 
