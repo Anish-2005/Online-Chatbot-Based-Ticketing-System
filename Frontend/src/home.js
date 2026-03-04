@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from './pages/ThemeContext';
 import { VscAccount } from 'react-icons/vsc';
-import { FaTicketAlt, FaClock, FaShieldAlt, FaHeadset, FaArrowRight, FaStar, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaTicketAlt, FaClock, FaShieldAlt, FaHeadset, FaArrowRight, FaStar } from 'react-icons/fa';
 import { FiZap, FiSmartphone, FiGlobe, FiChevronRight, FiUser } from 'react-icons/fi';
 import ThemeToggleButton from './components/ThemeToggleButton';
 import { useAuth } from './pages/AuthContext';

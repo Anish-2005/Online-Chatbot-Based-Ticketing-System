@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
 import { useTheme } from '../pages/ThemeContext';
-import { FiTag, FiCalendar, FiPercent, FiGift, FiMenu } from 'react-icons/fi';
+import { FiTag, FiCalendar, FiPercent, FiGift } from 'react-icons/fi';
 import { createSpecialOffer, fetchSpecialOffers, updateSpecialOfferStatus } from '../services/offers';
 
 const initialForm = {
@@ -198,8 +198,8 @@ const SpecialOffers = ({ role }) => {
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -8, transition: { duration: 0.2 } }}
                   className={`group relative rounded-2xl p-6 shadow-lg transition-all duration-300 hover:shadow-2xl overflow-hidden ${isDark
-                      ? 'bg-gray-800 border border-gray-700'
-                      : 'bg-white border border-gray-200'
+                    ? 'bg-gray-800 border border-gray-700'
+                    : 'bg-white border border-gray-200'
                     }`}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${palette.surface} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>

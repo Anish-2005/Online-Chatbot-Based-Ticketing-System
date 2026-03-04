@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiHome, FiBarChart2, FiDollarSign, FiTag, FiSettings, FiCalendar, FiChevronLeft, FiLogOut, FiMenu, FiChevronRight } from 'react-icons/fi';
-import { useTheme } from '../pages/ThemeContext';
 
 const Sidebar = () => {
   const location = useLocation();
-  const { isDark } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     return localStorage.getItem('adminSidebarCollapsed') === 'true';
   });

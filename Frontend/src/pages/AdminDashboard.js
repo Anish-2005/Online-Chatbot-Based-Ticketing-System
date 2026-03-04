@@ -6,16 +6,10 @@ import {
   FiUsers,
   FiDollarSign,
   FiTrendingUp,
-  FiCalendar,
   FiActivity,
-  FiBarChart2,
-  FiClock,
-  FiCheckCircle,
   FiRefreshCw,
-  FiArrowUpRight,
   FiLayers,
   FiSearch,
-  FiFilter
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { fetchAdminDashboardData } from '../services/dashboard';
@@ -44,7 +38,7 @@ const AdminDashboard = ({ role }) => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState('');
+  const [, setError] = useState('');
 
   const loadDashboard = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);

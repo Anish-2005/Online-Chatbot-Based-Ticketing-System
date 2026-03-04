@@ -6,9 +6,7 @@ import {
   FiLock,
   FiArrowRight,
   FiEye,
-  FiEyeOff,
-  FiCheckCircle,
-  FiUser
+  FiEyeOff
 } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
