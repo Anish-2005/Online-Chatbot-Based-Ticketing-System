@@ -1,307 +1,530 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from './pages/ThemeContext';
 import { VscAccount } from 'react-icons/vsc';
-import { FaTicketAlt, FaClock, FaShieldAlt, FaHeadset, FaArrowRight } from 'react-icons/fa';
+import { FaTicketAlt, FaClock, FaShieldAlt, FaHeadset, FaArrowRight, FaStar, FaMapMarkerAlt } from 'react-icons/fa';
+import { FiZap, FiSmartphone, FiGlobe } from 'react-icons/fi';
 import ThemeToggleButton from './components/ThemeToggleButton';
 
-// Landing Page - Home Component
+/* ─── Animated counter hook ──────────────────────────────── */
+const useCounter = (end, duration = 2000) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    let startTime;
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      if (ref.current) {
+        ref.current.textContent = Math.floor(eased * end).toLocaleString();
+      }
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        requestAnimationFrame(step);
+        observer.disconnect();
+      }
+    }, { threshold: 0.3 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [end, duration]);
+
+  return ref;
+};
+
+const StatItem = ({ value, suffix = '', label }) => {
+  const ref = useCounter(value);
+  return (
+    <div className="text-center">
+      <div className="text-4xl sm:text-5xl font-heading font-black bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+        <span ref={ref}>0</span>{suffix}
+      </div>
+      <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{label}</p>
+    </div>
+  );
+};
+
+/* ─── Floating orb component ──────────────────────────────── */
+const FloatingOrbs = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-purple-500/10 dark:bg-purple-500/5 blur-[100px] animate-float" />
+    <div className="absolute -bottom-[20%] -left-[10%] w-[450px] h-[450px] rounded-full bg-pink-500/10 dark:bg-pink-500/5 blur-[100px] animate-float-delayed" />
+    <div className="absolute top-[40%] left-[30%] w-[300px] h-[300px] rounded-full bg-blue-500/5 dark:bg-blue-500/3 blur-[80px] animate-float-slow" />
+  </div>
+);
+
+/* ─── Navbar component ──────────────────────────────── */
+const Navbar = ({ isDark, navigate, handleAdminLogin }) => {
+  const { scrollY } = useScroll();
+  const bgOpacity = useTransform(scrollY, [0, 100], [0, 1]);
+
+  return (
+    <motion.nav
+      className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8"
+      style={{
+        backgroundColor: isDark
+          ? `rgba(15, 23, 42, ${bgOpacity.get?.() ?? 0})`
+          : `rgba(255, 255, 255, ${bgOpacity.get?.() ?? 0})`,
+      }}
+    >
+      <motion.div
+        initial={false}
+        style={{ backdropFilter: `blur(${bgOpacity.get?.() ? '16px' : '0px'})` }}
+        className="max-w-7xl mx-auto flex items-center justify-between py-4 transition-all"
+      >
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => navigate('/')}
+        >
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
+          </div>
+          <span className="text-xl font-heading font-bold tracking-tight text-gray-900 dark:text-white">
+            Chat<span className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Ticket</span>
+          </span>
+        </motion.div>
+
+        {/* Right controls */}
+        <div className="flex items-center gap-3">
+          <ThemeToggleButton isCollapsed={true} />
+
+          <motion.button
+            onClick={handleAdminLogin}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${isDark
+                ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+              }`}
+          >
+            <VscAccount size={16} />
+            Admin
+          </motion.button>
+
+          <motion.button
+            onClick={() => navigate('/login')}
+            whileHover={{ scale: 1.05, boxShadow: '0 8px 24px rgba(124,58,237,.4)' }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25 transition-all"
+          >
+            Sign In
+          </motion.button>
+        </div>
+      </motion.div>
+    </motion.nav>
+  );
+};
+
+/* ─── Feature Card ──────────────────────────────── */
+const FeatureCard = ({ icon: Icon, title, description, gradient, delay }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.5 }}
+    whileHover={{ y: -6, transition: { duration: 0.2 } }}
+    className="group relative p-6 rounded-2xl bg-white dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/50 shadow-md hover:shadow-xl transition-all duration-300"
+  >
+    <div className={`mb-4 w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${gradient} shadow-lg`}>
+      <Icon className="w-5 h-5 text-white" />
+    </div>
+    <h3 className="text-lg font-heading font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
+    <div className={`absolute bottom-0 left-6 right-6 h-0.5 rounded-full bg-gradient-to-r ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+  </motion.div>
+);
+
+/* ─── Main Home Component ──────────────────────────────── */
 function Home() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
 
-  const handleAdminLogin = () => {
-    navigate('/admindashboard');
-  };
+  const handleAdminLogin = () => navigate('/admindashboard');
 
   const features = [
     {
       icon: FaTicketAlt,
-      title: 'Easy Booking',
-      description: 'Book in seconds'
-    },
-    {
-      icon: FaClock,
-      title: 'Real-time Updates',
-      description: 'Instant notifications'
-    },
-    {
-      icon: FaShieldAlt,
-      title: 'Secure Payment',
-      description: 'Protected transactions'
+      title: 'Instant Booking',
+      description: 'Book museum tickets and shows in under 30 seconds with our streamlined checkout.',
+      gradient: 'from-purple-600 to-violet-600',
     },
     {
       icon: FaHeadset,
-      title: 'AI Support',
-      description: '24/7 Chatbot Help'
+      title: 'AI-Powered Chatbot',
+      description: 'Get 24/7 intelligent ticket booking assistance powered by Dialogflow AI.',
+      gradient: 'from-pink-600 to-rose-600',
+    },
+    {
+      icon: FaShieldAlt,
+      title: 'Secure Payments',
+      description: 'Enterprise-grade security with Firebase Authentication and encrypted transactions.',
+      gradient: 'from-emerald-600 to-teal-600',
+    },
+    {
+      icon: FaClock,
+      title: 'Real-Time Updates',
+      description: 'Live seat availability, instant booking confirmations, and email receipts.',
+      gradient: 'from-blue-600 to-indigo-600',
+    },
+    {
+      icon: FiSmartphone,
+      title: 'Mobile Optimized',
+      description: 'Fully responsive design that works beautifully on any device, anywhere.',
+      gradient: 'from-orange-500 to-amber-600',
+    },
+    {
+      icon: FiGlobe,
+      title: 'Admin Dashboard',
+      description: 'Powerful analytics, show management, and revenue tracking for administrators.',
+      gradient: 'from-cyan-600 to-blue-600',
     },
   ];
 
   return (
-    <div className={`min-h-screen w-full ${isDark ? 'dark bg-gray-900' : 'bg-white'} flex flex-col`}>
-      {/* Admin & Theme Toggle - Top Right Corner */}
-      <div className="absolute top-8 right-8 z-50 flex items-center gap-4">
-        <ThemeToggleButton isCollapsed={true} />
+    <div className={`min-h-screen w-full ${isDark ? 'dark bg-gray-950' : 'bg-white'} overflow-hidden`}>
+      <Navbar isDark={isDark} navigate={navigate} handleAdminLogin={handleAdminLogin} />
 
-        <motion.button
-          onClick={handleAdminLogin}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="p-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-2xl hover:shadow-purple-500/50"
-          title="Admin Login"
-        >
-          <VscAccount size={24} />
-        </motion.button>
-      </div>
+      {/* ─── HERO SECTION ─── */}
+      <section className="relative min-h-screen flex items-center pt-20">
+        <FloatingOrbs />
 
-      {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className={`flex-1 flex items-center justify-center px-4 py-32 min-h-[90vh] ${isDark
-            ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900'
-            : 'bg-gradient-to-br from-white via-purple-50 to-white'
-          }`}
-      >
-        <div className="max-w-7xl w-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Hero Text */}
             <motion.div
-              initial={{ y: -40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6 text-center lg:text-left"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-8 text-center lg:text-left"
             >
-              <h1 className="text-7xl sm:text-8xl font-heading font-bold leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">
+              {/* Status badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-700/50"
+              >
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">
+                  Live • Museum Booking Platform
+                </span>
+              </motion.div>
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-black leading-[1.08] tracking-tight">
+                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">
                   Experience
                 </span>
                 <br />
                 <span className={isDark ? 'text-white' : 'text-gray-900'}>
-                  Unforgettable Moments
+                  Unforgettable
+                </span>
+                <br />
+                <span className={isDark ? 'text-white' : 'text-gray-900'}>
+                  Moments
                 </span>
               </h1>
 
-              <p className="text-xl text-gray-600 dark:text-gray-400 font-medium max-w-lg mx-auto lg:mx-0">
-                Book museum tickets and shows with AI-powered simplicity
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 font-medium max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                AI-powered ticket booking for museums and live shows.
+                Choose your seats, pay securely, and receive instant digital tickets.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <motion.button
                   onClick={() => navigate('/bookshows')}
-                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(108, 92, 231, 0.4)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-heading font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl hover:shadow-2xl transition-all"
+                  whileHover={{ scale: 1.04, boxShadow: '0 20px 40px rgba(124,58,237,.4)' }}
+                  whileTap={{ scale: 0.96 }}
+                  className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xl shadow-purple-500/25 transition-all"
                 >
                   Book Now
-                  <FaArrowRight />
+                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </motion.button>
 
                 <motion.button
-                  onClick={() => navigate('/login')}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-heading font-bold text-lg border-2 transition-all ${isDark
-                      ? 'border-purple-600/50 text-purple-400 hover:bg-purple-600/20'
-                      : 'border-purple-600 text-purple-600 hover:bg-purple-50'
+                  onClick={() => navigate('/events')}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  className={`flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg border-2 transition-all ${isDark
+                      ? 'border-gray-700 text-gray-300 hover:border-purple-500/50 hover:bg-purple-900/20'
+                      : 'border-gray-200 text-gray-700 hover:border-purple-400 hover:bg-purple-50'
                     }`}
                 >
-                  Sign In
-                  <FaArrowRight />
+                  <FiZap className="w-5 h-5" />
+                  Explore Shows
                 </motion.button>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="flex items-center gap-6 justify-center lg:justify-start pt-2">
+                <div className="flex items-center gap-1.5">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar key={i} className="w-4 h-4 text-yellow-400" />
+                  ))}
+                  <span className="ml-2 text-sm font-semibold text-gray-600 dark:text-gray-400">4.9/5</span>
+                </div>
+                <div className="w-px h-5 bg-gray-300 dark:bg-gray-600" />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Trusted by 10K+ visitors</span>
               </div>
             </motion.div>
 
             {/* Hero Visual */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative h-full flex items-center justify-center min-h-96"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative hidden lg:flex items-center justify-center"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-3xl blur-3xl ${isDark ? 'opacity-50' : 'opacity-30'}`}></div>
-              <motion.svg
-                viewBox="0 0 500 600"
-                className="w-full h-full max-w-md relative z-10"
-                animate={{ y: [0, 15, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity }}
-              >
-                <defs>
-                  <linearGradient id="chatbotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#6C5CE7" />
-                    <stop offset="100%" stopColor="#A29BFE" />
-                  </linearGradient>
-                  <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#667EEA" />
-                    <stop offset="100%" stopColor="#764BA2" />
-                  </linearGradient>
-                  <linearGradient id="ticketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#00B894" />
-                    <stop offset="100%" stopColor="#55EFC4" />
-                    <linearGradient id="buttonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#FF6B6B" />
-                      <stop offset="100%" stopColor="#FF8E8E" />
-                    </linearGradient>
-                  </linearGradient>
-                </defs>
+              {/* Background glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-[3rem] blur-3xl" />
 
-                {/* Laptop/Monitor Frame */}
-                <g filter="drop-shadow(0 15px 35px rgba(108, 92, 231, 0.3))">
-                  {/* Monitor Body */}
-                  <rect x="40" y="80" width="420" height="280" fill="url(#screenGrad)" rx="16" stroke="#2D3436" strokeWidth="2" />
+              {/* Card stack illustration */}
+              <div className="relative w-full max-w-md">
+                {/* Back card */}
+                <motion.div
+                  animate={{ y: [0, -8, 0], rotate: [0, 1, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className={`absolute top-8 left-4 right-4 h-64 rounded-3xl ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-100 border-gray-200'
+                    } border shadow-xl`}
+                />
 
-                  {/* Screen */}
-                  <rect x="50" y="90" width="400" height="260" fill="#1A1A2E" rx="12" />
+                {/* Middle card */}
+                <motion.div
+                  animate={{ y: [0, -12, 0], rotate: [0, -0.5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 0.3 }}
+                  className={`absolute top-4 left-2 right-2 h-64 rounded-3xl ${isDark ? 'bg-gray-800/90 border-gray-600' : 'bg-gray-50 border-gray-200'
+                    } border shadow-xl`}
+                />
 
-                  {/* Chatbot Avatar Circle */}
-                  <circle cx="100" cy="130" r="25" fill="#00B894" filter="drop-shadow(0 4px 12px rgba(0, 184, 148, 0.4))" />
-                  <text x="100" y="140" textAnchor="middle" fill="white" fontSize="20" fontWeight="bold" fontFamily="Arial">🤖</text>
+                {/* Front card — Ticket preview */}
+                <motion.div
+                  animate={{ y: [0, -16, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 0.6 }}
+                  className={`relative rounded-3xl p-6 border shadow-2xl ${isDark
+                      ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-purple-500/30'
+                      : 'bg-white border-purple-200'
+                    }`}
+                >
+                  {/* Ticket header */}
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                        <FaTicketAlt className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">E-Ticket</p>
+                        <p className="text-sm font-bold text-gray-900 dark:text-white">ChatTicket</p>
+                      </div>
+                    </div>
+                    <span className="badge badge-green text-[10px]">Confirmed</span>
+                  </div>
 
-                  {/* Chatbot Message Bubble */}
-                  <rect x="130" y="115" width="280" height="50" fill="#2D3436" rx="12" stroke="#00B894" strokeWidth="1.5" />
-                  <text x="270" y="135" textAnchor="middle" fill="#55EFC4" fontSize="12" fontWeight="bold" fontFamily="Arial">Hi! Choose your show:</text>
-                  <text x="270" y="155" textAnchor="middle" fill="#A0E7E5" fontSize="11" fontFamily="Arial">Museum Tour • Concert • Theater</text>
+                  <h3 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-1">
+                    Ancient Civilizations Exhibition
+                  </h3>
+                  <div className="flex items-center gap-2 mb-4">
+                    <FaMapMarkerAlt className="w-3 h-3 text-gray-400" />
+                    <span className="text-sm text-gray-500 dark:text-gray-400">National Museum, Delhi</span>
+                  </div>
 
-                  {/* Icon Grid - Shows Available */}
-                  <rect x="70" y="180" width="35" height="35" fill="#FF6B6B" rx="8" />
-                  <text x="87" y="202" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial">🎭</text>
+                  <div className="grid grid-cols-3 gap-3 mb-5">
+                    {[
+                      { label: 'Date', value: 'Mar 15' },
+                      { label: 'Time', value: '2:00 PM' },
+                      { label: 'Seats', value: 'A4, A5' },
+                    ].map((item) => (
+                      <div
+                        key={item.label}
+                        className={`rounded-xl p-3 text-center ${isDark ? 'bg-gray-700/50' : 'bg-purple-50'
+                          }`}
+                      >
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{item.label}</p>
+                        <p className="text-sm font-bold text-gray-900 dark:text-white mt-0.5">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
 
-                  <rect x="120" y="180" width="35" height="35" fill="#4ECDC4" rx="8" />
-                  <text x="137" y="202" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial">🎨</text>
-
-                  <rect x="170" y="180" width="35" height="35" fill="#FFD93D" rx="8" />
-                  <text x="187" y="202" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial">🎪</text>
-
-                  <rect x="220" y="180" width="35" height="35" fill="#6BCB77" rx="8" />
-                  <text x="237" y="202" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial">🎵</text>
-
-                  <rect x="270" y="180" width="35" height="35" fill="#4D96FF" rx="8" />
-                  <text x="287" y="202" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial">📚</text>
-
-                  <rect x="320" y="180" width="35" height="35" fill="#F38181" rx="8" />
-                  <text x="337" y="202" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial">🎬</text>
-
-                  {/* Booking Details Box */}
-                  <rect x="70" y="230" width="350" height="70" fill="#2D3436" rx="10" stroke="#667EEA" strokeWidth="1.5" opacity="0.8" />
-                  <text x="245" y="250" textAnchor="middle" fill="#A29BFE" fontSize="11" fontWeight="bold" fontFamily="Arial">🎟️ Museum Tour - Sunday 2:00 PM</text>
-                  <text x="245" y="270" textAnchor="middle" fill="#FFD93D" fontSize="10" fontFamily="Arial">Price: $25 • Seats: 4</text>
-                  <rect x="160" y="280" width="170" height="8" fill="#667EEA" rx="4" />
-                  <text x="245" y="313" textAnchor="middle" fill="#55EFC4" fontSize="11" fontWeight="bold" fontFamily="Arial">→ Book & Pay Securely</text>
-                </g>
-
-                {/* Tickets Stack on Side */}
-                <g transform="translate(0, 220)">
-                  {/* Ticket 1 */}
-                  <rect x="20" y="0" width="70" height="110" fill="url(#ticketGrad)" rx="8" stroke="#00B894" strokeWidth="2" filter="drop-shadow(0 8px 16px rgba(0, 184, 148, 0.3))" />
-                  <text x="55" y="35" textAnchor="middle" fill="#2D3436" fontSize="12" fontWeight="bold" fontFamily="Arial">ADMIT</text>
-                  <text x="55" y="55" textAnchor="middle" fill="#2D3436" fontSize="10" fontFamily="Arial">ONE</text>
-                  <line x1="25" y1="65" x2="85" y2="65" stroke="#2D3436" strokeWidth="1" strokeDasharray="2,2" />
-                  <text x="55" y="95" textAnchor="middle" fill="#2D3436" fontSize="7" fontFamily="Arial">✓ VALID</text>
-
-                  {/* Ticket 2 - Rotated */}
-                  <g transform="rotate(8)">
-                    <rect x="95" y="15" width="70" height="110" fill="url(#ticketGrad)" rx="8" stroke="#00B894" strokeWidth="2" filter="drop-shadow(0 8px 16px rgba(0, 184, 148, 0.3))" />
-                    <text x="130" y="50" textAnchor="middle" fill="#2D3436" fontSize="12" fontWeight="bold" fontFamily="Arial">ADMIT</text>
-                    <text x="130" y="70" textAnchor="middle" fill="#2D3436" fontSize="10" fontFamily="Arial">ONE</text>
-                    <line x1="100" y1="80" x2="160" y2="80" stroke="#2D3436" strokeWidth="1" strokeDasharray="2,2" />
-                    <text x="130" y="105" textAnchor="middle" fill="#2D3436" fontSize="7" fontFamily="Arial">✓ PAID</text>
-                  </g>
-
-                  {/* Ticket 3 - More Rotated */}
-                  <g transform="rotate(-6)">
-                    <rect x="170" y="5" width="70" height="110" fill="url(#ticketGrad)" rx="8" stroke="#00B894" strokeWidth="2" filter="drop-shadow(0 8px 16px rgba(0, 184, 148, 0.3))" />
-                    <text x="205" y="40" textAnchor="middle" fill="#2D3436" fontSize="12" fontWeight="bold" fontFamily="Arial">ADMIT</text>
-                    <text x="205" y="60" textAnchor="middle" fill="#2D3436" fontSize="10" fontFamily="Arial">ONE</text>
-                    <line x1="175" y1="70" x2="235" y2="70" stroke="#2D3436" strokeWidth="1" strokeDasharray="2,2" />
-                    <text x="205" y="100" textAnchor="middle" fill="#2D3436" fontSize="7" fontFamily="Arial">✓ SECURED</text>
-                  </g>
-                </g>
-
-                {/* Animated Chat Indicator */}
-                <g transform="translate(450, 100)">
-                  <circle cx="0" cy="0" r="6" fill="#FF6B6B" opacity="1">
-                    <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="0" cy="0" r="12" fill="#FF6B6B" opacity="0.3">
-                    <animate attributeName="r" values="6;14;6" dur="1.5s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.8;0;0.8" dur="1.5s" repeatCount="indefinite" />
-                  </circle>
-                </g>
-
-                {/* Bottom Status Bar */}
-                <rect x="50" y="370" width="400" height="40" fill="#2D3436" rx="8" stroke="#667EEA" strokeWidth="1" opacity="0.9" />
-                <text x="110" y="395" fill="#A0E7E5" fontSize="11" fontWeight="bold" fontFamily="Arial">✓ Booking Secure</text>
-                <text x="280" y="395" fill="#FFD93D" fontSize="11" fontWeight="bold" fontFamily="Arial">💳 Payment Ready</text>
-
-                {/* Keyboard */}
-                <rect x="45" y="420" width="410" height="50" fill="#1A1A2E" rx="4" />
-                <circle cx="65" cy="433" r="4" fill="#667EEA" />
-                <circle cx="80" cy="433" r="4" fill="#667EEA" />
-                <circle cx="95" cy="433" r="4" fill="#667EEA" />
-                <circle cx="110" cy="433" r="4" fill="#667EEA" />
-                <circle cx="125" cy="433" r="4" fill="#667EEA" />
-                <circle cx="65" cy="453" r="4" fill="#667EEA" />
-                <circle cx="80" cy="453" r="4" fill="#667EEA" />
-                <circle cx="95" cy="453" r="4" fill="#667EEA" />
-                <circle cx="110" cy="453" r="4" fill="#667EEA" />
-                <circle cx="125" cy="453" r="4" fill="#667EEA" />
-                <rect x="150" y="428" width="250" height="30" fill="#3A3A5C" rx="4" stroke="#667EEA" strokeWidth="0.5" />
-                <text x="275" y="450" textAnchor="middle" fill="#A0E7E5" fontSize="11" fontFamily="Arial">Type your choice...</text>
-
-                {/* Decorative Elements */}
-                <circle cx="80" cy="30" r="15" fill="#FF6B6B" opacity="0.15" />
-                <circle cx="420" cy="50" r="20" fill="#00B894" opacity="0.1" />
-                <circle cx="450" cy="500" r="25" fill="#667EEA" opacity="0.12" />
-              </motion.svg>
+                  {/* QR section */}
+                  <div className={`flex items-center justify-between p-4 rounded-2xl ${isDark ? 'bg-gray-700/30' : 'bg-gray-50'
+                    }`}>
+                    <div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Total</p>
+                      <p className="text-2xl font-heading font-black text-gray-900 dark:text-white">₹500</p>
+                    </div>
+                    <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${isDark ? 'bg-white' : 'bg-gray-900'
+                      }`}>
+                      <div className="w-12 h-12 grid grid-cols-4 gap-0.5">
+                        {[...Array(16)].map((_, i) => (
+                          <div
+                            key={i}
+                            className={`rounded-[1px] ${Math.random() > 0.4
+                                ? isDark ? 'bg-gray-900' : 'bg-white'
+                                : isDark ? 'bg-gray-300' : 'bg-gray-600'
+                              }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Features Section - Brief */}
-      <motion.section
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.8 }}
-        className={`py-16 px-4 sm:px-6 lg:px-8 ${isDark ? 'bg-gray-950 border-t border-gray-800' : 'bg-gray-50 border-t border-gray-200'}`}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  className={`p-6 rounded-2xl text-center transition-all duration-300 border ${isDark
-                      ? 'bg-gray-900 border-gray-800 hover:border-purple-600/50'
-                      : 'bg-white border-gray-200 hover:border-purple-600/50'
-                    }`}
-                >
-                  <div className="mb-4 flex justify-center">
-                    <div className="p-3 rounded-xl bg-gradient-to-br from-purple-600/20 to-pink-600/20">
-                      <Icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-heading font-bold text-gray-900 dark:text-white mb-1">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+      {/* ─── STATS SECTION ─── */}
+      <section className={`py-20 border-t ${isDark ? 'border-gray-800 bg-gray-950' : 'border-gray-100 bg-gray-50/50'}`}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <StatItem value={10000} suffix="+" label="Tickets Sold" />
+            <StatItem value={250} suffix="+" label="Shows Listed" />
+            <StatItem value={50} suffix="+" label="Museums" />
+            <StatItem value={99} suffix="%" label="Satisfaction" />
           </div>
         </div>
-      </motion.section>
+      </section>
+
+      {/* ─── FEATURES SECTION ─── */}
+      <section className={`py-24 ${isDark ? 'bg-gray-950' : 'bg-white'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="badge badge-purple mb-4">Features</span>
+            <h2 className="text-4xl sm:text-5xl font-heading font-black text-gray-900 dark:text-white tracking-tight mt-4">
+              Everything You Need for
+              <br />
+              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">
+                Seamless Booking
+              </span>
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              From intelligent chatbot interactions to secure payments, we've built every feature to make your booking experience effortless.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <FeatureCard key={feature.title} {...feature} delay={index * 0.08} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CTA SECTION ─── */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-rose-600" />
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-2 border-white/30" />
+          <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full border-2 border-white/20" />
+          <div className="absolute top-1/2 left-1/3 w-24 h-24 rounded-full border-2 border-white/25" />
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl sm:text-5xl font-heading font-black text-white tracking-tight">
+              Ready to Book Your Next
+              <br />
+              Museum Experience?
+            </h2>
+            <p className="mt-6 text-xl text-white/80 max-w-2xl mx-auto">
+              Join thousands of satisfied visitors who trust ChatTicket for their museum and show bookings.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.button
+                onClick={() => navigate('/bookshows')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg bg-white text-purple-700 shadow-xl hover:shadow-2xl transition-all"
+              >
+                Start Booking
+                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+              <motion.button
+                onClick={() => navigate('/login')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-heading font-bold text-lg text-white border-2 border-white/30 hover:border-white/60 hover:bg-white/10 transition-all"
+              >
+                Sign In
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── FOOTER ─── */}
+      <footer className={`py-12 border-t ${isDark ? 'border-gray-800 bg-gray-950' : 'border-gray-100 bg-gray-50'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Brand column */}
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                  <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
+                </div>
+                <span className="text-xl font-heading font-bold text-gray-900 dark:text-white">
+                  Chat<span className="text-purple-600 dark:text-purple-400">Ticket</span>
+                </span>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed">
+                AI-powered chatbot-based ticketing system for museums and live shows. Book securely, get instant digital tickets.
+              </p>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-4">Platform</h4>
+              <ul className="space-y-2.5">
+                {['Book Shows', 'Events', 'My Tickets'].map((link) => (
+                  <li key={link}>
+                    <button
+                      onClick={() => navigate(link === 'Book Shows' ? '/bookshows' : link === 'Events' ? '/events' : '/my-shows')}
+                      className="text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                    >
+                      {link}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-4">Technology</h4>
+              <ul className="space-y-2.5">
+                {['React', 'Firebase', 'Dialogflow AI', 'Tailwind CSS'].map((link) => (
+                  <li key={link}>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">{link}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className={`mt-10 pt-8 border-t ${isDark ? 'border-gray-800' : 'border-gray-200'} flex flex-col sm:flex-row items-center justify-between gap-4`}>
+            <p className="text-sm text-gray-400 dark:text-gray-500">
+              © {new Date().getFullYear()} ChatTicket. Built for Smart India Hackathon.
+            </p>
+            <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+              <span className="w-2 h-2 rounded-full bg-green-500" />
+              All systems operational
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

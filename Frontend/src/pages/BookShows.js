@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { FiInfo, FiStar, FiTrendingUp, FiCreditCard } from 'react-icons/fi';
+import { FiInfo, FiStar, FiTrendingUp, FiCreditCard, FiArrowLeft, FiUser } from 'react-icons/fi';
 import Carousel from './Carousel';
 import AboutMuseum from './AboutMuseum';
 import { useTheme } from './ThemeContext';
@@ -13,67 +13,92 @@ const Bookshows = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'}`}>
+      {/* Subtle background gradient */}
       <div className="relative overflow-hidden">
-        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50 to-white'}`} />
+        <div className={`pointer-events-none absolute inset-0 ${isDark ? 'bg-gradient-to-br from-gray-950 via-purple-950/20 to-gray-950' : 'bg-gradient-to-br from-white via-purple-50/50 to-white'}`} />
 
-        <div className="relative mx-auto w-full max-w-7xl px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pt-8">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 ${isDark ? 'border-purple-700/50 bg-purple-900/30' : 'border-purple-200 bg-purple-50/80'}`}>
-                <img
-                  src="/chat-ticket-logo.svg"
-                  alt="ChatTicket logo"
-                  className="h-7 w-7 rounded-md"
-                />
-                <span className={`text-sm font-black tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: "'Poppins', sans-serif" }}>
-                  ChatTicket Booking
-                </span>
-              </div>
-
-              <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-wide ${isDark ? 'border-purple-700/50 bg-purple-900/30 text-purple-300' : 'border-purple-200 bg-purple-50/80 text-purple-600'}`}>
-                <FiStar className="h-4 w-4" />
-                Curated Museum Experiences
-              </div>
-            </div>
-
-            <ThemeToggleButton />
-          </div>
-
-          <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45 }}
-              className="lg:col-span-8"
-            >
-              <h1 className={`text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl leading-[1.15] bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 ${isDark ? 'dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent' : 'bg-clip-text text-transparent'}`} style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '-0.02em' }}>
-                Discover, Compare,
-                <span className="block">and Book</span>
-                <span className={`block ${isDark ? 'text-white' : 'text-gray-900'}`}>Premium Shows</span>
-              </h1>
-              <p className={`mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl font-500 ${isDark ? 'text-gray-300' : 'text-gray-800'}`} style={{ fontFamily: "'Inter', sans-serif", letterSpacing: '-0.005em' }}>
-                Browse handpicked exhibitions and live museum programs in a cinematic experience. Tap any show card to book in seconds.
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+        {/* Top Navigation Bar */}
+        <div className="relative z-20">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between py-4">
+              {/* Left: Logo + Brand */}
+              <div className="flex items-center gap-3">
                 <button
-                  onClick={() => navigate('/events')}
-                  className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-purple-500/50"
+                  onClick={() => navigate('/')}
+                  className="flex items-center gap-3 group"
                 >
-                  <FiTrendingUp className="h-4 w-4" />
-                  Explore Events
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/30 transition-shadow">
+                    <img src="/chat-ticket-logo.svg" alt="ChatTicket" className="w-7 h-7 brightness-200" />
+                  </div>
+                  <span className={`text-lg font-heading font-bold tracking-tight hidden sm:inline ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    Chat<span className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Ticket</span>
+                  </span>
                 </button>
+
+                <div className={`hidden md:inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider ${isDark ? 'border-purple-700/50 bg-purple-900/30 text-purple-300' : 'border-purple-200 bg-purple-50/80 text-purple-600'}`}>
+                  <FiStar className="h-3 w-3" />
+                  Curated Museum Experiences
+                </div>
+              </div>
+
+              {/* Right: Navigation actions */}
+              <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => navigate('/my-shows')}
-                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${isDark ? 'bg-purple-800/70 text-purple-100 hover:bg-purple-700' : 'bg-purple-100 text-purple-800 hover:bg-purple-200'}`}
+                  className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700/50' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'}`}
                 >
                   <FiCreditCard className="h-4 w-4" />
                   My Shows
                 </button>
+                <ThemeToggleButton />
+                <button
+                  onClick={() => navigate('/my-shows')}
+                  className={`sm:hidden p-2 rounded-xl transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  title="My Shows"
+                >
+                  <FiUser className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero Section */}
+        <div className="relative mx-auto w-full max-w-7xl px-4 pb-12 pt-4 sm:px-6 lg:px-8 lg:pt-6">
+          <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-8"
+            >
+              <h1
+                className="text-4xl font-heading font-black tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]"
+              >
+                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 dark:from-purple-400 dark:via-pink-400 dark:to-rose-400 bg-clip-text text-transparent">
+                  Discover & Book
+                </span>
+                <br />
+                <span className={isDark ? 'text-white' : 'text-gray-900'}>Premium Shows</span>
+              </h1>
+              <p className={`mt-5 max-w-2xl text-base sm:text-lg leading-relaxed font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Browse handpicked exhibitions and live museum programs. Tap any show card below to book in seconds.
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <motion.button
+                  onClick={() => navigate('/events')}
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/25"
+                >
+                  <FiTrendingUp className="h-4 w-4" />
+                  Explore All Events
+                </motion.button>
                 <button
                   onClick={() => setShowAboutMuseum((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${isDark ? 'bg-gray-800 text-white hover:bg-gray-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
+                  className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all ${isDark ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700/50' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'}`}
                 >
                   <FiInfo className="h-4 w-4" />
                   {showAboutMuseum ? 'Hide Museum Info' : 'About the Museum'}
@@ -81,21 +106,22 @@ const Bookshows = () => {
               </div>
             </motion.div>
 
+            {/* Booking Tip Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.15 }}
+              transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="lg:col-span-4"
             >
-              <div className={`rounded-3xl border p-6 shadow-xl backdrop-blur-sm ${isDark ? 'border-purple-700/30 bg-purple-900/40' : 'border-purple-200 bg-purple-50/80'}`}>
-                <p className={`text-xs font-bold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`} style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.08em' }}>
+              <div className={`rounded-2xl border p-5 backdrop-blur-sm ${isDark ? 'border-gray-700/50 bg-gray-800/60' : 'border-purple-200 bg-purple-50/60'}`}>
+                <p className={`text-[11px] font-bold uppercase tracking-widest ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>
                   💡 Booking Tip
                 </p>
-                <h3 className={`mt-3 text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '-0.015em' }}>
+                <h3 className={`mt-2 text-xl font-heading font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   Best Slots Fill Fast
                 </h3>
-                <p className={`mt-3 text-base leading-relaxed font-400 ${isDark ? 'text-gray-400' : 'text-gray-700'}`} style={{ fontFamily: "'Inter', sans-serif" }}>
-                  Book early to secure premium seating. Available spots book quickly during peak times.
+                <p className={`mt-2 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Book early to secure premium seating. Available spots fill quickly during peak times.
                 </p>
               </div>
             </motion.div>
@@ -103,28 +129,31 @@ const Bookshows = () => {
         </div>
       </div>
 
+      {/* Carousel Section */}
       <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
         <motion.section
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.25 }}
-          className={`rounded-3xl border p-4 shadow-2xl sm:p-6 ${isDark ? 'border-purple-700/30 bg-gray-800/50' : 'border-purple-200 bg-white'}`}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className={`rounded-2xl border p-4 sm:p-6 ${isDark ? 'border-gray-700/50 bg-gray-800/40' : 'border-gray-200 bg-white shadow-lg shadow-gray-200/50'}`}
         >
           <Carousel onSlideClick={() => { }} />
         </motion.section>
 
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.35 }}
-          className="mt-8"
-        >
-          {showAboutMuseum && (
-            <div className={`rounded-3xl border p-6 shadow-lg ${isDark ? 'border-purple-700/30 bg-gray-800/50' : 'border-purple-200 bg-purple-50/50'}`}>
+        {/* About Museum Section */}
+        {showAboutMuseum && (
+          <motion.section
+            initial={{ opacity: 0, y: 16, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4 }}
+            className="mt-6"
+          >
+            <div className={`rounded-2xl border p-6 ${isDark ? 'border-gray-700/50 bg-gray-800/40' : 'border-gray-200 bg-gray-50'}`}>
               <AboutMuseum />
             </div>
-          )}
-        </motion.section>
+          </motion.section>
+        )}
       </main>
     </div>
   );

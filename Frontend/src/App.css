@@ -15,80 +15,28 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   background-color: #FFFFFF;
-  color: #2D3436;
+  color: #0F172A;
   line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body.dark {
-  background-color: #0F0F1E;
-  color: #E2E8F0;
+  background-color: #020617;
+  color: #F1F5F9;
 }
 
 body.light {
   background-color: #FFFFFF;
-  color: #2D3436;
-}
-
-html.dark {
-  --primary-dark: #6C5CE7;
-  --primary-light: #A29BFE;
-  --accent-yellow: #FFE66D;
+  color: #0F172A;
 }
 
 .App {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  transition: background-color 0.3s ease;
-}
-
-/* ============================================================ */
-/*                UTILITY CLASSES                              */
-/* ============================================================ */
-
-/* Text utilities */
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
-/* Spacing utilities */
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-/* Display utilities */
-.hidden {
-  display: none;
-}
-
-.flex {
-  display: flex;
-}
-
-.grid {
-  display: grid;
+  transition: background-color 0.4s ease;
 }
 
 /* ============================================================ */
@@ -99,18 +47,8 @@ html.dark {
   from {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes slideIn {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
   to {
-    transform: translateX(0);
     opacity: 1;
   }
 }
@@ -120,6 +58,7 @@ html.dark {
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -127,59 +66,39 @@ html.dark {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
 }
 
 /* ============================================================ */
-/*            SCROLLBAR STYLING                                */
+/*         THEME TRANSITION (VIEW TRANSITIONS API)              */
 /* ============================================================ */
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
 }
 
-::-webkit-scrollbar-track {
-  background: #F3F4F6;
+::view-transition-old(root) {
+  z-index: 2;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
-  border-radius: 4px;
+::view-transition-new(root) {
+  z-index: 1;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #5F3DC4, #9775FA);
+html.dark::view-transition-old(root) {
+  z-index: 1;
 }
 
-/* Dark mode scrollbar */
-html.dark ::-webkit-scrollbar-track {
-  background: #1C1C2E;
-}
-
-html.dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #FFE66D, #FFD93D);
-  border-radius: 4px;
-}
-
-html.dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #FFD93D, #FFED4E);
-}
-
-/* ============================================================ */
-/*            DARK MODE BODY STYLES                            */
-/* ============================================================ */
-
-body.dark,
-body.dark *:not(script):not(style) {
-  --bg-primary: #0F0F1E;
-  --bg-secondary: #1C1C2E;
-  --text-primary: #E2E8F0;
-  --text-secondary: #CBD5E0;
-  --border-color: #2D3436;
+html.dark::view-transition-new(root) {
+  z-index: 2;
 }

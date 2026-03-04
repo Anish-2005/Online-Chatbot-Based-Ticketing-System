@@ -57,7 +57,11 @@ const AdminDashboard = ({ role }) => {
 
     setError('');
     try {
-      const data = await fetchAdminDashboardData();
+      // Race the fetch against a 15-second timeout so the UI never hangs
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Dashboard request timed out. The backend may be slow or unreachable.')), 15000)
+      );
+      const data = await Promise.race([fetchAdminDashboardData(), timeout]);
       setDashboardData(data);
     } catch (loadError) {
       console.error('Error loading admin dashboard:', loadError);

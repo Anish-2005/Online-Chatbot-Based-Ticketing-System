@@ -4,11 +4,11 @@ import {
   getDoc,
   runTransaction,
   serverTimestamp,
-  } from 'firebase/firestore';
+} from 'firebase/firestore';
 import { auth, db } from './firebase';
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://online-chatbot-based-ticketing-system-4whh.onrender.com';
 
 export const getShowById = async (showId) => {
   const showRef = doc(db, 'shows', showId);

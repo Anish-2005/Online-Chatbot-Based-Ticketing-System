@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
+import asyncio
 import pytz
 from ..firebase_setup import db
 from google.cloud.firestore_v1.base_query import FieldFilter
@@ -59,27 +60,43 @@ def get_raw_admin_data():
     shows_ref = db.collection('shows')
     payments_ref = db.collection('payments')
     
-    shows_snapshot = shows_ref.stream()
-    payments_snapshot = payments_ref.where(filter=FieldFilter('status', '==', 'paid')).stream()
-    
     shows = []
-    for doc in shows_snapshot:
-        data = doc.to_dict()
-        data['id'] = doc.id
-        shows.append(data)
-        
+    try:
+        shows_snapshot = shows_ref.stream()
+        for doc in shows_snapshot:
+            data = doc.to_dict()
+            data['id'] = doc.id
+            shows.append(data)
+    except Exception as e:
+        print(f"Warning: Failed to fetch shows: {e}")
+    
     payment_rows = []
-    for doc in payments_snapshot:
-        p = doc.to_dict()
-        p['id'] = doc.id
+    try:
+        # Try filtered query first; fall back to fetching all if index is missing
+        try:
+            payments_snapshot = payments_ref.where(filter=FieldFilter('status', '==', 'paid')).stream()
+            payment_docs = list(payments_snapshot)
+        except Exception:
+            # Fallback: fetch all payments and filter client-side
+            print("Warning: Filtered payments query failed, fetching all payments instead")
+            all_snapshot = payments_ref.stream()
+            payment_docs = [doc for doc in all_snapshot if (doc.to_dict() or {}).get('status') == 'paid']
         
-        # Convert created At
-        created_at_dt = to_date_value(p.get('createdAt'))
-        
-        p['createdAtDate'] = created_at_dt
-        p['amountValue'] = as_number(p.get('amount'), 0.0)
-        p['seatCountValue'] = max(as_number(p.get('seatCount'), 0.0), 0.0)
-        payment_rows.append(p)
+        for doc in payment_docs:
+            p = doc.to_dict() if hasattr(doc, 'to_dict') else doc
+            if not isinstance(p, dict):
+                continue
+            p['id'] = doc.id if hasattr(doc, 'id') else p.get('id', '')
+            
+            # Convert createdAt
+            created_at_dt = to_date_value(p.get('createdAt'))
+            
+            p['createdAtDate'] = created_at_dt
+            p['amountValue'] = as_number(p.get('amount'), 0.0)
+            p['seatCountValue'] = max(as_number(p.get('seatCount'), 0.0), 0.0)
+            payment_rows.append(p)
+    except Exception as e:
+        print(f"Warning: Failed to fetch payments: {e}")
         
     shows_with_derived = []
     for show in shows:
@@ -109,8 +126,8 @@ def get_raw_admin_data():
     return payment_rows, shows_with_derived
 
 @router.get("/dashboard")
-def fetch_admin_dashboard_data():
-    payment_rows, shows_with_derived = get_raw_admin_data()
+async def fetch_admin_dashboard_data():
+    payment_rows, shows_with_derived = await asyncio.to_thread(get_raw_admin_data)
     
     today_start = start_of_today()
     tomorrow_start = today_start + timedelta(days=1)
@@ -204,8 +221,8 @@ def fetch_admin_dashboard_data():
     }
 
 @router.get("/analytics")
-def fetch_admin_analytics_data():
-    payment_rows, shows_with_derived = get_raw_admin_data()
+async def fetch_admin_analytics_data():
+    payment_rows, shows_with_derived = await asyncio.to_thread(get_raw_admin_data)
     
     total_revenue = sum(p['amountValue'] for p in payment_rows)
     total_tickets_sold = sum(p['seatCountValue'] for p in payment_rows)
@@ -261,8 +278,8 @@ def fetch_admin_analytics_data():
     }
 
 @router.get("/earnings")
-def fetch_total_earnings():
-    payment_rows, _ = get_raw_admin_data()
+async def fetch_total_earnings():
+    payment_rows, _ = await asyncio.to_thread(get_raw_admin_data)
     
     total_revenue = sum(p['amountValue'] for p in payment_rows)
     total_bookings = len(payment_rows)
