@@ -68,6 +68,10 @@ npm start
 - ✅ **Responsive & Secure** architecture ready for deployment.
 
 ---
+## 📄 Documentation & Legal
+- [Contributing Guidelines](./CONTRIBUTING.md)
+- [MIT License](./LICENSE)
+
 <div align="center">
   Built with ❤️ for <b>Smart India Hackathon 2024</b>
 </div>
