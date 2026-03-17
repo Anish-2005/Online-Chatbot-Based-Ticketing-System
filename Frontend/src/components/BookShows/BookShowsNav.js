@@ -8,7 +8,7 @@ const BookShowsNav = () => {
     const navigate = useNavigate();
 
     return (
-        <nav className="border-b border-white/10 dark:border-slate-800/50 backdrop-blur-md sticky top-0 z-50">
+        <nav className="border-b border-white/10 dark:border-slate-800/50 backdrop-blur-md sticky top-0 z-50 overflow-x-clip">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16 sm:h-20">
                     <button onClick={() => navigate('/')} className="flex items-center gap-2 sm:gap-3 group">

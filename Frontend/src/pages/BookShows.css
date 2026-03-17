@@ -827,3 +827,10 @@
     padding: 1.5rem;
   }
 }
+
+.bookshows-page {
+  min-height: 100vh;
+  overflow-x: clip;
+  /* ← clip instead of hidden — won't create a scroll container */
+  /* remove overflow-y: auto entirely — let the body handle scrolling */
+}

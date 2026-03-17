@@ -8,8 +8,7 @@ const CatalogSection = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass-premium p-5 sm:p-8 rounded-[2rem] sm:rounded-[3rem] border border-white/20 dark:border-slate-800/30 shadow-2xl overflow-hidden"
-        >
+            className="glass-premium p-5 sm:p-8 rounded-[2rem] sm:rounded-[3rem] border border-white/20 dark:border-slate-800/30 shadow-2xl"        >
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 sm:mb-12 gap-4">
                 <div>
                     <h2 className="text-3xl sm:text-4xl font-heading font-black tracking-tight mb-1 sm:mb-2">

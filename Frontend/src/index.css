@@ -45,8 +45,9 @@
   html {
     height: 100%;
     overflow-y: scroll;
-    padding: 0;
-    margin: 0;
+    /* keeps stable scrollbar gutter, prevents layout shift */
+    overflow-x: clip;
+    /* clip instead of hidden — no scroll container created */
     scroll-behavior: smooth;
   }
 
@@ -65,21 +66,23 @@
   .App {
     min-height: 100%;
     display: block;
-    overflow: visible !important;
   }
 
   /* Remove internal scrolling from all /bookshows components */
   .bookshows-page * {
-    scrollbar-width: none !important; /* Hide standard scrollbar Firefox */
-    -ms-overflow-style: none !important;  /* Hide standard scrollbar IE/Edge */
+    scrollbar-width: none !important;
+    /* Hide standard scrollbar Firefox */
+    -ms-overflow-style: none !important;
+    /* Hide standard scrollbar IE/Edge */
   }
 
   .bookshows-page *::-webkit-scrollbar {
-    display: none !important; /* Hide scrollbar for Chrome/Safari */
+    display: none !important;
+    /* Hide scrollbar for Chrome/Safari */
   }
 
-  .bookshows-page div, 
-  .bookshows-page SECTION, 
+  .bookshows-page div,
+  .bookshows-page SECTION,
   .bookshows-page MAIN {
     overflow: visible !important;
   }
