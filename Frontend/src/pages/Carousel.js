@@ -37,6 +37,12 @@ const Carousel = ({ onSlideClick }) => {
   const [shows, setShows] = useState([]);
   const navigate = useNavigate();
   const sliderRef = React.useRef(null);
+  const totalSlides = shows.length;
+  const desktopSlides = Math.min(3, Math.max(totalSlides, 1));
+  const tabletSlides = Math.min(2, Math.max(totalSlides, 1));
+  const mobileSlides = 1;
+  const canLoopDesktop = totalSlides > desktopSlides;
+  const canScroll = totalSlides > 1;
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -51,37 +57,53 @@ const Carousel = ({ onSlideClick }) => {
     fetchSlides();
   }, []);
 
+  useEffect(() => {
+    if (!sliderRef.current || totalSlides === 0) return;
+    setActiveIndex(0);
+    if (typeof sliderRef.current.slickGoTo === 'function') {
+      sliderRef.current.slickGoTo(0, true);
+    }
+  }, [totalSlides]);
+
+  const normalizeIndex = (index) => (totalSlides ? index % totalSlides : 0);
+  const enableEmphasis = canLoopDesktop;
+
   const settings = {
-    dots: true,
-    infinite: shows.length > 1,
+    dots: canScroll,
+    infinite: canLoopDesktop,
     speed: 1000,
     cssEase: 'cubic-bezier(0.23, 1, 0.32, 1)',
-    slidesToShow: 3,
+    slidesToShow: desktopSlides,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: canLoopDesktop,
     autoplaySpeed: 5000,
-    arrows: true,
-    centerMode: true,
-    centerPadding: '0px',
-    swipeToSlide: true,
-    focusOnSelect: true,
+    arrows: canLoopDesktop,
+    centerMode: canLoopDesktop,
+    centerPadding: canLoopDesktop ? '0px' : '0px',
+    swipeToSlide: canScroll,
+    focusOnSelect: canScroll,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
-    beforeChange: (current, next) => setActiveIndex(next),
+    beforeChange: (current, next) => setActiveIndex(normalizeIndex(next)),
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-          centerMode: true,
+          slidesToShow: tabletSlides,
+          centerMode: totalSlides > tabletSlides,
+          infinite: totalSlides > tabletSlides,
+          autoplay: totalSlides > tabletSlides,
+          arrows: totalSlides > tabletSlides,
         }
       },
       {
         breakpoint: 640,
         settings: {
-          slidesToShow: 1,
-          centerMode: true,
-          centerPadding: '20px',
+          slidesToShow: mobileSlides,
+          centerMode: totalSlides > mobileSlides,
+          infinite: totalSlides > mobileSlides,
+          autoplay: totalSlides > mobileSlides,
+          centerPadding: totalSlides > mobileSlides ? '20px' : '0px',
           arrows: false,
         }
       }
@@ -108,9 +130,9 @@ const Carousel = ({ onSlideClick }) => {
           <div key={item.id || index} className="px-3 py-4 outline-none">
             <motion.div
               animate={{
-                scale: activeIndex === index ? 1 : 0.9,
-                opacity: activeIndex === index ? 1 : 0.6,
-                y: activeIndex === index ? 0 : 10
+                scale: enableEmphasis ? (activeIndex === index ? 1 : 0.9) : 1,
+                opacity: enableEmphasis ? (activeIndex === index ? 1 : 0.6) : 1,
+                y: enableEmphasis ? (activeIndex === index ? 0 : 10) : 0
               }}
               transition={{ duration: 0.6 }}
               onClick={() => handleSlideClick(item)}
