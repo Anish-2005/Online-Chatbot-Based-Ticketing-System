@@ -42,7 +42,7 @@ const pageVariants = {
 };
 
 const PageWrapper = ({ children }) => (
-  <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} className="w-full h-full">
+  <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} className="w-full h-auto flex flex-col">
     {children}
   </motion.div>
 );

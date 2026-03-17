@@ -42,22 +42,30 @@
     --border: #1E293B;
   }
 
-  html,
-  body {
+  html {
     height: 100%;
+    overflow-y: scroll;
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    background-color: var(--surface);
+    color: var(--text);
+    -webkit-overflow-scrolling: touch;
   }
 
   #root,
   .App {
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    background-color: var(--surface);
-    color: var(--text);
+    min-height: 100%;
+    display: block;
+    overflow: visible !important;
   }
 
   body {
