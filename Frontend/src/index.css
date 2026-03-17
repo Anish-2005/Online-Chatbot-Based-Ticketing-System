@@ -81,12 +81,6 @@
     /* Hide scrollbar for Chrome/Safari */
   }
 
-  .bookshows-page div,
-  .bookshows-page SECTION,
-  .bookshows-page MAIN {
-    overflow: visible !important;
-  }
-
   body {
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;

@@ -12,7 +12,7 @@ const Bookshows = () => {
   const [showAboutMuseum, setShowAboutMuseum] = useState(false);
 
   return (
-    <div className={`bookshows-page relative ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`bookshows-page relative min-h-screen overflow-x-hidden ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
       {/* Background Ambience */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[-10%] right-[-5%] w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-indigo-600/10 rounded-full blur-[80px] sm:blur-[120px] animate-float" />
