@@ -26,6 +26,17 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>ChatTicket</title>
+    <!-- Dialogflow Messenger V1 -->
+    <!-- Dialogflow Messenger ES (Stable for your Agent ID) -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="ChatTicket Concierge"
+      agent-id="f869a013-1615-48d8-a6fb-c732a3460178"
+      language-code="en"
+      chat-icon="https://cdn-icons-png.flaticon.com/512/8943/8943377.png"
+    >
+    </df-messenger>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

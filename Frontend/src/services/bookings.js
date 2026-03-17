@@ -148,6 +148,52 @@ export const processShowPayment = async ({
   };
 };
 
+export const processChatbotBooking = async ({
+  eventTitle,
+  seatCount,
+  email,
+}) => {
+  // 1. Find the show by title
+  const showsRef = collection(db, 'shows');
+  const q = query(showsRef, where('title', '==', eventTitle));
+  const snapshot = await getDocs(q);
+  
+  if (snapshot.empty) {
+    throw new Error(`Show "${eventTitle}" not found`);
+  }
+  
+  const showDoc = snapshot.docs[0];
+  const showData = showDoc.data();
+  const showId = showDoc.id;
+
+  // 2. Pick next available seats
+  const currentBookedSeats = Array.isArray(showData.bookedSeats) ? showData.bookedSeats : [];
+  const bookedSet = new Set(currentBookedSeats.map(Number));
+  const configuredSeatsRaw = showData.available_seats ?? showData.totalSeats ?? 100;
+  const totalSeats = Number(configuredSeatsRaw);
+  
+  const selectedSeats = [];
+  for (let i = 1; i <= totalSeats && selectedSeats.length < seatCount; i++) {
+    if (!bookedSet.has(i)) {
+      selectedSeats.push(i);
+    }
+  }
+
+  if (selectedSeats.length < seatCount) {
+    throw new Error('Not enough seats available');
+  }
+
+  // 3. Process using existing logic
+  return await processShowPayment({
+    eventId: showId,
+    selectedSeats,
+    seatCount,
+    email,
+    amount: (showData.price_int || 200) * seatCount,
+    eventTitle: showData.title,
+  });
+};
+
 
 
 
